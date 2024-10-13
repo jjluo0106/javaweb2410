@@ -68,23 +68,7 @@
 
 
 
-        <!--日誌-->
-<!--        <dependency>-->
-<!--            <groupId>org.slf4j</groupId>-->
-<!--            <artifactId>slf4j-api</artifactId>-->
-<!--            <version>1.7.20</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>ch.qos.logback</groupId>-->
-<!--            <artifactId>logback-classic</artifactId>-->
-<!--            <version>1.4.6</version> &lt;!&ndash; 更新到最新版本 &ndash;&gt;-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>ch.qos.logback</groupId>-->
-<!--            <artifactId>logback-core</artifactId>-->
-<!--            <version>1.4.6</version> &lt;!&ndash; 更新到最新版本 &ndash;&gt;-->
-<!--        </dependency>-->
-
+        <!--日誌 記得設定logback.xml於resources內，可打印sql執行語句-->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>

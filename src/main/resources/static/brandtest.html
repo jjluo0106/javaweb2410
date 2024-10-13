@@ -107,14 +107,18 @@
             });
     });
 
-    function renderTable(data) {
-        const tableBody = document.querySelector("#dataTable tbody");
-        tableBody.innerHTML = '';
 
-        data.forEach(item => {
-            const row = document.createElement("tr");
+    // 渲染
+    function renderTable() {
 
-            row.innerHTML = `
+        fetch('http://localhost:8080/brand/selectAll')
+            .then(response => response.json())
+            .then(data => {
+
+                data.forEach(item => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
                 <td>${item.id || ''}</td>
                 <td>${item.brandName || 'N/A'}</td>
                 <td>${item.companyName || 'N/A'}</td>
@@ -129,8 +133,20 @@
                 </td>
             `;
 
-            tableBody.appendChild(row);
-        });
+                    tableBody.appendChild(row);
+                });
+
+
+
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
+        const tableBody = document.querySelector("#dataTable tbody");
+        tableBody.innerHTML = '';
+
+
     }
 
     function editRow(id) {
