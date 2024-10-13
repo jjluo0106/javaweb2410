@@ -14,8 +14,16 @@ public class BrandService {
     @Autowired
     BrandMapper brandMapper;
 
-    public List<Brand> testBrand (){
+    public List<Brand> selectAll(){
 
         return brandMapper.selectAll();
+    }
+
+    public int add(Brand brand) {
+        return brandMapper.add(brand);
+    }
+
+    public void update(Brand brand) {
+        brandMapper.update(brand);
     }
 }

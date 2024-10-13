@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Data Table</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>查詢按鈕</h2>
+<a href="#" id="fetchLink">Click here to fetch and render data</a>
+
+<table id="dataTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Brand Name</th>
+        <th>Company Name</th>
+        <th>Ordered</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<h2>新增</h2>
+<form id="brandForm">
+    <label for="brandName">Brand Name:</label><br>
+    <input type="text" id="brandName" name="brandName" required><br><br>
+
+    <label for="companyName">Company Name:</label><br>
+    <input type="text" id="companyName" name="companyName" required><br><br>
+
+    <label for="ordered">Ordered:</label><br>
+    <input type="number" id="ordered" name="ordered" required><br><br>
+
+    <label for="description">Description:</label><br>
+    <textarea id="description" name="description"></textarea><br><br>
+
+    <label for="status">Status:</label><br>
+    <input type="text" id="status" name="status" required><br><br>
+
+    <input type="submit" value="Add Brand">
+</form>
+
+<script>
+    document.getElementById('fetchLink').addEventListener('click', function(event) {
+        event.preventDefault();
+
+        fetch('http://localhost:8080/brand/selectAll')
+            .then(response => response.json())
+            .then(data => {
+                renderTable(data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    });
+
+    document.getElementById('brandForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const jsonData = {};
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+
+        fetch('http://localhost:8080/brand/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jsonData),
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Brand added successfully!');
+                    event.target.reset();
+                } else {
+                    alert('Failed to add brand');
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+            });
+    });
+
+    function renderTable(data) {
+        const tableBody = document.querySelector("#dataTable tbody");
+        tableBody.innerHTML = '';
+
+        data.forEach(item => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${item.id || ''}</td>
+                <td>${item.brandName || 'N/A'}</td>
+                <td>${item.companyName || 'N/A'}</td>
+                <td>${item.ordered || 'N/A'}</td>
+                <td>${item.description || 'N/A'}</td>
+                <td>${item.status || 'N/A'}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button onclick="editRow(${item.id})">修改</button>
+                        <button onclick="deleteRow(${item.id})">刪除</button>
+                    </div>
+                </td>
+            `;
+
+            tableBody.appendChild(row);
+        });
+    }
+
+    function editRow(id) {
+        // 你可以使用 prompt 來要求使用者修改每個欄位，或改用自訂的彈跳框。
+        const brandName = prompt('Enter new Brand Name:');
+        const companyName = prompt('Enter new Company Name:');
+        const ordered = prompt('Enter new Ordered quantity:');
+        const description = prompt('Enter new Description:');
+        const status = prompt('Enter new Status:');
+
+        const updatedData = {
+            id,
+            brandName,
+            companyName,
+            ordered,
+            description,
+            status
+        };
+
+        // 發送 PUT 請求來更新數據
+        fetch(`http://localhost:8080/brand/update`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedData),
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('Brand updated successfully!');
+                    // 重新加載表格數據
+                    document.getElementById('fetchLink').click();
+                } else {
+                    alert('Failed to update brand');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating data:', error);
+            });
+    }
+
+    function deleteRow(id) {
+        if (confirm(`Are you sure you want to delete the row with ID: ${id}?`)) {
+            // 發送 DELETE 請求來刪除數據
+            fetch(`http://localhost:8080/brand/delete/${id}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Row deleted successfully');
+                        // 重新加載表格數據
+                        document.getElementById('fetchLink').click();
+                    } else {
+                        alert('Failed to delete row');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting data:', error);
+                });
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -15,4 +15,9 @@ public interface BrandMapper {
     @Select("select * from brand;")
     @ResultMap("brandResultMap")
     List<Brand> selectAll();
+
+
+    int add(Brand brand);
+
+    void update(Brand brand);
 }

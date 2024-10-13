@@ -2,12 +2,12 @@ package com.azhe.pojo;
 
 public class Brand {
 
-    private String id;
-    private String brandName;
-    private String companyName;
-    private String ordered;
-    private String description;
-    private String status;
+    private String id; // 唯一ID
+    private String brandName; // 品牌名稱
+    private String companyName; // 公司名稱
+    private String ordered; // 數量
+    private String description; // 描述
+    private String status; // 狀態
 
 
     public Brand() {
@@ -119,6 +119,6 @@ public class Brand {
     }
 
     public String toString() {
-        return "Brand{id = " + id + ", brandName = " + brandName + ", companyName = " + companyName + ", ordered = " + ordered + ", description = " + description + ", status = " + status + "}";
+        return "Brand\n{id = " + id + ", brandName = " + brandName + ", companyName = " + companyName + ", ordered = " + ordered + ", description = " + description + ", status = " + status + "}\n";
     }
 }
