@@ -23,7 +23,7 @@ public class BrandService {
         return brandMapper.add(brand);
     }
 
-    public void update(Brand brand) {
-        brandMapper.update(brand);
+    public int update(Brand brand) {
+        return   brandMapper.update(brand);
     }
 }

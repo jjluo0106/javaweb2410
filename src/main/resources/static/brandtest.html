@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Data Table</title>
+    <title>JSON Data Table with Bootstrap Modal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     <style>
         table {
             width: 100%;
@@ -26,7 +27,8 @@
 <body>
 
 <h2>查詢按鈕</h2>
-<a href="#" id="fetchLink">Click here to fetch and render data</a>
+<a href="#" id="fetchLink">查詢</a>
+<button id="toggleFormButton" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addModal">新增品牌</button>
 
 <table id="dataTable">
     <thead>
@@ -44,40 +46,85 @@
     </tbody>
 </table>
 
-<h2>新增</h2>
-<form id="brandForm">
-    <label for="brandName">Brand Name:</label><br>
-    <input type="text" id="brandName" name="brandName" required><br><br>
+<!-- 新增品牌的 Bootstrap Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="brandForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">新增品牌</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="brandName">Brand Name:</label>
+                    <input type="text" id="brandName" name="brandName" class="form-control" required>
 
-    <label for="companyName">Company Name:</label><br>
-    <input type="text" id="companyName" name="companyName" required><br><br>
+                    <label for="companyName">Company Name:</label>
+                    <input type="text" id="companyName" name="companyName" class="form-control" required>
 
-    <label for="ordered">Ordered:</label><br>
-    <input type="number" id="ordered" name="ordered" required><br><br>
+                    <label for="ordered">Ordered:</label>
+                    <input type="number" id="ordered" name="ordered" class="form-control" required>
 
-    <label for="description">Description:</label><br>
-    <textarea id="description" name="description"></textarea><br><br>
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" class="form-control"></textarea>
 
-    <label for="status">Status:</label><br>
-    <input type="text" id="status" name="status" required><br><br>
+                    <label for="status">Status:</label>
+                    <input type="text" id="status" name="status" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Brand</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-    <input type="submit" value="Add Brand">
-</form>
+<!-- 修改資料的 Bootstrap Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">修改品牌</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editId">
 
+                    <label for="editBrandName">Brand Name:</label>
+                    <input type="text" id="editBrandName" class="form-control" required>
+
+                    <label for="editCompanyName">Company Name:</label>
+                    <input type="text" id="editCompanyName" class="form-control" required>
+
+                    <label for="editOrdered">Ordered:</label>
+                    <input type="number" id="editOrdered" class="form-control" required>
+
+                    <label for="editDescription">Description:</label>
+                    <textarea id="editDescription" class="form-control"></textarea>
+
+                    <label for="editStatus">Status:</label>
+                    <input type="text" id="editStatus" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.getElementById('fetchLink').addEventListener('click', function(event) {
-        event.preventDefault();
 
-        fetch('http://localhost:8080/brand/selectAll')
-            .then(response => response.json())
-            .then(data => {
-                renderTable(data);
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
+    // 查詢所有按鈕
+    document.getElementById('fetchLink').addEventListener('click', function(event) {
+        renderTable();
     });
 
+    // 新增品牌表單提交
     document.getElementById('brandForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -87,6 +134,7 @@
             jsonData[key] = value;
         });
 
+        // 新增
         fetch('http://localhost:8080/brand/add', {
             method: 'POST',
             headers: {
@@ -98,6 +146,10 @@
                 if (response.ok) {
                     alert('Brand added successfully!');
                     event.target.reset();
+                    renderTable();
+                    // 隱藏模態框
+                    const addModal = bootstrap.Modal.getInstance(document.getElementById('addModal'));
+                    addModal.hide();
                 } else {
                     alert('Failed to add brand');
                 }
@@ -107,66 +159,71 @@
             });
     });
 
-
-    // 渲染
     function renderTable() {
-
         fetch('http://localhost:8080/brand/selectAll')
             .then(response => response.json())
             .then(data => {
+                const tableBody = document.querySelector("#dataTable tbody");
+                tableBody.innerHTML = '';
 
                 data.forEach(item => {
                     const row = document.createElement("tr");
-
                     row.innerHTML = `
-                <td>${item.id || ''}</td>
-                <td>${item.brandName || 'N/A'}</td>
-                <td>${item.companyName || 'N/A'}</td>
-                <td>${item.ordered || 'N/A'}</td>
-                <td>${item.description || 'N/A'}</td>
-                <td>${item.status || 'N/A'}</td>
-                <td>
-                    <div class="action-buttons">
-                        <button onclick="editRow(${item.id})">修改</button>
-                        <button onclick="deleteRow(${item.id})">刪除</button>
-                    </div>
-                </td>
-            `;
-
+                        <td>${item.id || ''}</td>
+                        <td>${item.brandName || 'N/A'}</td>
+                        <td>${item.companyName || 'N/A'}</td>
+                        <td>${item.ordered || 'N/A'}</td>
+                        <td>${item.description || 'N/A'}</td>
+                        <td>${item.status || 'N/A'}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-sm btn-primary" onclick="openEditModal(${item.id}, '${item.brandName}', '${item.companyName}', ${item.ordered}, '${item.description}', '${item.status}')">修改</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteRow(${item.id})">刪除</button>
+                            </div>
+                        </td>
+                    `;
                     tableBody.appendChild(row);
                 });
-
-
-
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
-
-        const tableBody = document.querySelector("#dataTable tbody");
-        tableBody.innerHTML = '';
-
-
     }
 
-    function editRow(id) {
-        // 你可以使用 prompt 來要求使用者修改每個欄位，或改用自訂的彈跳框。
-        const brandName = prompt('Enter new Brand Name:');
-        const companyName = prompt('Enter new Company Name:');
-        const ordered = prompt('Enter new Ordered quantity:');
-        const description = prompt('Enter new Description:');
-        const status = prompt('Enter new Status:');
+    function openEditModal(id, brandName, companyName, ordered, description, status) {
+        // 填入原本的值
+        document.getElementById('editId').value = id;
+        document.getElementById('editBrandName').value = brandName;
+        document.getElementById('editCompanyName').value = companyName;
+        document.getElementById('editOrdered').value = ordered;
+        document.getElementById('editDescription').value = description;
+        document.getElementById('editStatus').value = status;
 
+        // 顯示 modal
+        const editModal = new bootstrap.Modal(document.getElementById('editModal'));
+        editModal.show();
+    }
+
+    document.getElementById('editForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const id = document.getElementById('editId').value;
         const updatedData = {
             id,
-            brandName,
-            companyName,
-            ordered,
-            description,
-            status
+            brandName: document.getElementById('editBrandName').value,
+            companyName: document.getElementById('editCompanyName').value,
+            ordered: document.getElementById('editOrdered').value,
+            description: document.getElementById('editDescription').value,
+            status: document.getElementById('editStatus').value
         };
 
-        // 發送 PUT 請求來更新數據
+        // 判斷是否有任何值被修改
+        if (!isDataModified(updatedData)) {
+            alert("資料未更改。");
+            return;
+        }
+
+        // 修改
         fetch(`http://localhost:8080/brand/update`, {
             method: 'PUT',
             headers: {
@@ -177,38 +234,41 @@
             .then(response => {
                 if (response.ok) {
                     alert('Brand updated successfully!');
-                    // 重新加載表格數據
-                    document.getElementById('fetchLink').click();
+                    renderTable();
+                    const editModal = bootstrap.Modal.getInstance(document.getElementById('editModal'));
+                    editModal.hide();
                 } else {
                     alert('Failed to update brand');
                 }
             })
             .catch(error => {
-                console.error('Error updating data:', error);
+                console.error('Error updating brand:', error);
             });
+    });
+
+    function isDataModified(updatedData) {
+        const originalData = JSON.parse(localStorage.getItem('originalData')) || {};
+        return Object.keys(updatedData).some(key => updatedData[key] !== originalData[key]);
     }
 
     function deleteRow(id) {
-        if (confirm(`Are you sure you want to delete the row with ID: ${id}?`)) {
-            // 發送 DELETE 請求來刪除數據
+        if (confirm('Are you sure you want to delete this brand?')) {
             fetch(`http://localhost:8080/brand/delete/${id}`, {
                 method: 'DELETE',
             })
                 .then(response => {
                     if (response.ok) {
-                        alert('Row deleted successfully');
-                        // 重新加載表格數據
-                        document.getElementById('fetchLink').click();
+                        alert('Brand deleted successfully!');
+                        renderTable();
                     } else {
-                        alert('Failed to delete row');
+                        alert('Failed to delete brand');
                     }
                 })
                 .catch(error => {
-                    console.error('Error deleting data:', error);
+                    console.error('Error deleting brand:', error);
                 });
         }
     }
 </script>
-
 </body>
 </html>
