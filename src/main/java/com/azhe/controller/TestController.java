@@ -3,6 +3,7 @@ package com.azhe.controller;
 
 import com.azhe.pojo.Brand;
 import com.azhe.service.BrandService;
+import com.azhe.util.CaptchaGenerator;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -120,6 +121,17 @@ public class TestController {
     }
 
 
+    @GetMapping("/captcha")
+    public void getCaptcha(HttpServletResponse response) {
+        response.setContentType("image/jpeg");
+
+        System.out.println("給驗證碼圖案");
+        try {
+            CaptchaGenerator.generateCaptcha(200, 50, response.getOutputStream(), CaptchaGenerator.generateRandomCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
