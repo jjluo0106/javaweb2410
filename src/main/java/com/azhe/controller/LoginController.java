@@ -1,41 +1,37 @@
 package com.azhe.controller;
 
 
-import com.azhe.pojo.Brand;
 import com.azhe.service.BrandService;
+import com.azhe.service.LoginService;
 import com.azhe.util.CaptchaGenerator;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import javax.xml.transform.Source;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
-import java.util.List;
 
 @RestController
-public class TestController {
+public class LoginController {
 
     @Autowired
     BrandService brandService;
 
+    @Autowired
+    LoginService loginService;
+    String code = "0000"; // 驗證碼
 
-//    @RequestMapping("/test")
-//    public List<Brand>  test(){
-//
-//
-//        return brandService.testBrand();
-//    }
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
 
     @RequestMapping("/testjson")
     public void testJSON(@RequestBody String json, HttpServletRequest request) {
@@ -120,18 +116,42 @@ public class TestController {
         return "ok";
     }
 
-
+    /*
+    處理驗證碼
+     */
     @GetMapping("/captcha")
-    public void getCaptcha(HttpServletResponse response) {
+    public String getCaptcha(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("image/jpeg");
 
-        System.out.println("給驗證碼圖案");
+        System.out.println("驗證碼獲取測試");
+
         try {
-            CaptchaGenerator.generateCaptcha(200, 50, response.getOutputStream(), CaptchaGenerator.generateRandomCode());
+            // 在提交回應前創建 session
+            HttpSession session = request.getSession();
+            String captchaCode = CaptchaGenerator.generateRandomCode(4);
+            session.setAttribute("captchaCode", captchaCode);
+
+            // 然後再生成圖像並寫入回應
+            CaptchaGenerator.generateCaptcha(200, 50, response.getOutputStream(), captchaCode);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return code;
     }
 
 
+    @PostMapping("/dealLogin")
+    public ResponseEntity<String> dealLogin(@RequestParam String username,
+                                            @RequestParam String password,
+                                            @RequestParam String captcha,
+                                            HttpServletRequest request) {
+
+        return loginService.dealLogin(username, password, captcha, request);
+    }
+
+    private boolean captchaIsValid(String captcha) {
+        if (code.equals(captcha)) return true;
+        return false;
+    }
 }

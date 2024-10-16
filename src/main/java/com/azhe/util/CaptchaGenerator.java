@@ -8,6 +8,9 @@ import java.io.OutputStream;
 import java.util.Random;
 import javax.imageio.ImageIO;
 
+/*
+驗證碼生產工具
+ */
 public class CaptchaGenerator {
 
 
@@ -43,11 +46,14 @@ public class CaptchaGenerator {
         ImageIO.write(image, "JPEG", os);
     }
 
-    public static String generateRandomCode() {
+    /*
+    製作隨機碼
+     */
+    public static String generateRandomCode(int length) {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder code = new StringBuilder();
         Random random = new Random();
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < length; i++) {
             code.append(chars.charAt(random.nextInt(chars.length())));
         }
         return code.toString();

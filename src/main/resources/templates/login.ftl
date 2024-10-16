@@ -6,24 +6,24 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
 </head>
 <body>
-<#--利用boostrap的登錄頁面-->
+<!-- 利用 Bootstrap 的登入頁面 -->
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-4">
       <h3 class="text-center mt-5">Login</h3>
-      <form>
+      <form id="loginForm" action="/dealLogin" method="POST">
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control" id="username" placeholder="Enter username">
+          <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" id="password" placeholder="Enter password">
+          <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
         </div>
         <div class="mb-3">
           <label for="captcha" class="form-label">Captcha</label>
           <div class="d-flex align-items-center">
-            <input type="text" class="form-control" id="captcha" placeholder="Enter captcha" required>
+            <input type="text" class="form-control" id="captcha" name="captcha" placeholder="Enter captcha" required>
             <img id="captchaImage" src="/captcha" alt="Captcha" class="ms-2" style="cursor: pointer; height: 50px;" onclick="refreshCaptcha()">
           </div>
         </div>
@@ -42,6 +42,30 @@
     // 刷新驗證碼圖片
     document.getElementById('captchaImage').src = '/captcha?' + new Date().getTime();
   }
+
+  // JavaScript 處理表單提交事件（如果需要額外的處理）
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // 停止默認的表單提交，改用 JavaScript 提交
+
+    const formData = new FormData(event.target);
+
+    fetch('/dealLogin', {
+      method: 'POST',
+      body: formData,
+    })
+            .then(response => response.json())
+            .then(data => {
+              if (data.success) {
+                alert('Login successful!');
+                // 可以根據需求跳轉到另一頁
+              } else {
+                alert('Login failed: ' + data.message);
+              }
+            })
+            .catch(error => {
+              console.error('Error submitting login form:', error);
+            });
+  });
 </script>
 </body>
 </html>

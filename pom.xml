@@ -81,6 +81,16 @@
         </dependency>
 
 
+<!--        可以隱式@Slf4j使用log方法-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.28</version> <!-- 確保使用最新版本 -->
+            <scope>provided</scope>
+        </dependency>
+
+
+
 
     </dependencies>
 <!--讓外部終端可以使用此jar-->

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.azhe.mapper.UserMapper">
+    
+<!--    對應SQL跟POJO名稱-->
+<!--    type 可以在properties簡化 mybatis.type-aliases-package=com.azhe.pojo-->
+<!--    如果想用註解導入sql語句可以用@ResultMap引用 userResultMap(id)-->
+    <resultMap id="userResultMap" type="user">
+    </resultMap>
+
+
+
+    <select id="selectAll" resultType="com.azhe.pojo.User">
+        select *
+        from user;
+    </select>
+
+
+</mapper>
