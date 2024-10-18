@@ -29,9 +29,13 @@
         </div>
         <button type="submit" class="btn btn-primary w-100">Login</button>
       </form>
+
+      <!-- Error message area -->
+
       <div class="text-center mt-3">
         <a href="#">Forgot password?</a>
       </div>
+      <div id="errorMessage" class="text-center mt-3" style="color: red;"></div>
     </div>
   </div>
 </div>
@@ -43,7 +47,7 @@
     document.getElementById('captchaImage').src = '/captcha?' + new Date().getTime();
   }
 
-  // JavaScript 處理表單提交事件（如果需要額外的處理）
+  // JavaScript 處理表單提交事件
   document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault(); // 停止默認的表單提交，改用 JavaScript 提交
 
@@ -56,14 +60,17 @@
             .then(response => response.json())
             .then(data => {
               if (data.success) {
-                alert('Login successful!');
+                document.getElementById('errorMessage').style.color = 'green';
+                document.getElementById('errorMessage').textContent = 'Login success: ' + data.message;
                 // 可以根據需求跳轉到另一頁
               } else {
-                alert('Login failed: ' + data.message);
+                // Display error message in red in the specified area
+                document.getElementById('errorMessage').textContent = 'Login failed: ' + data.message;
               }
             })
             .catch(error => {
               console.error('Error submitting login form:', error);
+              document.getElementById('errorMessage').textContent = 'An unexpected error occurred.';
             });
   });
 </script>
