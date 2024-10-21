@@ -17,7 +17,6 @@ import java.io.IOException;
 @WebFilter("/*")
 public class FilterDemo implements Filter {
 
-
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         log.info("doFilter...");
@@ -25,41 +24,37 @@ public class FilterDemo implements Filter {
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
         String url = httpServletRequest.getRequestURL().toString();
-        String[] urls = {"login","captcha"};
+        String[] urls = {"login", "captcha", "dealLogin"};
 
+        // 放行預設路徑
         for (String u : urls) {
-            if(url.contains(u)){
+            if (url.contains(u)) {
                 log.info("預設路徑，放行");
                 filterChain.doFilter(servletRequest, servletResponse);
-                return;
+                return;  // 放行後直接返回，避免重複執行
             }
         }
 
+        log.info("不在預設路徑");
 
-
-        // 将 ServletRequest 转换为 HttpServletRequest
-        if (servletRequest instanceof HttpServletRequest) {
-
-            // 获取 HttpSession
-            HttpSession session = httpServletRequest.getSession(false); // 如果不存在则不创建新会话
-
-            // 检查是否存在 session，并打印 session 中的内容
-            if (session.getAttribute("userID") != null) {
-                // 假设 session 中存储了一个名为 "user" 的属性
-                Object userID = session.getAttribute("userID");
-                log.info("含有 userID 的 session 請求 : " + userID);
-            } else {
-               log.info("服務器session中沒有 userID，跳轉login頁面");
-                httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login");
-            }
+        // 檢查 session 是否存在
+        HttpSession session = httpServletRequest.getSession(false); // 如果不存在則不创建新会话
+        if (session == null || session.getAttribute("userID") == null) {
+            log.info("服務器 session 中沒有 userID，跳轉 login 頁面");
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login");
+            return;  // 重定向後返回，避免後續邏輯執行
         }
+
+        // 有 userID 的 session，繼續處理請求
+        Object userID = session.getAttribute("userID");
+        log.info("含有 userID 的 session 請求 : {} ,放行...", userID);
 
         // 放行
         filterChain.doFilter(servletRequest, servletResponse);
 
         log.info("afterDoFilter...");
-
     }
+
 
     @Override
     public void destroy() {

@@ -51,7 +51,8 @@
   document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault(); // 停止默認的表單提交，改用 JavaScript 提交
 
-    const formData = new FormData(event.target);
+    const formData = new FormData(event.target); // 將form表單欄位組裝成請求的body?
+
 
     fetch('/dealLogin', {
       method: 'POST',
@@ -59,14 +60,14 @@
     })
             .then(response => response.json())
             .then(data => {
-              if (data.success) {
-                // 成功時設置 sessionStorage 並顯示成功消息
-                sessionStorage.setItem('user', JSON.stringify(data.user));
-                document.getElementById('errorMessage').style.color = 'green';
-                document.getElementById('errorMessage').textContent = 'Login success: ' + data.message;
-                // 根據需求跳轉到另一頁
-                // window.location.href = '/home'; // 跳轉到主頁或其他頁面
-              } else {
+
+              console.log(data)
+              console.log(data.url)
+              if (data.url) {
+                window.location.href = data.url;
+              }
+
+               else {
                 // Display error message in red in the specified area
                 document.getElementById('errorMessage').textContent = 'Login failed: ' + data.message;
               }

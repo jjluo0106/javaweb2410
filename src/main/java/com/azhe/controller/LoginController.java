@@ -96,29 +96,6 @@ public class LoginController {
     }
 
 
-    @RequestMapping("/testSession")
-    public String testSession(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        session.setAttribute("myAttribute", "123456~");
-
-//        System.out.println(session.getId());
-
-        System.out.println(session.getAttribute("myAttribute"));
-
-        System.out.println("測試儲存Session...");
-
-
-        session.invalidate();
-        return "ok";
-    }
-
-    @RequestMapping("/testGetSession")
-    public String testGetSession(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Object myAttribute = session.getAttribute("myAttribute");
-        System.out.println("myAttribute : " + myAttribute);
-        return "ok";
-    }
 
     /*
     處理驗證碼
@@ -127,7 +104,6 @@ public class LoginController {
     public String getCaptcha(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("image/jpeg");
 
-        logger.info("驗證碼獲取測試");
 
         try {
             // 在提交回應前創建 session
@@ -138,6 +114,7 @@ public class LoginController {
             // 然後再生成圖像並寫入回應
             CaptchaGenerator.generateCaptcha(200, 50, response.getOutputStream(), captchaCode);
 
+            logger.info("驗證碼獲取測試，存入服務器captchaCode : {}", captchaCode);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -156,34 +133,61 @@ public class LoginController {
                                           HttpServletResponse response) throws IOException {
 
 
+        JSONObject responseObj = new JSONObject();
         // 先檢查驗證碼是否正確
         String sessionCaptcha = (String) request.getSession().getAttribute("captchaCode");
-        if (sessionCaptcha == null || !sessionCaptcha.equals(captcha)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid captcha");
+        if (sessionCaptcha == null) {
+            logger.info("用戶正確驗證碼: {}, 欄位: {}", sessionCaptcha, captcha);
+            responseObj.put("message", "請刷新驗證碼");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseObj.toString());
+        }else if(!sessionCaptcha.equals(captcha)){
+            logger.info("用戶正確驗證碼: {}, 欄位: {}", sessionCaptcha, captcha);
+            responseObj.put("message", "驗證碼輸入錯誤");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseObj.toString());
         }
 
 
 
         ResponseEntity<String> stringResponseEntity = loginService.dealLogin(username, password, captcha, request);
 
-        logger.info(stringResponseEntity.getBody());
 
         JSONObject jsonObject = JSONUtil.parseObj(stringResponseEntity.getBody());
+
 
         if("true".equals(jsonObject.get("success"))){
             logger.info("成功");
 //            跳转/home
-            response.sendRedirect("/home");
-            return null;
+
+            responseObj.put("message", "Login success");
+            responseObj.put("url", "/home");
+            return ResponseEntity.status(HttpStatus.OK).body(responseObj.toString());
+
+
+//            return ResponseEntity.status(HttpStatus.OK).body("Login success: " + jsonObject.get("\"ur\":\""+ "/home" +"\""));
+//            response.sendRedirect("/home");
+//            return null;
         }
         logger.info("失敗");
 
         // 返回失敗訊息
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: " + jsonObject.get("errorMessage"));
+        responseObj.put("message", "密碼錯誤");
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseObj.toString());
     }
 
     private boolean captchaIsValid(String captcha) {
         if (code.equals(captcha)) return true;
         return false;
+    }
+
+
+    @PostMapping("/dealLogOut")
+    public void logout(HttpServletRequest request){
+        // 刪除session!!
+        Object userID = request.getSession().getAttribute("userID");
+
+        logger.info("登出");
+        logger.info("userID : {}",userID);
+        request.getSession().invalidate(); // 銷毀session
     }
 }

@@ -72,7 +72,7 @@ public class LoginService {
         } else {
 
             session.setAttribute("userID", id);
-            return ResponseEntity.ok("{\"success\": true, \"message\": \"登入成功!!\"}");
+            return ResponseEntity.ok("{\"success\": \"true\", \"message\": \"登入成功!!\"}");
         }
 
     }

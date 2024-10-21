@@ -10,6 +10,26 @@
 <body>
 <h1>主頁面</h1>
 
-<a href="/logout">退出</a>
+<button id="logoutBtn">退出</button>
+
+<script>
+    document.getElementById("logoutBtn").addEventListener("click", function() {
+        fetch("/dealLogOut", {
+            method: "Post"
+        })
+            .then(response => {
+            if (response.ok) {
+
+                location.reload();
+                // 登出成功，跳轉到登入頁面
+                // window.location.href = "/login";
+            } else {
+                alert("登出失敗");
+            }
+        });
+    });
+</script>
+
+
 </body>
 </html>
