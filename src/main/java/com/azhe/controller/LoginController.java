@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -126,7 +127,7 @@ public class LoginController {
     public String getCaptcha(HttpServletResponse response, HttpServletRequest request) {
         response.setContentType("image/jpeg");
 
-        System.out.println("驗證碼獲取測試");
+        logger.info("驗證碼獲取測試");
 
         try {
             // 在提交回應前創建 session
@@ -155,22 +156,30 @@ public class LoginController {
                                           HttpServletResponse response) throws IOException {
 
 
+        // 先檢查驗證碼是否正確
+        String sessionCaptcha = (String) request.getSession().getAttribute("captchaCode");
+        if (sessionCaptcha == null || !sessionCaptcha.equals(captcha)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid captcha");
+        }
+
 
 
         ResponseEntity<String> stringResponseEntity = loginService.dealLogin(username, password, captcha, request);
 
-        System.out.println(stringResponseEntity.getBody());
+        logger.info(stringResponseEntity.getBody());
 
         JSONObject jsonObject = JSONUtil.parseObj(stringResponseEntity.getBody());
 
         if("true".equals(jsonObject.get("success"))){
-            System.out.println("跳");
+            logger.info("成功");
 //            跳转/home
             response.sendRedirect("/home");
             return null;
         }
+        logger.info("失敗");
 
-        return stringResponseEntity;
+        // 返回失敗訊息
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: " + jsonObject.get("errorMessage"));
     }
 
     private boolean captchaIsValid(String captcha) {

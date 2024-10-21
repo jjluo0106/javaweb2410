@@ -20,7 +20,7 @@ public class FilterDemo implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("doFilter...");
+        log.info("doFilter...");
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
@@ -57,7 +57,8 @@ public class FilterDemo implements Filter {
         // 放行
         filterChain.doFilter(servletRequest, servletResponse);
 
-        System.out.println("afterDoFilter...");
+        log.info("afterDoFilter...");
+
     }
 
     @Override

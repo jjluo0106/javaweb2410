@@ -2,7 +2,7 @@
 <configuration>
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>[%level] %blue(%d{HH:mm:ss.SSS}) %cyan([%thread]) %boldGreen(%logger{15}) %yellow(%F{0}:%L) - %msg %n</pattern>
+            <pattern>[%level] %blue(%d{HH:mm:ss.SSS}) %cyan([%thread]) - %msg -  %yellow(%caller{1})</pattern>
         </encoder>
     </appender>
 
