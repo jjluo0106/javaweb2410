@@ -2,12 +2,14 @@ package com.azhe;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
+@ServletComponentScan
 @SpringBootApplication
-public class JavaWeb241011Application {
+public class App {
 
     public static void main(String[] args) {
-        SpringApplication.run(JavaWeb241011Application.class, args);
+        SpringApplication.run(App.class, args);
     }
 
 }

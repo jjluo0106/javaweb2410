@@ -60,9 +60,12 @@
             .then(response => response.json())
             .then(data => {
               if (data.success) {
+                // 成功時設置 sessionStorage 並顯示成功消息
+                sessionStorage.setItem('user', JSON.stringify(data.user));
                 document.getElementById('errorMessage').style.color = 'green';
                 document.getElementById('errorMessage').textContent = 'Login success: ' + data.message;
-                // 可以根據需求跳轉到另一頁
+                // 根據需求跳轉到另一頁
+                // window.location.href = '/home'; // 跳轉到主頁或其他頁面
               } else {
                 // Display error message in red in the specified area
                 document.getElementById('errorMessage').textContent = 'Login failed: ' + data.message;

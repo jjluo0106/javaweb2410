@@ -2,7 +2,7 @@ package com.azhe.pojo;
 
 import lombok.Data;
 
-@Data
+@Data // 自動生成getter setter
 public class User {
     private Integer id;
     private String name;

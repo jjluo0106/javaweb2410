@@ -1,7 +1,6 @@
 package com.azhe;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.ServletOutputStream;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,22 +12,27 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @SpringBootTest
-class JavaWeb241011ApplicationTests {
+class TestsApp {
 
     @Test
-    void contextLoads() {
+    void abc() {
 
-        TreeMap<String, String> tm = new TreeMap<>();
 
-        tm.put("1","11");
-        tm.put("2","11");
-        tm.put("3","11");
-        tm.put("4","11");
+        String s = "abc";
+        StringBuilder sb = new StringBuilder();
+        dealS(s, sb);
 
-        String sign = getSign(tm, tm, "6666");
 
-        System.out.println(sign);
+        System.out.println(s);
+        System.out.println(sb);
+
     }
+
+    public void dealS(String s, StringBuilder sb){
+        s = "修改";
+        sb.append("修改");
+    }
+
 
 
 

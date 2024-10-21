@@ -49,13 +49,16 @@ public class LoginService {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"success\": false, \"message\": \"驗證碼錯誤\"}");
         }
         List<User> users = selectAll();
+        int id = 0;
 
         System.out.println(users);
 
         boolean flagName = false;
 
         for (int i = 0; i < users.size(); i++) {
-            if (username.equals(users.get(i).getName())) {
+            String name = users.get(i).getName();
+            id =  users.get(i).getId();
+            if (username.equals(name)) {
                 flagName = true;
 
                 dataBasepassword = users.get(i).getPassword();
@@ -67,6 +70,8 @@ public class LoginService {
         } else if (!password.equals(dataBasepassword)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"success\": false, \"message\": \"密碼錯誤\"}");
         } else {
+
+            session.setAttribute("userID", id);
             return ResponseEntity.ok("{\"success\": true, \"message\": \"登入成功!!\"}");
         }
 

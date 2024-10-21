@@ -19,4 +19,10 @@ public class PageController {
 //        model.addAttribute("name", "World");
         return "login"; // 對應的是 greeting.ftl
     }
+
+    @GetMapping("/home")
+    public String home(Model model) {
+//        model.addAttribute("name", "World");
+        return "home.ftl"; // 對應的是 greeting.ftl
+    }
 }

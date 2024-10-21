@@ -1,9 +1,12 @@
 package com.azhe.controller;
 
 
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.azhe.service.BrandService;
 import com.azhe.service.LoginService;
 import com.azhe.util.CaptchaGenerator;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,10 +14,10 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
@@ -128,7 +131,7 @@ public class LoginController {
         try {
             // 在提交回應前創建 session
             HttpSession session = request.getSession();
-            String captchaCode = CaptchaGenerator.generateRandomCode(4);
+            String captchaCode = CaptchaGenerator.generateRandomCode(1);
             session.setAttribute("captchaCode", captchaCode);
 
             // 然後再生成圖像並寫入回應
@@ -141,13 +144,33 @@ public class LoginController {
     }
 
 
+    /*
+    處理登入判斷
+     */
     @PostMapping("/dealLogin")
     public ResponseEntity<String> dealLogin(@RequestParam String username,
-                                            @RequestParam String password,
-                                            @RequestParam String captcha,
-                                            HttpServletRequest request) {
+                                          @RequestParam String password,
+                                          @RequestParam String captcha,
+                                          HttpServletRequest request,
+                                          HttpServletResponse response) throws IOException {
 
-        return loginService.dealLogin(username, password, captcha, request);
+
+
+
+        ResponseEntity<String> stringResponseEntity = loginService.dealLogin(username, password, captcha, request);
+
+        System.out.println(stringResponseEntity.getBody());
+
+        JSONObject jsonObject = JSONUtil.parseObj(stringResponseEntity.getBody());
+
+        if("true".equals(jsonObject.get("success"))){
+            System.out.println("跳");
+//            跳转/home
+            response.sendRedirect("/home");
+            return null;
+        }
+
+        return stringResponseEntity;
     }
 
     private boolean captchaIsValid(String captcha) {
