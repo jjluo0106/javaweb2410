@@ -3,7 +3,6 @@ package com.azhe.mapper;
 import com.azhe.pojo.Brand;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -20,4 +19,6 @@ public interface BrandMapper {
     int add(Brand brand);
 
     int update(Brand brand);
+
+    int deleteById(Brand brand);
 }

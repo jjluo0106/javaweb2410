@@ -34,7 +34,8 @@ public class BrandController {
 
     @RequestMapping("/delete")
     public void delete(@RequestBody Brand brand){
-        System.out.println("刪除");
+        System.out.println("刪除 :" + brand);
+        brandService.deleteById(brand);
     }
 
 

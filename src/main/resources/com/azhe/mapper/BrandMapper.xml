@@ -43,6 +43,11 @@
         where id = #{id};
     </update>
 
+    <delete id="deleteById">
+        delete
+        from brand
+        where id = #{id};
+    </delete>
 
 
     <!--    <select id="selectAll" resultMap="brandResultMap">-->

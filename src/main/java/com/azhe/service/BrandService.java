@@ -26,4 +26,8 @@ public class BrandService {
     public int update(Brand brand) {
         return   brandMapper.update(brand);
     }
+
+    public int deleteById(Brand brand) {
+        return brandMapper.deleteById(brand);
+    }
 }

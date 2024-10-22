@@ -6,13 +6,19 @@
 </head>
 <body>
 
-<button id="brand">搜尋user</button>
+<!-- GET 請求按鈕 -->
+<button id="brand">get請求</button>
+
+<!-- POST 請求的動態輸入 -->
+<input type="text" id="postIdInput" placeholder="輸入ID">
+<button id="post">post請求</button>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
 
 <script>
-    let user = document.getElementById('brand')
-    user.addEventListener('click',function (){
+    // GET 請求按鈕
+    let user = document.getElementById('brand');
+    user.addEventListener('click', function () {
         axios.get('/brand/selectAll')
             .then(response => {
                 console.log(response.data);
@@ -20,8 +26,27 @@
             .catch(error => {
                 console.error('Axios error:', error);
             });
+    });
 
-    })
+    // POST 請求按鈕
+    let post = document.getElementById('post');
+    post.addEventListener('click', function () {
+        // 獲取用戶在輸入框中輸入的 ID
+        let postId = document.getElementById('postIdInput').value;
+
+        if (postId) {
+            axios.post('/brand/delete', { id: postId })  // 使用動態輸入的 ID 發送請求
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.error('Axios error:', error);
+                });
+        } else {
+            console.error('請輸入有效的 ID');
+        }
+    });
 </script>
+
 </body>
 </html>
