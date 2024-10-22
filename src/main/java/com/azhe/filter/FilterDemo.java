@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Slf4j
 // 過濾器
-@WebFilter("/*")
+//@WebFilter("/*")
 public class FilterDemo implements Filter {
 
     @Override

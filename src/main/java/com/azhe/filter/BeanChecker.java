@@ -6,6 +6,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+// 測試打印bean中的東西
 //@Component
 public class BeanChecker {
 
@@ -14,6 +15,7 @@ public class BeanChecker {
 
 //    @EventListener(ContextRefreshedEvent.class)
     public void checkBean() {
+        // 確定bean容器中是否有這物件
         boolean beanExists = applicationContext.containsBean("filterDemo");
 
         if (beanExists) {

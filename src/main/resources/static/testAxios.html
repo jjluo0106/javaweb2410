@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<button id="brand">搜尋user</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+
+<script>
+    let user = document.getElementById('brand')
+    user.addEventListener('click',function (){
+        axios.get('/brand/selectAll')
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.error('Axios error:', error);
+            });
+
+    })
+</script>
+</body>
+</html>
