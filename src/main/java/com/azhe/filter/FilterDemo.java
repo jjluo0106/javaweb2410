@@ -40,7 +40,7 @@ public class FilterDemo implements Filter {
         // 檢查 session 是否存在
         HttpSession session = httpServletRequest.getSession(false); // 如果不存在則不创建新会话
         if (session == null || session.getAttribute("userID") == null) {
-            log.info("服務器 session 中沒有 userID，跳轉 login 頁面");
+            log.info("服務器 session 中沒有 userID，跳轉 login 頁面 : {}{}",httpServletRequest.getContextPath(), "/login");
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login");
             return;  // 重定向後返回，避免後續邏輯執行
         }

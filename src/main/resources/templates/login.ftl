@@ -14,11 +14,18 @@
       <form id="loginForm" action="/dealLogin" method="POST">
         <div class="mb-3">
           <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+          <!-- 預設 username 為 admin -->
+          <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" value="admin" required>
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+          <div class="input-group">
+            <!-- 預設 password 為 6666 -->
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" value="6666" required>
+            <span class="input-group-text">
+              <input type="checkbox" id="showPasswordCheckbox" onclick="togglePassword()"> Show Password
+            </span>
+          </div>
         </div>
         <div class="mb-3">
           <label for="captcha" class="form-label">Captcha</label>
@@ -31,7 +38,6 @@
       </form>
 
       <!-- Error message area -->
-
       <div class="text-center mt-3">
         <a href="#">Forgot password?</a>
       </div>
@@ -42,6 +48,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  // 切換密碼顯示/隱藏
+  function togglePassword() {
+    var passwordField = document.getElementById("password");
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+    } else {
+      passwordField.type = "password";
+    }
+  }
+
   function refreshCaptcha() {
     // 刷新驗證碼圖片
     document.getElementById('captchaImage').src = '/captcha?' + new Date().getTime();
@@ -51,8 +67,7 @@
   document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault(); // 停止默認的表單提交，改用 JavaScript 提交
 
-    const formData = new FormData(event.target); // 將form表單欄位組裝成請求的body?
-
+    const formData = new FormData(event.target); // 將form表單欄位組裝成請求的body
 
     fetch('/dealLogin', {
       method: 'POST',
@@ -67,7 +82,7 @@
                 window.location.href = data.url;
               }
 
-               else {
+              else {
                 // Display error message in red in the specified area
                 document.getElementById('errorMessage').textContent = 'Login failed: ' + data.message;
               }
