@@ -35,7 +35,9 @@
         let postId = document.getElementById('postIdInput').value;
 
         if (postId) {
-            axios.post('/brand/delete', { id: postId })  // 使用動態輸入的 ID 發送請求
+            axios.post('http://localhost:8080/brand/delete',
+                {id: postId}
+            )  // 使用動態輸入的 ID 發送請求
                 .then(response => {
                     console.log(response.data);
                 })

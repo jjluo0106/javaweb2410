@@ -1,5 +1,8 @@
 package com.azhe;
 
+
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +34,31 @@ class TestsApp {
     public void dealS(String s, StringBuilder sb){
         s = "修改";
         sb.append("修改");
+    }
+
+    // 測試hutool的json對象
+    @Test
+    void testJSON(){
+        String jsonStr = "{\n" +
+                "    \"status\": \"success\",\n" +
+                "    \"data\": {\n" +
+                "        \"id\": 123,\n" +
+                "        \"url\": \"https://example.com\"\n" +
+                "    }\n" +
+                "}";
+
+        JSONObject json = JSONUtil.parseObj(jsonStr);
+
+        JSONObject data = json.getJSONObject("data");
+
+        data.set("obj","物件");
+
+        System.out.println(data.get("obj"));
+
+        Object url = data.get("url");
+
+        System.out.println(url);
+
     }
 
 

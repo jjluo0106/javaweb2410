@@ -46,6 +46,8 @@
   </div>
 </div>
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   // 切換密碼顯示/隱藏
@@ -68,28 +70,16 @@
     event.preventDefault(); // 停止默認的表單提交，改用 JavaScript 提交
 
     const formData = new FormData(event.target); // 將form表單欄位組裝成請求的body
+    console.log(formData)
 
-    fetch('/dealLogin', {
-      method: 'POST',
-      body: formData,
-    })
-            .then(response => response.json())
-            .then(data => {
-
-              console.log(data)
-              console.log(data.url)
-              if (data.url) {
-                window.location.href = data.url;
-              }
-
-              else {
-                // Display error message in red in the specified area
-                document.getElementById('errorMessage').textContent = 'Login failed: ' + data.message;
-              }
+    axios.post('/dealLogin',
+            formData
+    )  // 使用動態輸入的 ID 發送請求
+            .then(response => {
+              console.log(response.data);
             })
             .catch(error => {
-              console.error('Error submitting login form:', error);
-              document.getElementById('errorMessage').textContent = 'An unexpected error occurred.';
+              console.error('Axios error:', error);
             });
   });
 </script>

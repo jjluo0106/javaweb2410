@@ -106,6 +106,13 @@ public class LoginController {
 
 
         try {
+            /*
+            request.getSession() 是 Java Web 應用程式中用來取得 HttpSession 物件的方法。
+            這個方法可以做以下兩件事情：
+            創建新的 Session：如果當前用戶沒有現有的 Session（例如首次訪問網站），則 request.getSession() 會自動創建一個新的 HttpSession 物件，
+            並為該用戶分配唯一的 JSESSIONID。
+            取得現有的 Session：如果該用戶已經有一個有效的 Session，則 request.getSession() 會返回現有的 HttpSession 物件。
+             */
             // 在提交回應前創建 session
             HttpSession session = request.getSession();
             String captchaCode = CaptchaGenerator.generateRandomCode(1);
