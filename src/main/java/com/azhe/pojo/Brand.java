@@ -13,6 +13,11 @@ public class Brand {
     public Brand() {
     }
 
+    private Brand(String companyName){
+        this.companyName = companyName;
+    }
+
+
     public Brand(String id, String brandName, String companyName, String ordered, String description, String status) {
         this.id = id;
         this.brandName = brandName;
@@ -20,6 +25,10 @@ public class Brand {
         this.ordered = ordered;
         this.description = description;
         this.status = status;
+    }
+
+    private String testReflect(int num, String str){
+        return "接收數字 : " + num + ", 文字 : " + str;
     }
 
     /**
