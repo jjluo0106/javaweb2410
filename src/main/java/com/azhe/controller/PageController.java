@@ -37,4 +37,13 @@ public class PageController {
         log.info("跳轉主業");
         return "home"; // 對應的是 greeting.ftl
     }
+
+
+    @GetMapping("/layout")
+    public String layout(Model model) {
+//        List<User> users = loginService.selectAll();
+//        model.addAttribute("users", users);
+        log.info("pay工程工具");
+        return "layout"; // 對應的是 greeting.ftl
+    }
 }

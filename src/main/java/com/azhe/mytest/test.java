@@ -2,6 +2,7 @@ package com.azhe.mytest;
 
 import com.azhe.pojo.Brand;
 import com.azhe.pojo.User;
+import com.azhe.util.Day;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -114,6 +115,14 @@ public class test {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    @Test
+    public void testEnum(){
+        Day myday = Day.FRIDAY;
+
+        System.out.println(myday);
     }
 
 }

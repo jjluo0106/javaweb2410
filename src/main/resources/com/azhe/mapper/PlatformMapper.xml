@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.azhe.mapper.PlatformMapper">
+
+
+    <select id="queryTest4" resultType="com.azhe.pojo.PayPlatform">
+
+        SELECT * FROM 8bet.t_pay_platform WHERE PLATFORM_CODE in ('PAY99ZF24');
+    </select>
+</mapper>

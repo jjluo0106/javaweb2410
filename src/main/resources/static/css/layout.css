@@ -1,0 +1,137 @@
+body, table {
+    font-size: 12px;
+}
+
+h3{
+    font-size: 18px;
+    color: orange;
+}
+
+label {
+    display: inline-block; /* 或者使用 inline */
+    margin-right: 10px; /* 設置間距，可根據需要調整 */
+}
+
+table {
+    table-layout: fixed;
+    empty-cells: show;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+td {
+    height: 20px;
+}
+
+
+input {
+    /*all: unset; !* 重置所有样式 *!*/
+    /*display: block; !* 将其设置为块级元素以便处理布局 *!*/
+    width: 100px; /* 设置宽度为100%以适应父容器 */
+}
+
+/*查詢地址樣式*/
+.longInput{
+    width: 250px;
+}
+
+/*置中框框*/
+.title,
+.myInput{
+    background: #FFF;
+    border: 1px solid #9DB3C5;
+    padding: 1px;
+    width: 90%;
+    margin: 20px auto;
+}
+
+
+.title th, .title td {
+    border: 1px solid #CAD9EA;
+    padding: 5px;
+}
+
+table.t1 {
+    border: 1px solid #cad9ea;
+    color: #666;
+}
+
+table.t1 th {
+    /*background-image: url(th_bg1.gif);*/
+    background-repeat: repeat-x;
+    height: 30px;
+}
+
+table.t1 td, table.t1 th {
+    border: 1px solid #cad9ea;
+    padding: 0 1em 0;
+}
+.buttonClass {
+    width: 61px;
+    height: 23px;
+}
+
+.huiSe {
+    background-color: #5252ce;
+}
+
+/*盘口头部*/
+.selecetTitle {
+    margin-top: 18px;
+    /*height: 100px;*/
+    /*height: 87px;*/
+    /*border: 1px solid #aaaae2;*/
+}
+
+.nozzleType_right {
+    margin-top: 6px;
+    display: inline-block;
+}
+
+.checkAllLeft {
+    margin-left: 20px;
+}
+
+.appTypeList {
+    float: left;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+#movetop {
+    position: fixed;
+    right: 15px;
+    bottom: 70px;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    transition: 10s ease-out;
+    background: yellow;
+    font-weight: bold;
+}
+
+#submit {
+    background-color: orange;
+}
+
+.pickID {
+    width: 2%;
+}
+.findChinese {
+    width: 4%;
+}
+.findEng {
+    width: 4%;
+}
+.findPayURL {
+    width: 13%;
+}
+.findPayURL input,.findQueryURL input{
+    width: 100%;
+}
+.findQueryURL {
+    width: 13%;
+}
+.findParams {
+    width: 30%;
+}
