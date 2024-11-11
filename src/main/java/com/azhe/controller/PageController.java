@@ -1,49 +1,62 @@
 package com.azhe.controller;
 
+import com.azhe.pojo.PayAppType;
 import com.azhe.pojo.User;
 import com.azhe.service.LoginService;
+import com.azhe.service.PayAppTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
+/**
+ * 網頁處理控制器
+ */
 @Slf4j
 @Controller
 public class PageController {
 
     @Autowired
-    LoginService loginService;
+    private LoginService loginService;
+    @Autowired
+    PayAppTypeService payAppTypeService;
+
+    private void addUserListToModel(Model model) {
+        List<User> users = loginService.selectAll();
+        model.addAttribute("users", users);
+    }
 
     @GetMapping("/greeting")
     public String greeting(Model model) {
         model.addAttribute("name", "World");
-        return "greeting"; // 對應的是 greeting.ftl
+        return "greeting";
     }
 
+//    @RequestMapping({"/login", "/home", "/paytools"})
+//    public String page( String path) {
+//
+//        log.info("返回前端頁面 : {}", path);
+//        return path;
+//    }
 
-    @GetMapping("/login")
-    public String login(Model model) {
-//        model.addAttribute("name", "World");
-        return "login"; // 對應的是 greeting.ftl
+
+//    @RequestMapping("/{path}")
+//    public String page(@PathVariable String path) {
+//        log.info("返回前端頁面 : {}", path);
+//        return path;
+//    }
+
+
+    @RequestMapping("/payTool")
+    public String payTool(Model model) {
+        log.info("返回前端頁面 : payTool");
+
+        return "payTool";
     }
 
-    @GetMapping("/home")
-    public String home(Model model) {
-        List<User> users = loginService.selectAll();
-        model.addAttribute("users", users);
-        log.info("跳轉主業");
-        return "home"; // 對應的是 greeting.ftl
-    }
-
-
-    @GetMapping("/layout")
-    public String layout(Model model) {
-//        List<User> users = loginService.selectAll();
-//        model.addAttribute("users", users);
-        log.info("pay工程工具");
-        return "layout"; // 對應的是 greeting.ftl
-    }
 }

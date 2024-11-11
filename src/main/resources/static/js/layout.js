@@ -250,7 +250,7 @@ function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
-const com = document.querySelector('.findCompany').value
+const com = document.querySelector('.findCompany')
 // 用 AppCode 搜尋盤口(暫寫死)  select * from 8bet.t_pay_app_type where app_code = 'test4';
 
 // 進入頁面自動加載盤口

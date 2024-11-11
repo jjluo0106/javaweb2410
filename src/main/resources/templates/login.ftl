@@ -34,7 +34,7 @@
             <img id="captchaImage" src="/captcha" alt="Captcha" class="ms-2" style="cursor: pointer; height: 50px;" onclick="refreshCaptcha()">
           </div>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Login</button>
+        <button type="submit" class="appCodeBTN btn-primary w-100">Login</button>
       </form>
 
       <!-- Error message area -->

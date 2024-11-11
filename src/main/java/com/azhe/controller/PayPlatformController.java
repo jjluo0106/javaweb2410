@@ -1,7 +1,6 @@
 package com.azhe.controller;
 
 
-import cn.hutool.json.JSONObject;
 import com.azhe.pojo.PayPlatform;
 import com.azhe.service.PlatformService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +13,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/platform")
-public class PlatformController {
+public class PayPlatformController {
 
     @Autowired
     PlatformService platformService;

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'test4支付工具'">無法顯示</title>
+    <link rel="stylesheet" th:href="@{css/bootstrap.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <style>
+        .text-orange {
+            color: orange;
+        }
+
+        .ps {
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container text-center table-sub-heading-color">
+    <h1 class="text-orange">test4-pay工具</h1>
+    <p class="ps">
+        input欄位有Enter觸發之模糊搜尋
+    </p>
+</div>
+
+
+<div class="container">
+
+    <div>
+        <h2 class="text-center btn-warning d-flex justify-content-center align-items-center">
+            <span>盤口選擇</span>
+        </h2><input value="test4" class="app_codeInput text-center mx-2 input">
+        <!--    數量提示-->
+        <div id="inputNum" class="ps"></div>
+        <!-- 按鈕容器 -->
+        <!-- 按鈕控制列表顯示與隱藏 -->
+<!--        <button class="btn btn-primary mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#app_codeButtons">-->
+<!--            摺疊盤口顯示-->
+<!--        </button>-->
+        <div id="app_codeButtons" class="d-flex flex-wrap"></div>
+    </div>
+
+
+    <h2 class="text-center btn-danger d-flex justify-content-center align-items-center">預計導出盤口之數據</h2>
+<!--    顯示導出盤口ID，最大值資訊-->
+    <div class="table-bordered" id="exportTable">
+        <table class="table">
+            <tr><th>操作</th><th>平台名</th><th>最大平台ID</th><th>最大方法ID</th><th>最大通道ID</th><th>最大算法模板ID</th><th>回調地址</th></tr>
+        </table>
+    </div>
+
+    <div>
+        <h2 class="text-center btn-success d-flex justify-content-center align-items-center">支付搜尋</h2>
+        <div>支付選擇</div>
+    </div>
+</div>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>-->
+<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+<script th:inline="javascript">
+    // ---------宣告變數-----------------------------
+    // 查詢盤口輸日框 (輸入空則為搜全部)
+    const app_codeInput = document.querySelector('.app_codeInput');
+
+    // 當頁面加載時執行此函數
+    document.addEventListener('DOMContentLoaded', getAppTypes());
+
+
+    // -------------事件--------------------------
+    // 找盤口
+    function getAppTypes() {
+
+        console.log('渲染按鈕')
+        // 取得輸入框的值
+
+        const app_codeValue = app_codeInput.value;
+        const app_codeButtonsContainer = document.getElementById('app_codeButtons');
+
+        // 構建請求 URL
+        const url = `http://localhost:666/findTest4AppByAppCode?app_code=${app_codeValue}`;
+        console.log('查詢 :' + url)
+
+        // 模糊查詢盤口
+        $.getJSON(url)
+            .done((data) => {
+                // console.log(data.appType);
+                // const datas = data.appType;
+                let html = '';
+
+                if (data.length === 0) {
+                    html = '<p>未找到相關盤口資料</p>';
+                } else {
+                    console.log('獲取結果:')
+                    console.log(data)
+                    data.forEach(({ app_code, app_name, app_call_url, app_domain }) => {
+                        html += `
+                    <div class="appTypeList" id="appType_${app_code}">
+                        <input type="hidden" id="appCode_${app_code}" value="${app_code}" />
+                        <input type="hidden" id="appCallUrl_${app_code}" value="${app_call_url}" />
+                        <input type="hidden" id="appDomain_${app_code}" value="${app_domain}" />
+                        <button id="${app_code}" class="btn btn-success" onclick="addNozzle('${app_code}')">${app_name}</button>
+                    </div>
+                `;
+                    });
+                }
+
+                $('#inputNum').html('共有' + data.length + ' 數據');
+                $('#app_codeButtons').html(html);
+            })
+            .fail((jqXHR, textStatus, errorThrown) => {
+                console.error('請求失敗：', textStatus, errorThrown);
+                $('#app_codeButtons').html('<p>伺服器請求失敗，請稍後再試。</p>');
+            });
+
+
+    }
+
+    // 添加盤口查詢
+    app_codeInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // 防止表單提交
+            getAppTypes();
+        }
+    });
+
+
+    /* 點擊盤口按鈕的操作 */
+    function addNozzle(id) {
+        const flag_01 = `appCode_${id}`;
+        const flag_02 = `appCallUrl_${id}`;
+        const flag_03 = `appDomain_${id}`;
+
+        console.log('flag_01 : ' + flag_01)
+        console.log('flag_02 : ' + flag_02)
+        console.log('flag_03 : ' + flag_03)
+
+        // const appCode = 'test4';      // 對應的編碼
+        const appCode = $(`#${flag_01}`).val();      // 對應的編碼
+        const appCallUrl = $(`#${flag_02}`).val();   // 對應的回調地址
+        // const appCallUrl = '123123';   // 對應的回調地址
+// 欄位還沒渲染，獲取不到數值
+
+        const appDomain = $(`#${flag_03}`).val();    // 對應的盤口地址
+
+        console.info(`appCode: ${appCode}`);
+        console.info(`appCallUrl: ${appCallUrl}`);
+        console.info(`appDomain: ${appDomain}`);
+
+        const requestData = {
+            appCode,
+            appDomain
+        };
+
+        // 若點擊的是 'test4' 按鈕，修改樣式
+        if (id === 'test4') {
+            const test4Button = document.querySelector('#test4');
+            test4Button.style.backgroundColor = "#2F589C";
+            test4Button.style.color = "yellow";
+        }
+
+        // 查詢最大值
+        $.ajax({
+            type: "POST",
+            url: "/getMaxInfo",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(requestData),
+            success: function (response) {
+                console.log(requestData)
+                try {
+                    // 使用 JSON.parse 代替 eval
+                    const data = JSON.parse(response);
+                    console.info(data);
+
+                    const { platformId, payModleId, payChannelId, payMethodId } = data.data;
+
+                    // 建立新的表格行
+                    const newTr = `
+                    <tr id="tr_${id}">
+                        <td><button onclick="deleteTr('${id}')">刪除</button></td>
+                        <td>平台名：<input id="platformName_${id}" type="text" name="platformName" /></td>
+                        <td>最大平台ID：<input type="text" id="platformId_${id}" name="platformId" /></td>
+                        <td>最大方法ID：<input type="text" id="methodId_${id}" name="payMethodId" /></td>
+                        <td>最大通道ID：<input type="text" id="channelId_${id}" name="payChannelId" /></td>
+                        <td>最大算法模板ID：<input type="text" id="modelId_${id}" name="payModleId" /></td>
+                        <td>回調地址：<input id="callback_${id}" type="text" name="callback" /></td>
+                    </tr>`;
+
+                    // 在最後一行之後插入新的表格行
+                    $("#exportTable tr:last").after(newTr);
+
+                    // 設置輸入框的值
+                    $(`#platformName_${id}`).val(appCode);
+                    $(`#platformId_${id}`).val(platformId);
+                    $(`#methodId_${id}`).val(payMethodId);
+                    $(`#channelId_${id}`).val(payChannelId);
+                    $(`#modelId_${id}`).val(payModleId);
+                    $(`#callback_${id}`).val(appCallUrl);
+
+                    // 禁用按鈕並添加 'huiSe' 樣式
+                    $(`#${id}`).prop("disabled", true).addClass("huiSe");
+                } catch (error) {
+                    console.error("解析回應數據失敗：", error);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX 請求失敗：", status, error);
+            }
+        });
+    }
+
+
+
+</script>
+
+</body>
+</html>

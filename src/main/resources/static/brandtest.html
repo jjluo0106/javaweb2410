@@ -28,7 +28,7 @@
 
 <h2>查詢按鈕</h2>
 <a href="#" id="fetchLink">查詢</a>
-<button id="toggleFormButton" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addModal">新增品牌</button>
+<button id="toggleFormButton" class="appCodeBTN btn-secondary" data-bs-toggle="modal" data-bs-target="#addModal">新增品牌</button>
 
 <table id="dataTable">
     <thead>
@@ -72,8 +72,8 @@
                     <input type="text" id="status" name="status" class="form-control" required>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Brand</button>
+                    <button type="button" class="appCodeBTN btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="appCodeBTN btn-primary">Add Brand</button>
                 </div>
             </form>
         </div>
@@ -108,8 +108,8 @@
                     <input type="text" id="editStatus" class="form-control" required>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="appCodeBTN btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="appCodeBTN btn-primary">Save changes</button>
                 </div>
             </form>
         </div>
@@ -177,8 +177,8 @@
                         <td>${item.status || 'N/A'}</td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn btn-sm btn-primary" onclick="openEditModal(${item.id}, '${item.brandName}', '${item.companyName}', ${item.ordered}, '${item.description}', '${item.status}')">修改</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteRow(${item.id})">刪除</button>
+                                <button class="appCodeBTN btn-sm btn-primary" onclick="openEditModal(${item.id}, '${item.brandName}', '${item.companyName}', ${item.ordered}, '${item.description}', '${item.status}')">修改</button>
+                                <button class="appCodeBTN btn-sm btn-danger" onclick="deleteRow(${item.id})">刪除</button>
                             </div>
                         </td>
                     `;

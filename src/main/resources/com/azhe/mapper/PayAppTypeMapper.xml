@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.azhe.mapper.PayAppTypeMapper">
+
+
+    <select id="findTest4AppByAppCode" resultType="com.azhe.pojo.PayAppType">
+
+        <if test="app_code != null and app_code != ''">
+            select * from 8bet.t_pay_app_type
+            where app_code like CONCAT('%', #{app_code}, '%');
+            ;
+        </if>
+
+        <if test="app_code == null or app_code == ''">
+            select * from 8bet.t_pay_app_type
+            ;
+        </if>
+
+    </select>
+</mapper>
