@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
@@ -57,7 +58,7 @@ public class LoginController {
 
 
     @RequestMapping("/cookie")
-    public String testJSON(@RequestBody String a, HttpServletResponse response, HttpServletRequest request) {
+    public String testJSON(@RequestBody String a, HttpServletResponse response, HttpServletRequest request) throws UnsupportedEncodingException {
 
         Cookie[] cookies = request.getCookies();
 
@@ -84,7 +85,7 @@ public class LoginController {
 
         System.out.println("請求體: " + a);
         // 創建 Cookie
-        String encode = URLEncoder.encode("張三", StandardCharsets.UTF_8);
+        String encode = URLEncoder.encode("張三", String.valueOf(StandardCharsets.UTF_8));
         Cookie cookie = new Cookie("name", encode);
         // 設置 Cookie 的屬性，例如有效期、路徑等
         cookie.setPath("/");

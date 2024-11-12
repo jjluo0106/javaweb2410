@@ -45,18 +45,18 @@ public class PageController {
 //    }
 
 
-//    @RequestMapping("/{path}")
-//    public String page(@PathVariable String path) {
-//        log.info("返回前端頁面 : {}", path);
-//        return path;
-//    }
-
-
-    @RequestMapping("/payTool")
-    public String payTool(Model model) {
-        log.info("返回前端頁面 : payTool");
-
-        return "payTool";
+    @RequestMapping("/{path}")
+    public String page(@PathVariable String path) {
+        log.info("返回前端頁面 : {}", path);
+        return path;
     }
+
+
+//    @RequestMapping("/payTool")
+//    public String payTool() {
+//        log.info("返回前端頁面 : payTool");
+//
+//        return "payTool";
+//    }
 
 }
