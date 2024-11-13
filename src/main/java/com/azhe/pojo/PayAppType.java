@@ -9,9 +9,9 @@ import lombok.Data;
 public class PayAppType {
 
 
-    private String app_id; // key
-    private String app_code; //'盘口平台编码',
-    private String app_name; //'盘口平台名称',
-    private String app_call_url; //'盘口支付回调地址',
-    private String app_domain; //'盘口平台域名'
+    private String appId; // key
+    private String appCode; //'盘口平台编码',
+    private String appName; //'盘口平台名称',
+    private String appCallUrl; //'盘口支付回调地址',
+    private String appDomain; //'盘口平台域名'
 }

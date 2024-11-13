@@ -11,5 +11,5 @@ public interface Pay4ListsMapper {
 
 //    public List<PayRequestModel> selectAll();
 
-    List<PayRequestModel> selModelByEng(PayRequestModel model);
+    List<PayRequestModel> selModelByEng(PayRequestModel requestModel);
 }

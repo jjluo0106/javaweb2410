@@ -31,15 +31,15 @@
     <div>
         <h2 class="text-center btn-warning d-flex justify-content-center align-items-center">
             <span>盤口選擇</span>
-        </h2><input value="test4" class="app_codeInput text-center mx-2 input">
+        </h2><input value="test4" class="appCodeInput text-center mx-2 input">
         <!--    數量提示-->
         <div id="inputNum" class="ps"></div>
         <!-- 按鈕容器 -->
         <!-- 按鈕控制列表顯示與隱藏 -->
-<!--        <button class="btn btn-primary mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#app_codeButtons">-->
+<!--        <button class="btn btn-primary mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#appCodeButtons">-->
 <!--            摺疊盤口顯示-->
 <!--        </button>-->
-        <div id="app_codeButtons" class="d-flex flex-wrap"></div>
+        <div id="appCodeButtons" class="d-flex flex-wrap"></div>
     </div>
 
 
@@ -56,7 +56,11 @@
         <div>支付選擇1234</div>
         <div class="table-bordered" id="chooseZF">
             <table class="table">
-                <tr><th>ID</th><th>PLATFORM_NAME</th><th>PLATFORM_CODE</th><th>SUCCESS_URL</th><th>QUERY_URL</th><th>REQUERT_VALUE</th></tr>
+                <tr>
+                    <th>ID</th>
+                    <th>PLATFORM_NAME</th>
+                    <th>PLATFORM_CODE　<input class="findEZInput" id="platformCode"></th>
+                    <th>SUCCESS_URL</th><th>QUERY_URL</th><th>REQUERT_VALUE</th></tr>
             </table>
         </div>
     </div>
@@ -76,24 +80,24 @@
 <script th:inline="javascript">
     // ---------宣告變數-----------------------------
     // 查詢盤口輸日框 (輸入空則為搜全部)
-    const app_codeInput = document.querySelector('.app_codeInput');
-
+    const prefix = 'http://localhost:666/'; // 本地服務器前墜(域名)
+    const appCodeInput = document.querySelector('.appCodeInput');
     // 當頁面加載時執行此函數
+
     document.addEventListener('DOMContentLoaded', getAppTypes());
 
-
-    // -------------事件--------------------------
-    // 找盤口
+    // -------------函數--------------------------
+    // 找盤口函數
     function getAppTypes() {
 
         console.log('渲染按鈕')
         // 取得輸入框的值
 
-        const app_codeValue = app_codeInput.value;
-        const app_codeButtonsContainer = document.getElementById('app_codeButtons');
+        const appCodeValue = appCodeInput.value;
+        const appCodeButtonsContainer = document.getElementById('appCodeButtons');
 
         // 構建請求 URL
-        const url = `http://localhost:666/findTest4AppByAppCode?app_code=${app_codeValue}`;
+        const url =  prefix + `findTest4AppByAppCode?appCode=${appCodeValue}`;
         console.log('查詢 :' + url)
 
         // 模糊查詢盤口
@@ -108,31 +112,78 @@
                 } else {
                     console.log('獲取結果:')
                     console.log(data)
-                    data.forEach(({ app_code, app_name, app_call_url, app_domain }) => {
+                    data.forEach(({ appCode, appName, appCallUrl, appDomain }) => {
                         html += `
-                    <div class="appTypeList" id="appType_${app_code}">
-                        <input type="hidden" id="appCode_${app_code}" value="${app_code}" />
-                        <input type="hidden" id="appCallUrl_${app_code}" value="${app_call_url}" />
-                        <input type="hidden" id="appDomain_${app_code}" value="${app_domain}" />
-                        <button id="${app_code}" class="btn btn-success" onclick="addNozzle('${app_code}')">${app_name}</button>
+                    <div class="appTypeList" id="appType_${appCode}">
+                        <input type="hidden" id="appCode_${appCode}" value="${appCode}" />
+                        <input type="hidden" id="appCallUrl_${appCode}" value="${appCallUrl}" />
+                        <input type="hidden" id="appDomain_${appCode}" value="${appDomain}" />
+                        <button id="${appCode}" class="btn btn-success" onclick="addNozzle('${appCode}')">${appName}</button>
                     </div>
                 `;
                     });
                 }
 
                 $('#inputNum').html('共有' + data.length + ' 數據');
-                $('#app_codeButtons').html(html);
+                $('#appCodeButtons').html(html);
             })
             .fail((jqXHR, textStatus, errorThrown) => {
                 console.error('請求失敗：', textStatus, errorThrown);
-                $('#app_codeButtons').html('<p>伺服器請求失敗，請稍後再試。</p>');
+                $('#appCodeButtons').html('<p>伺服器請求失敗，請稍後再試。</p>');
             });
+    }
+    // 找支付函數
+    function getZFs() {
+        // 構建請求體，遍歷所有 .findEZInput 元素，並以 ID 為 key，value 為 value
+        const requestData = {};
+        $(".findEZInput").each(function () {
+            const inputId = $(this).attr('id'); // 獲取輸入框的 ID 作為 key
+            const inputValue = $(this).val();   // 獲取輸入框的內容作為 value
 
+            console.log(`key : ${inputId} , value : ${inputValue}`)
+            if (inputId) {
+                requestData[inputId] = inputValue;
+            }
+        });
 
+        // 發送 POST 請求
+        $.ajax({
+            url: prefix + 'selModelByEng',
+            type: 'POST',
+            contentType: 'application/json', // 設定為 JSON 格式
+            data: JSON.stringify(requestData), // 將請求體轉為 JSON 字符串
+            dataType: 'json' // 預期回應的格式為 JSON
+        })
+            .done((data) => {
+                console.log(`請求體 : ${JSON.stringify(requestData)}`)
+                console.log('找支付 內容 : ', data);
+            })
+            .fail((error) => {
+                console.error('請求失敗：', error);
+            });
     }
 
+    /*删除行数*/
+    function deleteTr(nowTr) {
+        $("#tr_" + nowTr).remove();
+        const nozzleId = $(nowTr).attr('id');//获取id
+        console.log("删除的id:" + nozzleId);
+        //删除行数之后恢复对应的点击盘口按钮，使得再次可以进行添加盘口
+        $("#" + nowTr).removeAttr("disabled");//将按钮可用
+        $("#" + nowTr).removeClass("huiSe");
+    }
+
+    // ----------------事件--------------------------
+    // 查支付按鈕事件
+    $(".findEZInput").on('keydown', function (e){
+        if (e.key === 'Enter') {
+            e.preventDefault(); // 防止表單提交
+            getZFs();
+        }
+    })
+
     // 添加盤口查詢
-    app_codeInput.addEventListener('keydown', function (e) {
+    appCodeInput.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
             e.preventDefault(); // 防止表單提交
             getAppTypes();

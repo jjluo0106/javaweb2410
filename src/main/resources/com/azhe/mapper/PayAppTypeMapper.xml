@@ -7,13 +7,13 @@
 
     <select id="findTest4AppByAppCode" resultType="com.azhe.pojo.PayAppType">
 
-        <if test="app_code != null and app_code != ''">
+        <if test="appCode != null and appCode != ''">
             select * from 8bet.t_pay_app_type
-            where app_code like CONCAT('%', #{app_code}, '%');
+            where app_code like CONCAT('%', #{appCode}, '%');
             ;
         </if>
 
-        <if test="app_code == null or app_code == ''">
+        <if test="appCode == null or appCode == ''">
             select * from 8bet.t_pay_app_type
             ;
         </if>

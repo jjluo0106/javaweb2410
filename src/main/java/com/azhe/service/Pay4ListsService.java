@@ -13,7 +13,7 @@ public class Pay4ListsService {
     @Autowired
     Pay4ListsMapper pay4ListsMapper;
 
-    public List<PayRequestModel> selModelByEng(PayRequestModel model) {
-        return pay4ListsMapper.selModelByEng(model);
+    public List<PayRequestModel> selModelByEng(PayRequestModel requestModel) {
+        return pay4ListsMapper.selModelByEng(requestModel);
     }
 }

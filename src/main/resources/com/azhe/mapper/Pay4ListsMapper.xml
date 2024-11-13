@@ -8,6 +8,12 @@
     <select id="selModelByEng" resultType="com.azhe.pojo.PayRequestModel">
 
         select *
-        from `8bet`.t_pay_request_model where PLATFORM_CODE in (#{PLATFORM_CODE});
+        from `8bet`.t_pay_request_model
+        <where>
+            <if test="platformCode != null and platformCode != '' ">
+                PLATFORM_CODE like  CONCAT('%', #{platformCode}, '%')
+            </if>
+        </where>
+
     </select>
 </mapper>

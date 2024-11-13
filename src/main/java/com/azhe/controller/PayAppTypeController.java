@@ -16,7 +16,7 @@ public class PayAppTypeController {
 
     @RequestMapping("/findTest4AppByAppCode")
     public List<PayAppType> findTest4AppByAppCode(PayAppType payAppType){
-        log.info("findTest4AppByAppCode-查詢 {}資訊...", payAppType.getApp_code());
+        log.info("findTest4AppByAppCode-查詢 {}資訊...", payAppType.getAppCode());
         return payAppTypeService.findTest4AppByAppCode(payAppType);
     }
 
