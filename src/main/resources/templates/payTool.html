@@ -74,8 +74,9 @@
             <th>ID</th>
             <th><input class="findEZInput" id="platformName" placeholder="中"></th>
             <th><input class="findEZInput" id="platformCode" placeholder="英"></th>
+
             <th><input class="findEZInput" id="payRequestStrategy" placeholder="下單策略"></th>
-            <th><input class="findEZInput" id="successURL" placeholder="下單地址"></th>
+            <th><input class="findEZInput" id="successUrl" placeholder="下單地址"></th>
             <th><input class="findEZInput" id="callbackUrl" placeholder="回調地址"></th>
             <th><input class="findEZInput" id="requestValue" placeholder="請求參數"></th>
         </tr>
@@ -141,6 +142,63 @@
             this.lastUpdatedBy = "";
         }
     }
+
+    class PayPlatformAndModelVO {
+        constructor() {
+            // Platform 屬性
+            this.payPlatformId = "";
+            this.platformCode = "";
+            this.platformName = "";
+            this.merchantCode = "";
+            this.secretKey = "";
+            this.rsaKey = "";
+            this.publicKey = "";
+            this.isQuery = "";
+            this.queryUrl = "";
+            this.ip = "";
+            this.isEnable = "";
+            this.versionNo = "";
+            this.successUrl = "";
+            this.creationTime = "";
+            this.creationBy = "";
+            this.lastUpdatedTime = "";
+            this.lastUpdatedBy = "";
+            this.payVoucher = "";
+
+            // Model 屬性
+            this.payModelId = "";
+            this.payStrategyName = "";
+            this.payStrategyType = "";
+            this.payRequestStrategy = "";
+            this.payRequestApi = "";
+            this.orderStrategy = "";
+            this.encryptionStrategy = "";
+            this.signValue = "";
+            this.requestValue = "";
+            this.requestEncryptionStrategy = "";
+            this.responseStrategy = "";
+            this.pageCallbackUrl = "";
+            this.callbackUrl = "";
+            this.callbackStrategy = "";
+            this.callbackReturnStrategy = "";
+            this.orderNoStatus = "";
+            this.callbackSignValue = "";
+            this.rootXml = "";
+            this.amountStrategy = "";
+            this.queryStrategy = "";
+        }
+
+        // 方法：將 JSON 資料賦值到當前對象
+        fromJSON(data) {
+            Object.assign(this, data);
+        }
+
+        // 方法：將當前對象轉換為 JSON
+        toJSON() {
+            return JSON.stringify(this);
+        }
+    }
+
     // 當頁面加載時執行此函數
 
     document.addEventListener('DOMContentLoaded', getAppTypes());
@@ -228,20 +286,22 @@
 
                 // 遍歷返回的數據並渲染到表格中
                 data.forEach((item) => {
-                    let payRequestModel = new PayRequestModel();
-                    Object.assign(payRequestModel, item);
+                    let payPlatformAndModelVO = new PayPlatformAndModelVO();
+                    Object.assign(payPlatformAndModelVO, item);
 
                     // 插入新的表格行
                     const newRow = `
                     <tr>
-                        <td class="text-nowrap"> <input type="checkbox" id="${payRequestModel.payModelId}"></td>
-                        <td class="text-nowrap">${payRequestModel.payModelId}</td>
-                        <td class="text-nowrap">${payRequestModel.payStrategyName}</td>
-                        <td class="text-nowrap">${payRequestModel.platformCode}</td>
-                        <td class="text-nowrap">${payRequestModel.payRequestStrategy}</td>
-                        <td class="text-nowrap">${payRequestModel.pageCallbackUrl}</td>
-                        <td class="text-nowrap">${payRequestModel.callbackUrl}</td>
-                        <td class="text-nowrap">${payRequestModel.requestValue}</td>
+                        <td class="text-nowrap"> <input type="checkbox" id="${payPlatformAndModelVO.payModelId}"></td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.payModelId}</td>
+
+                        <td class="text-nowrap">${payPlatformAndModelVO.payStrategyName}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.platformCode}</td>
+
+                        <td class="text-nowrap">${payPlatformAndModelVO.payRequestStrategy}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.successUrl}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.callbackUrl}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.requestValue}</td>
                     </tr>
                 `;
                     $("#resultZF").append(newRow);

@@ -5,9 +5,29 @@
 <mapper namespace="com.azhe.mapper.Pay4ListsMapper">
 
 <!--    對應資料庫名稱-->
-    <resultMap id="payRequestModelMap" type="com.azhe.pojo.PayRequestModel">
-        <result property="payModelId" column="PAY_MODEL_ID"/>
+    <resultMap id="payPlatformAndModelVOMap" type="com.azhe.vo.PayPlatformAndModelVO">
+        <!-- PayPlatform 欄位映射 -->
+        <result property="payPlatformId" column="PAY_PLATFORM_ID"/>
         <result property="platformCode" column="PLATFORM_CODE"/>
+        <result property="platformName" column="PLATFORM_NAME"/>
+        <result property="merchantCode" column="MERCHANT_CODE"/>
+        <result property="secretKey" column="SECRET_KEY"/>
+        <result property="rsaKey" column="RSA_KEY"/>
+        <result property="publicKey" column="PUBLIC_KEY"/>
+        <result property="isQuery" column="IS_QUERY"/>
+        <result property="queryUrl" column="QUERY_URL"/>
+        <result property="ip" column="IP"/>
+        <result property="isEnable" column="IS_ENABLE"/>
+        <result property="versionNo" column="VERSION_NO"/>
+        <result property="successUrl" column="SUCCESS_URL"/>
+        <result property="creationTime" column="CREATION_TIME"/>
+        <result property="creationBy" column="CREATION_BY"/>
+        <result property="lastUpdatedTime" column="LAST_UPDATED_TIME"/>
+        <result property="lastUpdatedBy" column="LAST_UPDATED_BY"/>
+        <result property="payVoucher" column="PAY_VOUCHER"/>
+
+        <!-- PayRequestModel 欄位映射 -->
+        <result property="payModelId" column="PAY_MODEL_ID"/>
         <result property="payStrategyName" column="PAY_STRATEGY_NAME"/>
         <result property="payStrategyType" column="PAY_STRATEGY_TYPE"/>
         <result property="payRequestStrategy" column="PAY_REQUEST_STRATEGY"/>
@@ -27,21 +47,63 @@
         <result property="rootXml" column="ROOT_XML"/>
         <result property="amountStrategy" column="AMOUNT_STRATEGY"/>
         <result property="queryStrategy" column="QUERY_STRATEGY"/>
-        <result property="creationTime" column="CREATION_TIME"/>
-        <result property="creationBy" column="CREATION_BY"/>
-        <result property="lastUpdatedTime" column="LAST_UPDATED_TIME"/>
-        <result property="lastUpdatedBy" column="LAST_UPDATED_BY"/>
     </resultMap>
 
-    <select id="selModelByEng" resultMap="payRequestModelMap">
-        select *
-        from `8bet`.t_pay_request_model
-        <where>
-            <if test="platformCode != null and platformCode != ''">
-                PLATFORM_CODE like CONCAT('%', #{platformCode}, '%')
-            </if>
-        </where>
-        order by PAY_MODEL_ID desc;
+
+    <select id="selModelByEng" resultMap="payPlatformAndModelVOMap">
+<!--        select *-->
+<!--        from `8bet`.t_pay_request_model-->
+<!--        <where>-->
+<!--            <if test="platformCode != null and platformCode != ''">-->
+<!--                PLATFORM_CODE like CONCAT('%', #{platformCode}, '%')-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        order by PAY_MODEL_ID desc;-->
+
+
+        select p.*, m.* from 8bet.t_pay_platform p INNER JOIN
+        8bet.t_pay_request_model m
+        on p.PLATFORM_CODE = m.PLATFORM_CODE
+        WHERE 1=1
+        <if test="platformName != null and platformName != ''">
+            AND p.PLATFORM_NAME LIKE CONCAT('%', #{platformName}, '%')
+        </if>
+        <if test="platformCode != null and platformCode != ''">
+            AND p.PLATFORM_CODE LIKE CONCAT('%', #{platformCode}, '%')
+        </if>
+        <if test="successUrl != null and successUrl != ''">
+            AND p.SUCCESS_URL LIKE CONCAT('%', #{successUrl}, '%')
+        </if>
+        <if test="queryUrl != null and queryUrl != ''">
+            AND p.QUERY_URL LIKE CONCAT('%', #{queryUrl}, '%')
+        </if>
+
+<!--        <if test="requestParam1 != null and requestParam1 != ''">-->
+<!--            and p.PLATFORM_CODE in (-->
+<!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam1}, '%' )-->
+<!--            )-->
+<!--        </if>-->
+<!--        <if test="requestParam2 != null and requestParam2 != ''">-->
+<!--            and p.PLATFORM_CODE in (-->
+<!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam2}, '%' )-->
+<!--            )-->
+<!--        </if>-->
+<!--        <if test="requestParam3 != null and requestParam3 != ''">-->
+<!--            and p.PLATFORM_CODE in (-->
+<!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam3}, '%' )-->
+<!--            )-->
+<!--        </if>-->
+<!--        <if test="requestParam4 != null and requestParam4 != ''">-->
+<!--            and p.PLATFORM_CODE in (-->
+<!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam4}, '%' )-->
+<!--            )-->
+<!--        </if>-->
+<!--        <if test="requestParam5 != null and requestParam5 != ''">-->
+<!--            and p.PLATFORM_CODE in (-->
+<!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam5}, '%' )-->
+<!--            )-->
+<!--        </if>-->
+        order by p.PAY_PLATFORM_ID desc;
     </select>
 
 </mapper>

@@ -1,10 +1,12 @@
-package com.azhe.pojo;
+package com.azhe.vo;
+
 
 import lombok.Data;
 
-@Data // 自動生成getter setter
-public class PayPlatform {
+@Data
+public class PayPlatformAndModelVO {
 
+//    Platform
     private String payPlatformId;    // 主鍵
     private String platformCode;     // 平台編碼
     private String platformName;     // 平台名稱
@@ -23,5 +25,28 @@ public class PayPlatform {
     private String lastUpdatedTime;  // 最後更新時間
     private String lastUpdatedBy;    // 最後更新人
     private String payVoucher;       // 商戶秘鑰
-}
 
+
+//  Model
+    private String payModelId;
+    private String payStrategyName;
+    private String payStrategyType;
+    private String payRequestStrategy;
+    private String payRequestApi;
+    private String orderStrategy;
+    private String encryptionStrategy;
+    private String signValue;
+    private String requestValue;
+    private String requestEncryptionStrategy;
+    private String responseStrategy;
+    private String pageCallbackUrl;
+    private String callbackUrl;
+    private String callbackStrategy;
+    private String callbackReturnStrategy;
+    private String orderNoStatus;
+    private String callbackSignValue;
+    private String rootXml;
+    private String amountStrategy;
+    private String queryStrategy;
+
+}

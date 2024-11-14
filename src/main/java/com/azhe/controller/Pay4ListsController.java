@@ -1,6 +1,7 @@
 package com.azhe.controller;
 import com.azhe.pojo.PayRequestModel;
 import com.azhe.service.Pay4ListsService;
+import com.azhe.vo.PayPlatformAndModelVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,9 +17,9 @@ public class Pay4ListsController {
 
 
     @PostMapping("/selModelByEng")
-    public List<PayRequestModel> selModelByEng(@RequestBody PayRequestModel requestModel) {
-        log.info("請求體 : {}",requestModel);
-        log.info(pay4ListsService.selModelByEng(requestModel).toString());
-        return pay4ListsService.selModelByEng(requestModel);
+    public List<PayPlatformAndModelVO> selModelByEng(@RequestBody PayPlatformAndModelVO payPlatformAndModelVO) {
+        log.info("請求體 : {}",payPlatformAndModelVO);
+        log.info(pay4ListsService.selModelByEng(payPlatformAndModelVO).toString());
+        return pay4ListsService.selModelByEng(payPlatformAndModelVO);
     }
 }
