@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,11 +53,16 @@ public class PageController {
 //    }
 
 
-    @RequestMapping("/payTool")
-    public String payTool() {
-        log.info("返回前端頁面 : payTool");
+    @GetMapping("/payTool")
+    public String payToolPage(Model model) {
+        List<String> fieldNames = Arrays.asList(
+                "payModelId", "payStrategyName", "platformCode",  "callbackReturnStrategy"
+        );
 
+        log.info("fieldNames : {}", fieldNames);
+        model.addAttribute("fieldNames", fieldNames);
         return "payTool";
     }
+
 
 }

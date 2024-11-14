@@ -10,10 +10,17 @@
         .text-orange {
             color: orange;
         }
-
+        /*備註小字體*/
         .ps {
             font-size: 12px;
         }
+
+        .findEZInput {
+            white-space: nowrap;
+            width: 100%; /* 或者根據需要設置寬度 */
+            max-width: 200px;
+        }
+
     </style>
 </head>
 <body>
@@ -54,18 +61,40 @@
     <div>
         <h2 class="text-center btn-success d-flex justify-content-center align-items-center">支付搜尋</h2>
         <div>支付選擇1234</div>
-        <div class="table-bordered" id="chooseZF">
-            <table class="table">
-                <tr>
-                    <th>ID</th>
-                    <th>PLATFORM_NAME</th>
-                    <th>PLATFORM_CODE　<input class="findEZInput" id="platformCode"></th>
-                    <th>SUCCESS_URL</th><th>QUERY_URL</th><th>REQUERT_VALUE</th></tr>
-            </table>
-        </div>
-    </div>
-</div>
 
+    </div>
+
+</div>
+<!-- 表格容器，加入滾動條 -->
+<div class="table-container">
+    <table class="table table-bordered" id="resultZF">
+        <thead>
+        <tr>
+            <th>pick</th>
+            <th>ID</th>
+            <th><input class="findEZInput" id="platformName" placeholder="中"></th>
+            <th><input class="findEZInput" id="platformCode" placeholder="英"></th>
+            <th><input class="findEZInput" id="payRequestStrategy" placeholder="下單策略"></th>
+            <th><input class="findEZInput" id="successURL" placeholder="下單地址"></th>
+            <th><input class="findEZInput" id="callbackUrl" placeholder="回調地址"></th>
+            <th><input class="findEZInput" id="requestValue" placeholder="請求參數"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 這裡將動態插入數據 -->
+        </tbody>
+    </table>
+<!--    <table id="resultZF" class="table table-bordered">-->
+<!--        <tr>-->
+<!--            <th>pick</th>-->
+<!--            <th th:each="field : ${fieldNames}">-->
+<!--                <input class="findEZInput" th:id="${field}" th:placeholder="${field}">-->
+<!--            </th>-->
+<!--        </tr>-->
+<!--    </table>-->
+
+
+</div>
 
 
 
@@ -82,6 +111,36 @@
     // 查詢盤口輸日框 (輸入空則為搜全部)
     const prefix = 'http://localhost:666/'; // 本地服務器前墜(域名)
     const appCodeInput = document.querySelector('.appCodeInput');
+
+    class PayRequestModel {
+        constructor() {
+            this.payModelId = "";
+            this.platformCode = "";
+            this.payStrategyName = "";
+            this.payStrategyType = "";
+            this.payRequestStrategy = "";
+            this.payRequestApi = "";
+            this.orderStrategy = "";
+            this.encryptionStrategy = "";
+            this.signValue = "";
+            this.requestValue = "";
+            this.requestEncryptionStrategy = "";
+            this.responseStrategy = "";
+            this.pageCallbackUrl = "";
+            this.callbackUrl = "";
+            this.callbackStrategy = "";
+            this.callbackReturnStrategy = "";
+            this.orderNoStatus = "";
+            this.callbackSignValue = "";
+            this.rootXml = "";
+            this.amountStrategy = "";
+            this.queryStrategy = "";
+            this.creationTime = "";
+            this.creationBy = "";
+            this.lastUpdatedTime = "";
+            this.lastUpdatedBy = "";
+        }
+    }
     // 當頁面加載時執行此函數
 
     document.addEventListener('DOMContentLoaded', getAppTypes());
@@ -155,11 +214,42 @@
             dataType: 'json' // 預期回應的格式為 JSON
         })
             .done((data) => {
-                console.log(`請求體 : ${JSON.stringify(requestData)}`)
+                console.log(`請求體 : ${JSON.stringify(requestData)}`);
                 console.log('找支付 內容 : ', data);
+
+                // 清空舊的表格數據
+                $("#resultZF").find("tr:gt(0)").remove();
+
+                if (data.length === 0) {
+                    // 如果沒有查詢到數據，插入提示
+                    $("#resultZF").append('<tr><td colspan="6">未找到相關支付資料</td></tr>');
+                    return;
+                }
+
+                // 遍歷返回的數據並渲染到表格中
+                data.forEach((item) => {
+                    let payRequestModel = new PayRequestModel();
+                    Object.assign(payRequestModel, item);
+
+                    // 插入新的表格行
+                    const newRow = `
+                    <tr>
+                        <td class="text-nowrap"> <input type="checkbox" id="${payRequestModel.payModelId}"></td>
+                        <td class="text-nowrap">${payRequestModel.payModelId}</td>
+                        <td class="text-nowrap">${payRequestModel.payStrategyName}</td>
+                        <td class="text-nowrap">${payRequestModel.platformCode}</td>
+                        <td class="text-nowrap">${payRequestModel.payRequestStrategy}</td>
+                        <td class="text-nowrap">${payRequestModel.pageCallbackUrl}</td>
+                        <td class="text-nowrap">${payRequestModel.callbackUrl}</td>
+                        <td class="text-nowrap">${payRequestModel.requestValue}</td>
+                    </tr>
+                `;
+                    $("#resultZF").append(newRow);
+                });
             })
             .fail((error) => {
                 console.error('請求失敗：', error);
+                $("#resultZF").append('<tr><td colspan="6">伺服器請求失敗，請稍後再試。</td></tr>');
             });
     }
 
@@ -173,7 +263,7 @@
         $("#" + nowTr).removeClass("huiSe");
     }
 
-    // ----------------事件--------------------------
+    // ----------------監聽--------------------------
     // 查支付按鈕事件
     $(".findEZInput").on('keydown', function (e){
         if (e.key === 'Enter') {
@@ -274,7 +364,6 @@
             }
         });
     }
-
 
 
 </script>
