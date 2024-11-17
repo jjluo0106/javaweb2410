@@ -78,11 +78,11 @@
             AND p.QUERY_URL LIKE CONCAT('%', #{queryUrl}, '%')
         </if>
 
-<!--        <if test="requestParam1 != null and requestParam1 != ''">-->
-<!--            and p.PLATFORM_CODE in (-->
-<!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam1}, '%' )-->
-<!--            )-->
-<!--        </if>-->
+        <if test="requestValue != null and requestValue != ''">
+            and p.PLATFORM_CODE in (
+            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestValue}, '%' )
+            )
+        </if>
 <!--        <if test="requestParam2 != null and requestParam2 != ''">-->
 <!--            and p.PLATFORM_CODE in (-->
 <!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam2}, '%' )-->
@@ -103,7 +103,7 @@
 <!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam5}, '%' )-->
 <!--            )-->
 <!--        </if>-->
-        order by p.PAY_PLATFORM_ID desc;
+        order by p.PAY_PLATFORM_ID desc limit 100;
     </select>
 
 </mapper>

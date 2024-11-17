@@ -36,7 +36,6 @@ public class PayPlatformAndModelVO {
     private String orderStrategy;
     private String encryptionStrategy;
     private String signValue;
-    private String requestValue;
     private String requestEncryptionStrategy;
     private String responseStrategy;
     private String pageCallbackUrl;
@@ -48,5 +47,8 @@ public class PayPlatformAndModelVO {
     private String rootXml;
     private String amountStrategy;
     private String queryStrategy;
+
+
+    private String requestValue;
 
 }
