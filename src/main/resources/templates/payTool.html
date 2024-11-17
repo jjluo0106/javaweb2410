@@ -307,6 +307,7 @@
                     $("#resultZF").append(newRow);
                 });
             })
+
             .fail((error) => {
                 console.error('請求失敗：', error);
                 $("#resultZF").append('<tr><td colspan="6">伺服器請求失敗，請稍後再試。</td></tr>');
