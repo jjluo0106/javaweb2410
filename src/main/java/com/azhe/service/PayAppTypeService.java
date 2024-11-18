@@ -24,15 +24,22 @@ public class PayAppTypeService {
     }
 
     public String getMaxInfo(Object data) {
-        String domain = JSONUtil.parseObj(data).get("appDomain").toString(); // 獲取玉明
-        String suffix = "/pay/maxid/findMaxId"; // 服務器查詢最大值尾墜
-        String url = domain + suffix;
+        HttpResponse response = null;
+        try {
+            String domain = JSONUtil.parseObj(data).get("appDomain").toString();
+            String suffix = "/pay/maxid/findMaxId";
+            String url = domain + suffix;
 
-        log.info("發送get請求 : {}",url);
-        HttpResponse response = HttpRequest.get(url).execute();
+            log.info("發送 GET 請求 : {}", url);
+            response = HttpRequest.get(url).execute();
 
-        String body = response.body();
-       log.info("響應: {}", body);
-        return body;
+            String body = response.body();
+            log.info("響應: {}", body);
+            return body;
+        } catch (Exception e) {
+            log.error("獲取最大值信息時發生錯誤: \n{}\n{}", e.getMessage(), e);
+            return "{\"status\":0,\"msg\":\"獲取 " +data+ " 最大值信息時發生錯誤 : \n"+ e +"\"}";
+        }
     }
+
 }

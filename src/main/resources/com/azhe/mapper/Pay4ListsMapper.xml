@@ -51,58 +51,93 @@
 
 
     <select id="selModelByEng" resultMap="payPlatformAndModelVOMap">
-<!--        select *-->
-<!--        from `8bet`.t_pay_request_model-->
-<!--        <where>-->
-<!--            <if test="platformCode != null and platformCode != ''">-->
-<!--                PLATFORM_CODE like CONCAT('%', #{platformCode}, '%')-->
-<!--            </if>-->
-<!--        </where>-->
-<!--        order by PAY_MODEL_ID desc;-->
+        <!--        select *-->
+        <!--        from `8bet`.t_pay_request_model-->
+        <!--        <where>-->
+        <!--            <if test="platformCode != null and platformCode != ''">-->
+        <!--                PLATFORM_CODE like CONCAT('%', #{platformCode}, '%')-->
+        <!--            </if>-->
+        <!--        </where>-->
+        <!--        order by PAY_MODEL_ID desc;-->
 
 
         select p.*, m.* from 8bet.t_pay_platform p INNER JOIN
         8bet.t_pay_request_model m
         on p.PLATFORM_CODE = m.PLATFORM_CODE
         WHERE 1=1
+
         <if test="platformName != null and platformName != ''">
             AND p.PLATFORM_NAME LIKE CONCAT('%', #{platformName}, '%')
         </if>
         <if test="platformCode != null and platformCode != ''">
             AND p.PLATFORM_CODE LIKE CONCAT('%', #{platformCode}, '%')
         </if>
+
+
         <if test="successUrl != null and successUrl != ''">
             AND p.SUCCESS_URL LIKE CONCAT('%', #{successUrl}, '%')
         </if>
+        <if test="payRequestStrategy != null and payRequestStrategy != ''">
+            AND m.PAY_REQUEST_STRATEGY LIKE CONCAT('%', #{payRequestStrategy}, '%')
+        </if>
+
+
+
+
+        <if test="requestValue != null and requestValue != ''">
+            and p.PLATFORM_CODE in (
+            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%',
+            #{requestValue}, '%' )
+            )
+        </if>
+        <if test="requestValue2 != null and requestValue2 != ''">
+            and p.PLATFORM_CODE in (
+            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%',
+            #{requestValue2}, '%' )
+            )
+        </if>
+        <if test="requestValue3 != null and requestValue3 != ''">
+            and p.PLATFORM_CODE in (
+            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%',
+            #{requestValue3}, '%' )
+            )
+        </if>
+        <if test="requestValue4 != null and requestValue4 != ''">
+            and p.PLATFORM_CODE in (
+            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%',
+            #{requestValue4}, '%' )
+            )
+        </if>
+        <if test="requestValue5 != null and requestValue5 != ''">
+            and p.PLATFORM_CODE in (
+            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%',
+            #{requestValue5}, '%' )
+            )
+        </if>
+        <if test="requestValue6 != null and requestValue6 != ''">
+            and p.PLATFORM_CODE in (
+            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%',
+            #{requestValue6}, '%' )
+            )
+        </if>
+        <if test="requestValue7 != null and requestValue7 != ''">
+            and p.PLATFORM_CODE in (
+            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%',
+            #{requestValue7}, '%' )
+            )
+        </if>
+        <if test="requestValue8 != null and requestValue8 != ''">
+            and p.PLATFORM_CODE in (
+            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%',
+            #{requestValue8}, '%' )
+            )
+        </if>
+
+
         <if test="queryUrl != null and queryUrl != ''">
             AND p.QUERY_URL LIKE CONCAT('%', #{queryUrl}, '%')
         </if>
 
-        <if test="requestValue != null and requestValue != ''">
-            and p.PLATFORM_CODE in (
-            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestValue}, '%' )
-            )
-        </if>
-<!--        <if test="requestParam2 != null and requestParam2 != ''">-->
-<!--            and p.PLATFORM_CODE in (-->
-<!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam2}, '%' )-->
-<!--            )-->
-<!--        </if>-->
-<!--        <if test="requestParam3 != null and requestParam3 != ''">-->
-<!--            and p.PLATFORM_CODE in (-->
-<!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam3}, '%' )-->
-<!--            )-->
-<!--        </if>-->
-<!--        <if test="requestParam4 != null and requestParam4 != ''">-->
-<!--            and p.PLATFORM_CODE in (-->
-<!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam4}, '%' )-->
-<!--            )-->
-<!--        </if>-->
-<!--        <if test="requestParam5 != null and requestParam5 != ''">-->
-<!--            and p.PLATFORM_CODE in (-->
-<!--            SELECT m.PLATFORM_CODE from 8bet.t_pay_request_model m where m.REQUERT_VALUE LIKE CONCAT('%', #{requestParam5}, '%' )-->
-<!--            )-->
-<!--        </if>-->
         order by p.PAY_PLATFORM_ID desc limit 100;
     </select>
 

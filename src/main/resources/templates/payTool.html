@@ -2,24 +2,35 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${title} ?: 'test4支付工具'">無法顯示</title>
+    <title th:text="工具-支付導出">無法顯示</title>
+    <link rel="icon" th:href="@{pic/Thymeleaf.png}">
     <link rel="stylesheet" th:href="@{css/bootstrap.css}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <style>
-        .text-orange {
-            color: orange;
-        }
-        /*備註小字體*/
+        /*.text-orange {*/
+        /*    color: orange;*/
+        /*}*/
+        /*!*備註小字體*!*/
         .ps {
             font-size: 12px;
+            color: gray;
         }
 
-        .findEZInput {
-            white-space: nowrap;
-            width: 100%; /* 或者根據需要設置寬度 */
-            max-width: 200px;
+        .red {
+            color: red;
         }
+
+        /*.findEZInput {*/
+        /*    !*white-space: nowrap;*!*/
+        /*    width: 100%; !* 或者根據需要設置寬度 *!*/
+        /*    max-width: 200px;*/
+        /*}*/
+
+        /*.table-bordered td{*/
+        /*    font-size: 10px;*/
+        /*}*/
 
     </style>
 </head>
@@ -43,31 +54,40 @@
         <div id="inputNum" class="ps"></div>
         <!-- 按鈕容器 -->
         <!-- 按鈕控制列表顯示與隱藏 -->
-<!--        <button class="btn btn-primary mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#appCodeButtons">-->
-<!--            摺疊盤口顯示-->
-<!--        </button>-->
+        <!--        <button class="btn btn-primary mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#appCodeButtons">-->
+        <!--            摺疊盤口顯示-->
+        <!--        </button>-->
         <div id="appCodeButtons" class="d-flex flex-wrap"></div>
     </div>
 
 
     <h2 class="text-center btn-danger d-flex justify-content-center align-items-center">預計導出盤口之數據</h2>
-<!--    顯示導出盤口ID，最大值資訊-->
+    <!--    顯示導出盤口ID，最大值資訊-->
     <div class="table-bordered" id="exportTable">
+        <div id="appCodePS"></div>
         <table class="table">
-            <tr><th>操作</th><th>平台名</th><th>最大平台ID</th><th>最大方法ID</th><th>最大通道ID</th><th>最大算法模板ID</th><th>回調地址</th></tr>
+            <tr>
+                <th>操作</th>
+                <th>平台名</th>
+                <th>最大平台ID</th>
+                <th>最大方法ID</th>
+                <th>最大通道ID</th>
+                <th>最大算法模板ID</th>
+                <th>回調地址<button class="btn btn-warning" id="layoutBTN">導出</button></th>
+            </tr>
         </table>
     </div>
 
     <div>
         <h2 class="text-center btn-success d-flex justify-content-center align-items-center">支付搜尋</h2>
-        <div>支付選擇1234</div>
+        <div id="zfNum" class="ps"></div>
 
     </div>
 
 </div>
 <!-- 表格容器，加入滾動條 -->
 <div class="table-container">
-    <table class="table table-bordered" id="resultZF">
+    <table class="table table-bordered table-striped border" id="resultZF">
         <thead>
         <tr>
             <th>pick</th>
@@ -77,30 +97,40 @@
 
             <th><input class="findEZInput" id="successUrl" placeholder="下單地址"></th>
             <th><input class="findEZInput" id="payRequestStrategy" placeholder="下單策略"></th>
+            <th style="width: 800px;">
+                <input class="findEZInput" id="requestValue" placeholder="請求參數1">
+                <input class="findEZInput" id="requestValue2" placeholder="請求參數2">
+                <input class="findEZInput" id="requestValue3" placeholder="請求參數3">
+                <input class="findEZInput" id="requestValue4" placeholder="請求參數4">
+                <input class="findEZInput" id="requestValue5" placeholder="請求參數5">
+                <input class="findEZInput" id="requestValue6" placeholder="請求參數6">
+                <input class="findEZInput" id="requestValue7" placeholder="請求參數7">
+                <input class="findEZInput" id="requestValue8" placeholder="請求參數8">
+            </th>
+            <!--            <th></th>-->
             <th><input class="findEZInput" id="callbackUrl" placeholder="回調地址"></th>
-            <th><input class="findEZInput" id="requestValue" placeholder="請求參數"></th>
         </tr>
         </thead>
         <tbody>
         <!-- 這裡將動態插入數據 -->
         </tbody>
     </table>
-<!--    <table id="resultZF" class="table table-bordered">-->
-<!--        <tr>-->
-<!--            <th>pick</th>-->
-<!--            <th th:each="field : ${fieldNames}">-->
-<!--                <input class="findEZInput" th:id="${field}" th:placeholder="${field}">-->
-<!--            </th>-->
-<!--        </tr>-->
-<!--    </table>-->
+    <!--    <table id="resultZF" class="table table-bordered">-->
+    <!--        <tr>-->
+    <!--            <th>pick</th>-->
+    <!--            <th th:each="field : ${fieldNames}">-->
+    <!--                <input class="findEZInput" th:id="${field}" th:placeholder="${field}">-->
+    <!--            </th>-->
+    <!--        </tr>-->
+    <!--    </table>-->
 
 
 </div>
 
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 
 <!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>-->
 <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>-->
@@ -214,7 +244,7 @@
         const appCodeButtonsContainer = document.getElementById('appCodeButtons');
 
         // 構建請求 URL
-        const url =  prefix + `findTest4AppByAppCode?appCode=${appCodeValue}`;
+        const url = prefix + `findTest4AppByAppCode?appCode=${appCodeValue}`;
         console.log('查詢 :' + url)
 
         // 模糊查詢盤口
@@ -229,7 +259,7 @@
                 } else {
                     console.log('獲取結果:')
                     console.log(data)
-                    data.forEach(({ appCode, appName, appCallUrl, appDomain }) => {
+                    data.forEach(({appCode, appName, appCallUrl, appDomain}) => {
                         html += `
                     <div class="appTypeList" id="appType_${appCode}">
                         <input type="hidden" id="appCode_${appCode}" value="${appCode}" />
@@ -241,7 +271,7 @@
                     });
                 }
 
-                $('#inputNum').html('共有' + data.length + ' 數據');
+                $('#inputNum').html('共有' + data.length + ' 符合數據');
                 $('#appCodeButtons').html(html);
             })
             .fail((jqXHR, textStatus, errorThrown) => {
@@ -249,98 +279,6 @@
                 $('#appCodeButtons').html('<p>伺服器請求失敗，請稍後再試。</p>');
             });
     }
-    // 找支付函數
-    function getZFs() {
-        // 構建請求體，遍歷所有 .findEZInput 元素，並以 ID 為 key，value 為 value
-        const requestData = {};
-        $(".findEZInput").each(function () {
-            const inputId = $(this).attr('id'); // 獲取輸入框的 ID 作為 key
-            const inputValue = $(this).val();   // 獲取輸入框的內容作為 value
-
-            console.log(`key : ${inputId} , value : ${inputValue}`)
-            if (inputId) {
-                requestData[inputId] = inputValue;
-            }
-        });
-
-        // 發送 POST 請求
-        $.ajax({
-            url: prefix + 'selModelByEng',
-            type: 'POST',
-            contentType: 'application/json', // 設定為 JSON 格式
-            data: JSON.stringify(requestData), // 將請求體轉為 JSON 字符串
-            dataType: 'json' // 預期回應的格式為 JSON
-        })
-            .done((data) => {
-                console.log(`請求體 : ${JSON.stringify(requestData)}`);
-                console.log('找支付 內容 : ', data);
-
-                // 清空舊的表格數據
-                $("#resultZF").find("tr:gt(0)").remove();
-
-                if (data.length === 0) {
-                    // 如果沒有查詢到數據，插入提示
-                    $("#resultZF").append('<tr><td colspan="6">未找到相關支付資料</td></tr>');
-                    return;
-                }
-
-                // 遍歷返回的數據並渲染到表格中
-                data.forEach((item) => {
-                    let payPlatformAndModelVO = new PayPlatformAndModelVO();
-                    Object.assign(payPlatformAndModelVO, item);
-
-                    // 插入新的表格行
-                    const newRow = `
-                    <tr>
-                        <td class="text-nowrap"> <input type="checkbox" id="${payPlatformAndModelVO.payModelId}"></td>
-                        <td class="text-nowrap">${payPlatformAndModelVO.payModelId}</td>
-
-                        <td class="text-nowrap">${payPlatformAndModelVO.payStrategyName}</td>
-                        <td class="text-nowrap">${payPlatformAndModelVO.platformCode}</td>
-
-                        <td class="text-nowrap">${payPlatformAndModelVO.successUrl}</td>
-                        <td class="text-nowrap">${payPlatformAndModelVO.payRequestStrategy}</td>
-                        <td class="text-nowrap">${payPlatformAndModelVO.callbackUrl}</td>
-                        <td class="text-nowrap">${payPlatformAndModelVO.requestValue}</td>
-                    </tr>
-                `;
-                    $("#resultZF").append(newRow);
-                });
-            })
-
-            .fail((error) => {
-                console.error('請求失敗：', error);
-                $("#resultZF").append('<tr><td colspan="6">伺服器請求失敗，請稍後再試。</td></tr>');
-            });
-    }
-
-    /*删除行数*/
-    function deleteTr(nowTr) {
-        $("#tr_" + nowTr).remove();
-        const nozzleId = $(nowTr).attr('id');//获取id
-        console.log("删除的id:" + nozzleId);
-        //删除行数之后恢复对应的点击盘口按钮，使得再次可以进行添加盘口
-        $("#" + nowTr).removeAttr("disabled");//将按钮可用
-        $("#" + nowTr).removeClass("huiSe");
-    }
-
-    // ----------------監聽--------------------------
-    // 查支付按鈕事件
-    $(".findEZInput").on('keydown', function (e){
-        if (e.key === 'Enter') {
-            e.preventDefault(); // 防止表單提交
-            getZFs();
-        }
-    })
-
-    // 添加盤口查詢
-    appCodeInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // 防止表單提交
-            getAppTypes();
-        }
-    });
-
 
     /* 點擊盤口按鈕的操作 */
     function addNozzle(id) {
@@ -389,10 +327,10 @@
                     const data = JSON.parse(response);
                     console.info(data);
 
-                    const { platformId, payModleId, payChannelId, payMethodId } = data.data;
-
-                    // 建立新的表格行
-                    const newTr = `
+                    if (data.status === 1) {
+                        // 建立新的表格行
+                        const {platformId, payModleId, payChannelId, payMethodId} = data.data;
+                        const newTr = `
                     <tr id="tr_${id}">
                         <td><button onclick="deleteTr('${id}')">刪除</button></td>
                         <td>平台名：<input id="platformName_${id}" type="text" name="platformName" /></td>
@@ -403,19 +341,22 @@
                         <td>回調地址：<input id="callback_${id}" type="text" name="callback" /></td>
                     </tr>`;
 
-                    // 在最後一行之後插入新的表格行
-                    $("#exportTable tr:last").after(newTr);
+                        // 在最後一行之後插入新的表格行
+                        $("#exportTable tr:last").after(newTr);
 
-                    // 設置輸入框的值
-                    $(`#platformName_${id}`).val(appCode);
-                    $(`#platformId_${id}`).val(platformId);
-                    $(`#methodId_${id}`).val(payMethodId);
-                    $(`#channelId_${id}`).val(payChannelId);
-                    $(`#modelId_${id}`).val(payModleId);
-                    $(`#callback_${id}`).val(appCallUrl);
+                        // 設置輸入框的值
+                        $(`#platformName_${id}`).val(appCode);
+                        $(`#platformId_${id}`).val(platformId);
+                        $(`#methodId_${id}`).val(payMethodId);
+                        $(`#channelId_${id}`).val(payChannelId);
+                        $(`#modelId_${id}`).val(payModleId);
+                        $(`#callback_${id}`).val(appCallUrl);
 
-                    // 禁用按鈕並添加 'huiSe' 樣式
-                    $(`#${id}`).prop("disabled", true).addClass("huiSe");
+                        // 禁用按鈕並添加 'huiSe' 樣式
+                        $(`#${id}`).prop("disabled", true).addClass("huiSe");
+                    } else if (data.status === 0) {
+                        $("#appCodePS").text(data.msg).addClass('red ps')
+                    }
                 } catch (error) {
                     console.error("解析回應數據失敗：", error);
                 }
@@ -425,6 +366,143 @@
             }
         });
     }
+
+    // 找支付函數
+    function getZFs() {
+        // 構建請求體，遍歷所有 .findEZInput 元素，並以 ID 為 key，value 為 value
+        const requestData = {};
+        $(".findEZInput").each(function () {
+            const inputId = $(this).attr('id'); // 獲取輸入框的 ID 作為 key
+            const inputValue = $(this).val();   // 獲取輸入框的內容作為 value
+
+            console.log(`key : ${inputId} , value : ${inputValue}`)
+            if (inputId) {
+                requestData[inputId] = inputValue;
+            }
+        });
+
+        // 發送 POST 請求
+        $.ajax({
+            url: prefix + 'selModelByEng',
+            type: 'POST',
+            contentType: 'application/json', // 設定為 JSON 格式
+            data: JSON.stringify(requestData), // 將請求體轉為 JSON 字符串
+            dataType: 'json' // 預期回應的格式為 JSON
+        })
+            .done((data) => {
+                console.log(`請求體 : ${JSON.stringify(requestData)}`);
+                console.log('找支付 內容 : ', data);
+
+                // 清空舊的表格數據
+                $("#resultZF").find("tr:gt(0)").remove();
+
+                if (data.length === 0) {
+                    // 如果沒有查詢到數據，插入提示
+                    $("#resultZF").append('<tr><td colspan="6">未找到相關支付資料</td></tr>');
+                    return;
+                }
+
+                // 遍歷返回的數據並渲染到表格中
+                data.forEach((item) => {
+                    let payPlatformAndModelVO = new PayPlatformAndModelVO();
+                    Object.assign(payPlatformAndModelVO, item);
+
+                    // 修改&no在html中的亂碼問題
+                    const fixRequestValue = payPlatformAndModelVO.requestValue.replace('&no', '&amp;no');
+                    console.log(123)
+                    // 插入新的表格行
+                    const newRow = `
+                    <tr>
+                        <td class="text-nowrap"> <input type="checkbox" id="${payPlatformAndModelVO.payModelId}"></td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.payModelId}</td>
+
+                        <td class="text-nowrap">${payPlatformAndModelVO.payStrategyName}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.platformCode}</td>
+
+                        <td class="text-nowrap">${payPlatformAndModelVO.successUrl}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.payRequestStrategy}</td>
+                        <td class="text-nowrap">${fixRequestValue}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.callbackUrl}</td>
+                    </tr>
+                `;
+                    $("#resultZF").append(newRow);
+
+                });
+                $("#zfNum").text(`查詢符合條件數量 : ${data.length} (上限為100)`)
+            })
+
+            .fail((error) => {
+                console.error('請求失敗：', error);
+                $("#resultZF").append('<tr><td colspan="6">伺服器請求失敗，請稍後再試。</td></tr>');
+            });
+    }
+
+    /*删除行数*/
+    function deleteTr(nowTr) {
+        $("#tr_" + nowTr).remove();
+        const nozzleId = $(nowTr).attr('id');//获取id
+        console.log("删除的id:" + nozzleId);
+        //删除行数之后恢复对应的点击盘口按钮，使得再次可以进行添加盘口
+        $("#" + nowTr).removeAttr("disabled");//将按钮可用
+        $("#" + nowTr).removeClass("huiSe");
+    }
+
+    // ----------------監聽--------------------------
+    // 查支付按鈕事件
+    $(".findEZInput").on('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // 防止表單提交
+            getZFs();
+        }
+    })
+
+    // 添加盤口查詢
+    appCodeInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // 防止表單提交
+            getAppTypes();
+        }
+    });
+
+
+    // 導出按鈕
+    $("#layoutBTN").click(function () {
+        // 初始化一個空的數據對象
+        const collectedData = {};
+
+        // 遍歷表格中的所有輸入框
+        $("#exportTable input").each(function () {
+            const inputId = $(this).attr('id'); // 獲取輸入框的 ID
+            const inputValue = $(this).val();   // 獲取輸入框的值
+
+            // 將輸入框的 ID 和值存入數據對象
+            if (inputId) {
+                collectedData[inputId] = inputValue;
+            }
+        });
+
+        // 在控制台輸出收集到的數據
+        console.log("收集到的數據：", collectedData);
+
+        // 你可以在這裡將收集到的數據發送到後端 API 或執行其他操作
+        // 例如：
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/your/api/endpoint",
+        //     contentType: "application/json",
+        //     data: JSON.stringify(collectedData),
+        //     success: function (response) {
+        //         console.log("數據已成功發送：", response);
+        //     },
+        //     error: function (error) {
+        //         console.error("發送數據時出錯：", error);
+        //     }
+        // });
+    });
+
+
+
+
 
 
 </script>

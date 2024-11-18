@@ -50,5 +50,12 @@ public class PayPlatformAndModelVO {
 
 
     private String requestValue;
+    private String requestValue2;
+    private String requestValue3;
+    private String requestValue4;
+    private String requestValue5;
+    private String requestValue6;
+    private String requestValue7;
+    private String requestValue8;
 
 }

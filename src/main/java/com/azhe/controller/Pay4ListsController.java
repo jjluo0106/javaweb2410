@@ -18,8 +18,8 @@ public class Pay4ListsController {
 
     @PostMapping("/selModelByEng")
     public List<PayPlatformAndModelVO> selModelByEng(@RequestBody PayPlatformAndModelVO payPlatformAndModelVO) {
-        log.info("請求體 : {}",payPlatformAndModelVO);
-        log.info(pay4ListsService.selModelByEng(payPlatformAndModelVO).toString());
+
+        log.info("響應數量 : {}" , pay4ListsService.selModelByEng(payPlatformAndModelVO).size());
         return pay4ListsService.selModelByEng(payPlatformAndModelVO);
     }
 }

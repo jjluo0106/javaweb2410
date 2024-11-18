@@ -9,4 +9,6 @@
     <logger name="com" level="DEBUG" additivity="false">
         <appender-ref ref="Console"/>
     </logger>
+
+
 </configuration>
