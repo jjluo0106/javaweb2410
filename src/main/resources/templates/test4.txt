@@ -1,0 +1,32 @@
+-- SQL 生成於：[[${currentDate}]]
+USE 8bet;
+
+-- 支付平台
+INSERT INTO `t_pay_platform` (`PAY_PLATFORM_ID`, `PLATFORM_CODE`, `PLATFORM_NAME`, `MERCHANT_CODE`, `SECRET_KEY`, `RSA_KEY`, `PUBLIC_KEY`, `IS_ENABLE`, `VERSION_NO`, `ip`, `SUCCESS_URL`, `QUERY_URL`, `CREATION_TIME`, `CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`) VALUES
+<th:block th:each="platform, iterStat : ${platforms}">
+    ('[[${platform.payPlatformId}]]', '[[${platform.myPlatformCode}]]', '[[${platform.myPlatformName}]]', '[[${platform.myMerchantCode}]]', '[[${platform.mySecretCode}]]', '-', '-', '[[${platform.isEnable}]]', '[[${platform.versionNo}]]', '[[${platform.myIP}]]', '[[${platform.mySuccessfulURL}]]', '[[${platform.myQueryURL}]]', NOW(), 'system', NOW(), 'system'<th:if="${!iterStat.last}">,</th:if><th:if="${iterStat.last}">;</th:if>
+</th:block>
+
+-- 支付方式
+INSERT INTO `t_pay_method` (`PAY_METHOD_ID`, `PAY_TYPE_ID`, `IS_ONLINE`, `PAY_METHOD_CODE`, `PAY_METHOD_NAME`, `PAY_METHOD_DESC`, `ORDER_NUM`, `IS_RECOMMEND`, `IS_ENABLE`, `CREATION_TIME`, `CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`) VALUES
+<th:block th:each="method, iterStat : ${methods}">
+    ('[[${method.payMethodId}]]', '2', '[[${method.isOnline}]]', '[[${method.myPlatformCode}]]', '[[${method.myPlatformName}]]_[[${method.myChannelCode}]]', '[[${method.myPlatformName}]]_[[${method.myChannelCode}]]', '[[${method.orderNum}]]', '[[${method.isRecommend}]]', '1', NOW(), 'system', NOW(), 'system'<th:if="${!iterStat.last}">,</th:if><th:if="${iterStat.last}">;</th:if>
+</th:block>
+
+-- 支付通道
+INSERT INTO `t_pay_channel` (`PAY_CHANNEL_ID`, `PAY_TYPE_ID`, `PAY_METHOD_ID`, `PAY_MODEL_ID`, `PAY_PLATFORM_CODE`, `PAY_CHANNEL_CODE`, `PAY_CHANNEL_NAME`, `PAY_CHANNEL_DESC`, `ORDER_NUM`, `PAY_CHANNEL_QUOTA`, `PAY_DEFAULT_AMOUNT`, `PAY_BANK_CODE`, `IS_RECOMMEND`, `IS_ENABLE`, `IS_DELETE`, `BANK_CARD_ID`, `RECEIPT_ACCOUNT`, `OP_ACCOUNT_PLACE`, `RECEIPT_NAME`, `PAY_ICON_URL`, `BANK_DEPOSIT`, `REMARK`, `TOTAL_LOAD_TIMES`, `TOTAL_LOAD_AMOUNT`, `CREATION_TIME`, `CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`) VALUES
+<th:block th:each="channel, iterStat : ${channels}">
+    ('[[${channel.payChannelId}]]', '2', '[[${channel.payMethodId}]]', '[[${channel.payModelId}]]', '[[${channel.myPlatformCode}]]', '[[${channel.myChannelCode}]]', '[[${channel.myPlatformName}]]_[[${channel.myChannelCode}]]', '[[${channel.myPlatformName}]]_[[${channel.myChannelCode}]]', '[[${channel.orderNum}]]', '1-5000', '10,20,50,100,200,500,800', '[[${channel.payBankCode}]]', '[[${channel.isRecommend}]]', '1', '[[${channel.isDelete}]]', '1', '[[${channel.receiptAccount}]]', '[[${channel.opAccountPlace}]]', '[[${channel.receiptName}]]', '[[${channel.payIconUrl}]]', '[[${channel.bankDeposit}]]', '[[${channel.remark}]]', '[[${channel.totalLoadTimes}]]', '[[${channel.totalLoadAmount}]]', NOW(), 'system', NOW(), 'system'<th:if="${!iterStat.last}">,</th:if><th:if="${iterStat.last}">;</th:if>
+</th:block>
+
+-- 支付算法模板
+INSERT INTO `t_pay_request_model` (`PAY_MODEL_ID`, `PLATFORM_CODE`, `PAY_STRATEGY_NAME`, `PAY_STRATEGY_TYPE`, `PAY_REQUEST_STRATEGY`, `PAY_REQUEST_API`, `ORDER_STRATEGY`, `ENCRYPTION_STRATEGY`, `SIGN_VALUE`, `REQUERT_VALUE`, `REQUEST_ENCRYPTION_STRATEGY`, `RESPONSE_STRATEGY`, `PAGE_CALLBACK_URL`, `CALLBACK_URL`, `CALLBACK_STRATEGY`, `CALLBACK_RETURN_STRATEGY`, `ORDERNO_STATUS`, `CALLBACK_SIGN_VALUE`, `ROOT_XML`, `AMOUNT_STRATEGY`, `CREATION_TIME`, `CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`, `QUERY_STRATEGY`) VALUES
+<th:block th:each="model, iterStat : ${models}">
+    ('[[${model.payModelId}]]', '[[${model.myPlatformCode}]]', '[[${model.myPlatformName}]]', '[[${model.payStrategyType}]]', '[[${model.payRequestStrategy}]]', '[[${model.mySuccessfulURL}]]', '[[${model.orderStrategy}]]', '[[${model.encryptionStrategy}]]', "[[${model.signValue}]]", "[[${model.requertValue}]]", '[[${model.requestEncryptionStrategy}]]', '[[${model.responseStrategy}]]', '[[${model.pageCallbackUrl}]]', '[[${model.myCallbackURL}]]_[[${model.payModelId}]]', '[[${model.callbackStrategy}]]', '[[${model.callbackReturnStrategy}]]', '[[${model.ordernoStatus}]]', "[[${model.callbackSignValue}]]", '[[${model.rootXml}]]', '[[${model.amountStrategy}]]', NOW(), 'system', NOW(), 'system', '[[${model.queryStrategy}]]'<th:if="${!iterStat.last}">,</th:if><th:if="${iterStat.last}">;</th:if>
+</th:block>
+
+-- 支付字段映射
+INSERT INTO `t_member_pay_filed_mapper` (`PAY_MODEL_ID`, `API_FILED_NAME`, `FILED_JAVATYPE`, `MODEL_FILED_NAME`, `ORDER_NUMBER`, `IS_AMOUNT`, `FILED_TYPE`, `CREATION_TIME`, `CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`) VALUES
+<th:block th:each="filed, iterStat : ${mappers}">
+    ('[[${filed.payModelId}]]', '[[${filed.apiFiledName}]]', '[[${filed.filedJavatype}]]', '[[${filed.modelFiledName}]]', '[[${filed.orderNumber}]]', '[[${filed.isAmount}]]', '[[${filed.filedType}]]', NOW(), 'system', NOW(), 'system'<th:if="${!iterStat.last}">,</th:if><th:if="${iterStat.last}">;</th:if>
+</th:block>

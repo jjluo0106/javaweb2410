@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title th:text="工具-支付導出">無法顯示</title>
     <link rel="icon" th:href="@{pic/Thymeleaf.png}">
-    <link rel="stylesheet" th:href="@{css/bootstrap.css}">
+<!--    <link rel="stylesheet" th:href="@{css/bootstrap.css}">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
@@ -22,15 +22,18 @@
             color: red;
         }
 
-        /*.findEZInput {*/
-        /*    !*white-space: nowrap;*!*/
-        /*    width: 100%; !* 或者根據需要設置寬度 *!*/
-        /*    max-width: 200px;*/
-        /*}*/
+        .findEZInput {
+            /*white-space: nowrap;*/
+            width: 100%; /* 或者根據需要設置寬度 */
+            max-width: 200px;
+        }
 
         /*.table-bordered td{*/
         /*    font-size: 10px;*/
         /*}*/
+
+
+
 
     </style>
 </head>
@@ -87,7 +90,7 @@
 </div>
 <!-- 表格容器，加入滾動條 -->
 <div class="table-container">
-    <table class="table table-bordered table-striped border" id="resultZF">
+    <table class="table table-bordered table-striped border table-hover table-sm" id="resultZF">
         <thead>
         <tr>
             <th>pick</th>
@@ -95,8 +98,10 @@
             <th><input class="findEZInput" id="platformName" placeholder="中"></th>
             <th><input class="findEZInput" id="platformCode" placeholder="英"></th>
 
-            <th><input class="findEZInput" id="successUrl" placeholder="下單地址"></th>
             <th><input class="findEZInput" id="payRequestStrategy" placeholder="下單策略"></th>
+            <th><input class="findEZInput" id="successUrl" placeholder="下單地址"></th>
+            <th><input class="findEZInput" id="queryUrl" placeholder="查詢地址"></th>
+
             <th style="width: 800px;">
                 <input class="findEZInput" id="requestValue" placeholder="請求參數1">
                 <input class="findEZInput" id="requestValue2" placeholder="請求參數2">
@@ -109,6 +114,10 @@
             </th>
             <!--            <th></th>-->
             <th><input class="findEZInput" id="callbackUrl" placeholder="回調地址"></th>
+            <th><input class="findEZInput" id="merchantCode" placeholder="商戶號"></th>
+            <th><input class="findEZInput" id="secretKey" placeholder="密鑰"></th>
+            <th><input class="findEZInput" id="publicKey" placeholder="公鑰"></th>
+            <th><input class="findEZInput" id="rsaKey" placeholder="RSA密鑰"></th>
         </tr>
         </thead>
         <tbody>
@@ -257,8 +266,8 @@
                 if (data.length === 0) {
                     html = '<p>未找到相關盤口資料</p>';
                 } else {
-                    console.log('獲取結果:')
-                    console.log(data)
+                    // console.log('獲取結果:')
+                    // console.log(data)
                     data.forEach(({appCode, appName, appCallUrl, appDomain}) => {
                         html += `
                     <div class="appTypeList" id="appType_${appCode}">
@@ -383,7 +392,7 @@
 
         // 發送 POST 請求
         $.ajax({
-            url: prefix + 'selModelByEng',
+            url: prefix + 'selPayPlatformAndModelVO',
             type: 'POST',
             contentType: 'application/json', // 設定為 JSON 格式
             data: JSON.stringify(requestData), // 將請求體轉為 JSON 字符串
@@ -398,7 +407,7 @@
 
                 if (data.length === 0) {
                     // 如果沒有查詢到數據，插入提示
-                    $("#resultZF").append('<tr><td colspan="6">未找到相關支付資料</td></tr>');
+                    $("#resultZF  tbody").append('<tr><td colspan="6">未找到相關支付資料</td></tr>');
                     return;
                 }
 
@@ -416,16 +425,26 @@
                         <td class="text-nowrap"> <input type="checkbox" id="${payPlatformAndModelVO.payModelId}"></td>
                         <td class="text-nowrap">${payPlatformAndModelVO.payModelId}</td>
 
+
                         <td class="text-nowrap">${payPlatformAndModelVO.payStrategyName}</td>
                         <td class="text-nowrap">${payPlatformAndModelVO.platformCode}</td>
 
-                        <td class="text-nowrap">${payPlatformAndModelVO.successUrl}</td>
                         <td class="text-nowrap">${payPlatformAndModelVO.payRequestStrategy}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.successUrl}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.queryUrl}</td>
+
+
+
                         <td class="text-nowrap">${fixRequestValue}</td>
+
                         <td class="text-nowrap">${payPlatformAndModelVO.callbackUrl}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.merchantCode}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.secretKey}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.publicKey}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.rsaKey}</td>
                     </tr>
                 `;
-                    $("#resultZF").append(newRow);
+                    $("#resultZF tbody").append(newRow);
 
                 });
                 $("#zfNum").text(`查詢符合條件數量 : ${data.length} (上限為100)`)
@@ -437,7 +456,7 @@
             });
     }
 
-    /*删除行数*/
+    /*删除已經選盤口*/
     function deleteTr(nowTr) {
         $("#tr_" + nowTr).remove();
         const nozzleId = $(nowTr).attr('id');//获取id

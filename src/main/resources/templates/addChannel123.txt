@@ -1,7 +1,10 @@
--- SQL 生成於 [[${currentDate}]]
+-- SQL 生成於：[[${currentDate}]]
 -- 公司代碼：[[${companyCode}]]
 
-<#list channels as channel>
+[# th:each="channel : ${channels}"]
 INSERT INTO pay_channel (pay_type_id, pay_channel_name, pay_platform_code, pay_channel_code)
 VALUES ('[[${channel.payTypeId}]]', '[[${channel.payChannelName}]]', '[[${channel.payPlatformCode}]]', '[[${channel.payChannelCode}]]');
-</#list>
+[/]
+
+
+666
