@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.azhe.mapper.Pay4ListsMapper">
+
+<!--    對應資料庫名稱-->
+    <resultMap id="PayChannelResultMap" type="com.azhe.pojo.PayChannel">
+        <id column="PAY_CHANNEL_ID" property="payChannelId" />
+        <result column="PAY_TYPE_ID" property="payTypeId" />
+        <result column="PAY_METHOD_ID" property="payMethodId" />
+        <result column="PAY_MODEL_ID" property="payModelId" />
+        <result column="PAY_PLATFORM_CODE" property="payPlatformCode" />
+        <result column="PAY_CHANNEL_CODE" property="payChannelCode" />
+        <result column="PAY_CHANNEL_NAME" property="payChannelName" />
+        <result column="PAY_CHANNEL_DESC" property="payChannelDesc" />
+        <result column="ORDER_NUM" property="orderNum" />
+        <result column="PAY_CHANNEL_QUOTA" property="payChannelQuota" />
+        <result column="PAY_DEFAULT_AMOUNT" property="payDefaultAmount" />
+        <result column="PAY_BANK_CODE" property="payBankCode" />
+        <result column="IS_RECOMMEND" property="isRecommend" />
+        <result column="IS_ENABLE" property="isEnable" />
+        <result column="IS_DELETE" property="isDelete" />
+        <result column="IS_DISPLAY" property="isDisplay" />
+        <result column="BANK_CARD_ID" property="bankCardId" />
+        <result column="RECEIPT_ACCOUNT" property="receiptAccount" />
+        <result column="OP_ACCOUNT_PLACE" property="opAccountPlace" />
+        <result column="RECEIPT_NAME" property="receiptName" />
+        <result column="PAY_ICON_URL" property="payIconUrl" />
+        <result column="BANK_DEPOSIT" property="bankDeposit" />
+        <result column="VOUCHER_TIPS" property="voucherTips" />
+        <result column="REMARK" property="remark" />
+        <result column="TOTAL_LOAD_TIMES" property="totalLoadTimes" />
+        <result column="TOTAL_LOAD_AMOUNT" property="totalLoadAmount" />
+        <result column="CREATION_TIME" property="creationTime" />
+        <result column="CREATION_BY" property="creationBy" />
+        <result column="LAST_UPDATED_TIME" property="lastUpdatedTime" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" />
+        <result column="DISCOUNT_PROPORTION" property="discountProportion" />
+        <result column="MAX_DISCOUNT_AMOUNT" property="maxDiscountAmount" />
+        <result column="HANDLING_PROPORTION" property="handlingProportion" />
+        <result column="MAX_HANDLING_AMOUNT" property="maxHandlingAmount" />
+        <result column="SUCCESS_TIMES" property="successTimes" />
+        <result column="TOTAL_SUCCESS_AMOUNT" property="totalSuccessAmount" />
+        <result column="DISCOUNT_DAMA_MULTIPLE" property="discountDamaMultiple" />
+        <result column="ENTER_SELF" property="enterSelf" />
+        <result column="usdt_type" property="usdtType" />
+        <result column="usdt_address" property="usdtAddress" />
+    </resultMap>
+
+
+    <select id="selModelByEng" resultMap="PayChannelResultMap">
+        SELECT * FROM 8bet.t_pay_channel WHERE PAY_PLATFORM_CODE = #{payPlatformCode};
+    </select>
+
+</mapper>

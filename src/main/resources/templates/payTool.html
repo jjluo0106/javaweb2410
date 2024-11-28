@@ -95,8 +95,10 @@
         <tr>
             <th>pick</th>
             <th>ID</th>
+
             <th><input class="findEZInput" id="platformName" placeholder="中"></th>
             <th><input class="findEZInput" id="platformCode" placeholder="英"></th>
+            <th>創建時間</th>
 
             <th><input class="findEZInput" id="payRequestStrategy" placeholder="下單策略"></th>
             <th><input class="findEZInput" id="successUrl" placeholder="下單地址"></th>
@@ -246,7 +248,6 @@
     // 找盤口函數
     function getAppTypes() {
 
-        console.log('渲染按鈕')
         // 取得輸入框的值
 
         const appCodeValue = appCodeInput.value;
@@ -256,7 +257,7 @@
         const url = prefix + `findTest4AppByAppCode?appCode=${appCodeValue}`;
         console.log('查詢 :' + url)
 
-        // 模糊查詢盤口
+        // 模糊查詢"盤口"
         $.getJSON(url)
             .done((data) => {
                 // console.log(data.appType);
@@ -295,9 +296,9 @@
         const flag_02 = `appCallUrl_${id}`;
         const flag_03 = `appDomain_${id}`;
 
-        console.log('flag_01 : ' + flag_01)
-        console.log('flag_02 : ' + flag_02)
-        console.log('flag_03 : ' + flag_03)
+        // console.log('flag_01 : ' + flag_01)
+        // console.log('flag_02 : ' + flag_02)
+        // console.log('flag_03 : ' + flag_03)
 
         // const appCode = 'test4';      // 對應的編碼
         const appCode = $(`#${flag_01}`).val();      // 對應的編碼
@@ -307,9 +308,9 @@
 
         const appDomain = $(`#${flag_03}`).val();    // 對應的盤口地址
 
-        console.info(`appCode: ${appCode}`);
-        console.info(`appCallUrl: ${appCallUrl}`);
-        console.info(`appDomain: ${appDomain}`);
+        // console.info(`appCode: ${appCode}`);
+        // console.info(`appCallUrl: ${appCallUrl}`);
+        // console.info(`appDomain: ${appDomain}`);
 
         const requestData = {
             appCode,
@@ -342,12 +343,12 @@
                         const newTr = `
                     <tr id="tr_${id}">
                         <td><button onclick="deleteTr('${id}')">刪除</button></td>
-                        <td>平台名：<input id="platformName_${id}" type="text" name="platformName" /></td>
-                        <td>最大平台ID：<input type="text" id="platformId_${id}" name="platformId" /></td>
-                        <td>最大方法ID：<input type="text" id="methodId_${id}" name="payMethodId" /></td>
-                        <td>最大通道ID：<input type="text" id="channelId_${id}" name="payChannelId" /></td>
-                        <td>最大算法模板ID：<input type="text" id="modelId_${id}" name="payModleId" /></td>
-                        <td>回調地址：<input id="callback_${id}" type="text" name="callback" /></td>
+                        <td><input id="platformName_${id}" type="text" name="platformName" /></td>
+                        <td><input type="text" id="platformId_${id}" name="platformId" /></td>
+                        <td><input type="text" id="methodId_${id}" name="payMethodId" /></td>
+                        <td><input type="text" id="channelId_${id}" name="payChannelId" /></td>
+                        <td><input type="text" id="modelId_${id}" name="payModleId" /></td>
+                        <td><input id="callback_${id}" type="text" name="callback" /></td>
                     </tr>`;
 
                         // 在最後一行之後插入新的表格行
@@ -390,7 +391,7 @@
             }
         });
 
-        // 發送 POST 請求
+        // 模糊搜尋請求並渲染找到的支付
         $.ajax({
             url: prefix + 'selPayPlatformAndModelVO',
             type: 'POST',
@@ -399,8 +400,8 @@
             dataType: 'json' // 預期回應的格式為 JSON
         })
             .done((data) => {
-                console.log(`請求體 : ${JSON.stringify(requestData)}`);
-                console.log('找支付 內容 : ', data);
+                // console.log(`請求體 : ${JSON.stringify(requestData)}`);
+                // console.log('找支付 內容 : ', data);
 
                 // 清空舊的表格數據
                 $("#resultZF").find("tr:gt(0)").remove();
@@ -418,16 +419,17 @@
 
                     // 修改&no在html中的亂碼問題
                     const fixRequestValue = payPlatformAndModelVO.requestValue.replace('&no', '&amp;no');
-                    console.log(123)
                     // 插入新的表格行
                     const newRow = `
                     <tr>
-                        <td class="text-nowrap"> <input type="checkbox" id="${payPlatformAndModelVO.payModelId}"></td>
+                        <td class="text-nowrap exportCheckbox"> <input type="checkbox" id="${payPlatformAndModelVO.payModelId}"></td>
                         <td class="text-nowrap">${payPlatformAndModelVO.payModelId}</td>
 
 
                         <td class="text-nowrap">${payPlatformAndModelVO.payStrategyName}</td>
                         <td class="text-nowrap">${payPlatformAndModelVO.platformCode}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.creationTime}</td>
+
 
                         <td class="text-nowrap">${payPlatformAndModelVO.payRequestStrategy}</td>
                         <td class="text-nowrap">${payPlatformAndModelVO.successUrl}</td>
@@ -500,23 +502,51 @@
             }
         });
 
+        console.log(`collectedData : ${collectedData}.[0]`)
+
+        const ZFs = new Array();
+        // 遍歷表格中選中的複選框
+        $(".exportCheckbox input:checked").each(function () {
+            // 獲取當前行
+            const currentRow = $(this).closest("tr");
+
+            const fourthColumnValue = currentRow.find("td:nth-child(4)").text().trim();
+
+            ZFs.push(fourthColumnValue)
+        });
+
+        console.log("選取支付 :", ZFs);
+
+        if (Object.keys(collectedData).length === 0) {
+            alert("請選擇想要生成的盤口ID");
+            return; // 终止后续代码的执行
+        }
         // 在控制台輸出收集到的數據
+
         console.log("收集到的數據：", collectedData);
 
         // 你可以在這裡將收集到的數據發送到後端 API 或執行其他操作
         // 例如：
-        // $.ajax({
-        //     type: "POST",
-        //     url: "/your/api/endpoint",
-        //     contentType: "application/json",
-        //     data: JSON.stringify(collectedData),
-        //     success: function (response) {
-        //         console.log("數據已成功發送：", response);
-        //     },
-        //     error: function (error) {
-        //         console.error("發送數據時出錯：", error);
-        //     }
-        // });
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:666/testmap",
+            contentType: "application/json",
+            data: JSON.stringify(collectedData),
+            success: function (response) {
+                console.log("數據已成功發送：", response);
+            },
+            error: function (error) {
+                console.error("發送數據時出錯：", error);
+            }
+        });
+    });
+
+
+    // 動態生成，所以事件綁在父容器丄
+    $(document).on('click', '.exportCheckbox', function () {
+        console.log('123123123');
+
+        console.log($(".exportCheckbox input:checked").length)
     });
 
 
