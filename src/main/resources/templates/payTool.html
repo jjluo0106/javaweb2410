@@ -31,6 +31,9 @@
         /*.table-bordered td{*/
         /*    font-size: 10px;*/
         /*}*/
+        .table{
+            font-size: 12px;
+        }
 
 
 
@@ -96,7 +99,7 @@
             <th>pick</th>
             <th>ID</th>
 
-            <th><input class="findEZInput" id="platformName" placeholder="中"></th>
+            <th style="width: 50px;"><input class="findEZInput" id="platformName" placeholder="中"></th>
             <th><input class="findEZInput" id="platformCode" placeholder="英"></th>
             <th>創建時間</th>
 
@@ -385,7 +388,7 @@
             const inputId = $(this).attr('id'); // 獲取輸入框的 ID 作為 key
             const inputValue = $(this).val();   // 獲取輸入框的內容作為 value
 
-            console.log(`key : ${inputId} , value : ${inputValue}`)
+            // console.log(`key : ${inputId} , value : ${inputValue}`)
             if (inputId) {
                 requestData[inputId] = inputValue;
             }
@@ -488,52 +491,60 @@
 
     // 導出按鈕
     $("#layoutBTN").click(function () {
-        // 初始化一個空的數據對象
-        const collectedData = {};
+        const ZFs = [];
+        const collectedData = {
+            inputs: [], // 初始化为空数组
+            ZFs: ZFs    // 选中支付数据
+        };
 
-        // 遍歷表格中的所有輸入框
-        $("#exportTable input").each(function () {
-            const inputId = $(this).attr('id'); // 獲取輸入框的 ID
-            const inputValue = $(this).val();   // 獲取輸入框的值
+        // 遍历表格中的每一行，并提取输入框值
+        $("#exportTable tr").each(function () {
+            const rowObject = {}; // 初始化一个对象存储当前行的输入框值
 
-            // 將輸入框的 ID 和值存入數據對象
-            if (inputId) {
-                collectedData[inputId] = inputValue;
+            // 遍历当前行的所有输入框
+            $(this).find("input").each(function (index) {
+                const inputId = $(this).attr('id'); // 获取输入框的 ID
+                const inputValue = $(this).val();   // 获取输入框的值
+
+                if (inputId) {
+                    rowObject[inputId] = inputValue; // 将 ID-值作为键值对存储
+                }
+            });
+
+            // 如果该行有有效数据，加入 inputs 数组
+            if (Object.keys(rowObject).length > 0) {
+                collectedData.inputs.push(rowObject);
             }
         });
 
-        console.log(`collectedData : ${collectedData}.[0]`)
+        // 检查 inputs 和 ZFs 是否为空
+        if (collectedData.inputs.length === 0) {
+            alert("請填寫必要的輸入框！");
+            return;
+        }
 
-        const ZFs = new Array();
-        // 遍歷表格中選中的複選框
+        // 遍历表格中选中的复选框
         $(".exportCheckbox input:checked").each(function () {
-            // 獲取當前行
             const currentRow = $(this).closest("tr");
-
             const fourthColumnValue = currentRow.find("td:nth-child(4)").text().trim();
-
-            ZFs.push(fourthColumnValue)
+            ZFs.push(fourthColumnValue);
         });
 
-        console.log("選取支付 :", ZFs);
-
-        if (Object.keys(collectedData).length === 0) {
-            alert("請選擇想要生成的盤口ID");
-            return; // 终止后续代码的执行
+        if (!collectedData.ZFs || collectedData.ZFs.length === 0) {
+            alert("請選擇至少一個支付！");
+            return;
         }
-        // 在控制台輸出收集到的數據
 
-        console.log("收集到的數據：", collectedData);
+        console.log("請求數據：", collectedData);
 
-        // 你可以在這裡將收集到的數據發送到後端 API 或執行其他操作
-        // 例如：
+        // 将数据发送到后端
         $.ajax({
             type: "POST",
             url: "http://localhost:666/testmap",
             contentType: "application/json",
             data: JSON.stringify(collectedData),
             success: function (response) {
-                console.log("數據已成功發送：", response);
+                console.log("數據已成功發送，響應數據：", response);
             },
             error: function (error) {
                 console.error("發送數據時出錯：", error);
@@ -542,11 +553,14 @@
     });
 
 
+
+
+
     // 動態生成，所以事件綁在父容器丄
     $(document).on('click', '.exportCheckbox', function () {
-        console.log('123123123');
+        // console.log('123123123');
 
-        console.log($(".exportCheckbox input:checked").length)
+        // console.log($(".exportCheckbox input:checked").length)
     });
 
 

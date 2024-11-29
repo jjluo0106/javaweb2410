@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class Pay4ListsService {
@@ -22,9 +23,9 @@ public class Pay4ListsService {
         return pay4ListsMapper.selModelByEng(payPlatformAndModelVO);
     }
 
-    public List<PayMethod> selectByCode(String payMethodCode) {
+    public List<PayMethod> selectByCode(Map<String, Object> requestBody) {
 
 
-        return payMethodMapper.selectByCode(payMethodCode);
+        return null;
     }
 }

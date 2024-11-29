@@ -1,11 +1,12 @@
 package com.azhe.controller;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import com.azhe.pojo.PayMethod;
 import com.azhe.service.Pay4ListsService;
 import com.azhe.service.PayMethodService;
 import com.azhe.service.ThymeleafSqlGeneratorService;
 import com.azhe.vo.PayPlatformAndModelVO;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -69,12 +70,31 @@ public class Pay4ListsController {
 
 
     @PostMapping("/testmap")
-    public List<PayMethod> testmap(@RequestBody Map<String, String> requestBody) {
-        String payMethodCode = requestBody.get("payMethodCode");
-        String payChannelCode = requestBody.get("payChannelCode");
-        log.info("payMethodCode : {}", payMethodCode);
-        log.info("payChannelCode : {}", payChannelCode);
-        return pay4ListsService.selectByCode(payMethodCode);
+    public Object testmap(@RequestBody String rawRequestBody) {
+        // 打印原始数据字符串
+        System.out.println("原始数据字符串：" + rawRequestBody);
+
+        // 将 JSON 字符串解析为 Map
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            Map<String, Object> requestBody = objectMapper.readValue(rawRequestBody, new TypeReference<Map<String, Object>>() {});
+            System.out.println("解析后的数据：" + requestBody);
+
+            // 获取 inputs 和 ZFs
+            List<String> inputs = (List<String>) requestBody.get("inputs");
+            List<String> ZFs = (List<String>) requestBody.get("ZFs");
+
+            System.out.println("inputs: " + inputs);
+            System.out.println("ZFs: " + ZFs);
+
+            return "處理成功";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "處理失败";
+        }
     }
+
+
+
 
 }
