@@ -7,6 +7,6 @@
 
     <select id="queryTest4" resultType="com.azhe.pojo.PayPlatform">
 
-        SELECT * FROM 8bet.t_pay_platform WHERE PLATFORM_CODE in ('PAY99ZF24');
+        SELECT * FROM 8bet.t_pay_platform WHERE PLATFORM_CODE in ('${ZF}');
     </select>
 </mapper>

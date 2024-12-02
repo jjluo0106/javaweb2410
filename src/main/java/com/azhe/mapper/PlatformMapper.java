@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper
 public interface PlatformMapper {
-    public List<PayPlatform> queryTest4() ;
+    public List<PayPlatform> queryTest4(String ZF) ;
 }

@@ -1,7 +1,13 @@
 package com.azhe.service;
 
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.azhe.mapper.PlatformMapper;
+import com.azhe.pojo.PayPlatform;
 import com.azhe.vo.PayPlatformAndModelVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -10,6 +16,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
@@ -20,11 +27,14 @@ public class ThymeleafSqlGeneratorService {
 
     private final TemplateEngine templateEngine;
 
+    @Autowired
+    PlatformMapper platformMapper;
+
     public ThymeleafSqlGeneratorService() {
         // 配置 Thymeleaf
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
         resolver.setPrefix("templates/");
-        resolver.setSuffix(".txt"); // 腳本文件的後綴
+        resolver.setSuffix(".html"); // 腳本文件的後綴 - 注意: 使用的腳本只能是html才能遍例！！
         resolver.setTemplateMode("TEXT"); // 模板文件的模式
         resolver.setCharacterEncoding("UTF-8");
 
@@ -32,56 +42,71 @@ public class ThymeleafSqlGeneratorService {
         templateEngine.setTemplateResolver(resolver);
     }
 
-//    public void generateSqlFile(String filePath, Map<String, Object> variables) throws Exception {
-//        // 加載 Thymeleaf 上下文
-//        Context context = new Context();
-//        context.setVariables(variables);
-//
-//        // 生成 SQL 文件內容 指定template腳本
-//        String content = templateEngine.process("addChannel123", context);
-//
-//        // 寫入文件
-//        File file = new File(filePath);
-//        File parent = file.getParentFile();
-//        if (!parent.exists()) {
-//            parent.mkdirs();
-//        }
-//
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-//            writer.write(content);
-//        }
-//
-//        System.out.println("SQL 文件生成成功：" + filePath);
-//    }
 
-    public String generateSqlFile(List<String> ids, List<PayPlatformAndModelVO> payPlatformAndModelVOS) throws Exception {
-        // 加載 Thymeleaf 上下文
-        Context context = new Context();
-        HashMap<String, Object> map = new HashMap<>();
-        // 產出腳本時間
-        map.put("currentDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+    public String generateSqlFile(String rawRequestBody) {
+        try {
+            // 加載 Thymeleaf 上下文
+            Context context = new Context();
+            HashMap<String, Object> map = new HashMap<>();
+            // 產出腳本時間
+            map.put("currentDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 
 
-        log.info("處理接口傳遞過來的值:\nid= {}\npayPlatformAndModelVOS = {}", ids, payPlatformAndModelVOS);
-//        // 將所需的參數map傳遞給腳本
-//        context.setVariables(variables);
+            // 打印原始数据字符串
+            System.out.println("原始数据字符串：" + rawRequestBody);
+
+            // 1. 將字符串轉為 JSONObject
+            JSONObject jsonObject = JSONUtil.parseObj(rawRequestBody);
+            System.out.println("JSONObject: " + jsonObject);
 //
-//        // 生成 SQL 文件內容 指定template腳本
-//        String content = templateEngine.process("addChannel123", context);
-//
-//        // 寫入文件
-//        File file = new File(filePath);
-//        File parent = file.getParentFile();
-//        if (!parent.exists()) {
-//            parent.mkdirs();
-//        }
-//
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-//            writer.write(content);
-//        }
-//
-//        System.out.println("SQL 文件生成成功：" + filePath);
-        return  "test123456";
+//        // 獲取字段值
+//        String inputs = jsonObject.getStr("inputs");
+//        String ZFs = jsonObject.getStr("ZFs");
+
+            // 提取 inputs 并转为 List
+            JSONArray inputsArray = jsonObject.getJSONArray("inputs");
+            List<Map> inputsList = inputsArray.toList(Map.class);
+
+            // 提取 ZFs 并转为 List
+            JSONArray zfsArray = jsonObject.getJSONArray("ZFs");
+            List<String> zfsList = zfsArray.toList(String.class);
+
+            log.info("\ninputs:\n{}\nZFs:\n{}", inputsList, zfsList);
+
+
+            List<PayPlatform> payPlatforms = platformMapper.queryTest4(zfsList.get(0));
+            log.info("查询到的payPlatforms :\n{}", payPlatforms);
+            payPlatforms.forEach(platform -> log.info("payPlatformId: {}", platform.getPayPlatformId()));
+//            map.put("payPlatforms", payPlatforms);
+            context.setVariable("payPlatforms", payPlatforms);
+            // 將所需的參數map傳遞給腳本
+            context.setVariables(map);
+
+            log.info("1");
+            // 生成 SQL 文件內容 指定template腳本
+            String content = templateEngine.process("addChannel123", context);
+            log.info("1");
+
+            // 寫入文件
+            File file = new File("C:\\Develop\\abc.sql");
+            File parent = file.getParentFile();
+            if (!parent.exists()) {
+                parent.mkdirs();
+            }
+            log.info("1");
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                writer.write(content);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            System.out.println("SQL 文件生成成功：");
+            return  "test123456";
+        } catch (RuntimeException e) {
+            log.info("錯誤 :\n{}",e);
+            throw new RuntimeException(e);
+        }
     }
 
 //    public static void main(String[] args) throws Exception {

@@ -19,8 +19,8 @@ public class PayPlatformController {
     PlatformService platformService;
 
     @RequestMapping("/queryTest4")
-    public List<PayPlatform> queryTest4() {
+    public List<PayPlatform> queryTest4(String ZF) {
         log.info("查詢");
-        return platformService.queryTest4();
+        return platformService.queryTest4(ZF);
     }
 }

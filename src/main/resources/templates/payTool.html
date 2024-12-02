@@ -99,7 +99,7 @@
             <th>pick</th>
             <th>ID</th>
 
-            <th style="width: 50px;"><input class="findEZInput" id="platformName" placeholder="中"></th>
+            <th style="width: 2%;"><input class="findEZInput" id="platformName" placeholder="中"></th>
             <th><input class="findEZInput" id="platformCode" placeholder="英"></th>
             <th>創建時間</th>
 
@@ -346,12 +346,12 @@
                         const newTr = `
                     <tr id="tr_${id}">
                         <td><button onclick="deleteTr('${id}')">刪除</button></td>
-                        <td><input id="platformName_${id}" type="text" name="platformName" /></td>
-                        <td><input type="text" id="platformId_${id}" name="platformId" /></td>
-                        <td><input type="text" id="methodId_${id}" name="payMethodId" /></td>
-                        <td><input type="text" id="channelId_${id}" name="payChannelId" /></td>
-                        <td><input type="text" id="modelId_${id}" name="payModleId" /></td>
-                        <td><input id="callback_${id}" type="text" name="callback" /></td>
+                        <td><input class="platformName" id="platformName_${id}" type="text" name="platformName" /></td>
+                        <td><input class="platformId" type="text" id="platformId_${id}" name="platformId" /></td>
+                        <td><input class="methodId" type="text" id="methodId_${id}" name="payMethodId" /></td>
+                        <td><input class="channelId" type="text" id="channelId_${id}" name="payChannelId" /></td>
+                        <td><input class="modelId" type="text" id="modelId_${id}" name="payModleId" /></td>
+                        <td><input class="callback" id="callback_${id}" type="text" name="callback" /></td>
                     </tr>`;
 
                         // 在最後一行之後插入新的表格行
@@ -497,13 +497,14 @@
             ZFs: ZFs    // 选中支付数据
         };
 
-        // 遍历表格中的每一行，并提取输入框值
+        // 遍历表格中的每一行，并提取输入框值 -- 盤口數據
         $("#exportTable tr").each(function () {
             const rowObject = {}; // 初始化一个对象存储当前行的输入框值
 
             // 遍历当前行的所有输入框
             $(this).find("input").each(function (index) {
-                const inputId = $(this).attr('id'); // 获取输入框的 ID
+                // const inputId = $(this).attr('id'); // 获取输入框的 ID
+                const inputId = $(this).attr('class');
                 const inputValue = $(this).val();   // 获取输入框的值
 
                 if (inputId) {
