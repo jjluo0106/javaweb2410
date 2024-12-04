@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title th:text="工具-支付導出">無法顯示</title>
     <link rel="icon" th:href="@{pic/Thymeleaf.png}">
-<!--    <link rel="stylesheet" th:href="@{css/bootstrap.css}">-->
+    <!--    <link rel="stylesheet" th:href="@{css/bootstrap.css}">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
@@ -31,7 +31,7 @@
         /*.table-bordered td{*/
         /*    font-size: 10px;*/
         /*}*/
-        .table{
+        .table {
             font-size: 12px;
         }
 
@@ -41,6 +41,9 @@
     </style>
 </head>
 <body>
+
+<button id="clearSearch" class="btn btn-danger position-fixed top-0 start-0 m-3">清空所有查詢欄位</button>
+<button class="btn btn-primary position-fixed top-0 end-0 m-3" id="layoutBTN">導出數據</button>
 
 <div class="container text-center table-sub-heading-color">
     <h1 class="text-orange">test4-pay工具</h1>
@@ -67,7 +70,7 @@
     </div>
 
 
-    <h2 class="text-center btn-danger d-flex justify-content-center align-items-center">預計導出盤口之數據</h2>
+    <h2 class="text-center btn-primary d-flex justify-content-center align-items-center">預計導出盤口之數據</h2>
     <!--    顯示導出盤口ID，最大值資訊-->
     <div class="table-bordered" id="exportTable">
         <div id="appCodePS"></div>
@@ -79,18 +82,36 @@
                 <th>最大方法ID</th>
                 <th>最大通道ID</th>
                 <th>最大算法模板ID</th>
-                <th>回調地址<button class="btn btn-warning" id="layoutBTN">導出</button></th>
+                <th>回調地址
+                </th>
             </tr>
         </table>
     </div>
 
+    <!--修改導出腳本內容-->
+    <div class="modifier">
+        <h2 class="text-center btn-danger d-flex justify-content-center align-items-center">修改導出腳本內容</h2>
+        中文<input type="text" id="myPlatformName" placeholder="中文">
+        英文<input type="text" id="myPlatformCode" placeholder="英文">
+        商戶號<input type="text" id="myMerchantCode" style="max-width: 200px;" placeholder="商戶號">
+        密鑰<input type="text" id="mySecretCode" class="longInput" style="width: 400px;" placeholder="密鑰">
+        <br>
+        IP<input type="text" id="myIP" placeholder="IP">
+        下單地址<input type="text" id="mySuccessfulURL" class="longInput" style="width: 300px;" placeholder="下單地址">
+        查詢地址<input type="text" id="myQueryURL" class="longInput" style="width: 300px;" placeholder="查詢地址">
+        通道编码<input type="text" id="myChannelCode" placeholder="通道編碼">
+    </div>
+
+
     <div>
-        <h2 class="text-center btn-success d-flex justify-content-center align-items-center">支付搜尋</h2>
-        <div id="zfNum" class="ps"></div>
+        <h2 class="text-center btn-success d-flex justify-content-center align-items-center">支付搜尋 </h2>
+
+        <span id="zfNum" class="ps"></span>
 
     </div>
 
 </div>
+
 <!-- 表格容器，加入滾動條 -->
 <div class="table-container">
     <table class="table table-bordered table-striped border table-hover table-sm" id="resultZF">
@@ -99,23 +120,24 @@
             <th>pick</th>
             <th>ID</th>
 
-            <th style="width: 2%;"><input class="findEZInput" id="platformName" placeholder="中"></th>
-            <th><input class="findEZInput" id="platformCode" placeholder="英"></th>
-            <th>創建時間</th>
+            <th style="width: 5%;"><input class="findEZInput" id="platformName" placeholder="中"></th>
+            <th><input class="findEZInput" id="platformCode" placeholder="英*****"></th>
+            <th style="max-width: 20px">創建時間</th>
+            <th><input class="findEZInput" id="lastUpdatedBy" placeholder="最後修改者"></th>
 
             <th><input class="findEZInput" id="payRequestStrategy" placeholder="下單策略"></th>
-            <th><input class="findEZInput" id="successUrl" placeholder="下單地址"></th>
-            <th><input class="findEZInput" id="queryUrl" placeholder="查詢地址"></th>
+            <th style="width: 10%;"><input class="findEZInput" id="successUrl" placeholder="下單地址*****"></th>
+            <th style="width: 10%;"><input class="findEZInput" id="queryUrl" placeholder="查詢地址"></th>
 
-            <th style="width: 800px;">
-                <input class="findEZInput" id="requestValue" placeholder="請求參數1">
-                <input class="findEZInput" id="requestValue2" placeholder="請求參數2">
-                <input class="findEZInput" id="requestValue3" placeholder="請求參數3">
-                <input class="findEZInput" id="requestValue4" placeholder="請求參數4">
-                <input class="findEZInput" id="requestValue5" placeholder="請求參數5">
-                <input class="findEZInput" id="requestValue6" placeholder="請求參數6">
-                <input class="findEZInput" id="requestValue7" placeholder="請求參數7">
-                <input class="findEZInput" id="requestValue8" placeholder="請求參數8">
+            <th style="width: 34%;">
+                <input class="findEZInput" id="requestValue" style="max-width: 75px;" placeholder="請求參數1">
+                <input class="findEZInput" id="requestValue2" style="max-width: 75px;" placeholder="請求參數2">
+                <input class="findEZInput" id="requestValue3" style="max-width: 75px;" placeholder="請求參數3">
+                <input class="findEZInput" id="requestValue4" style="max-width: 75px;" placeholder="請求參數4">
+                <input class="findEZInput" id="requestValue5" style="max-width: 75px;" placeholder="請求參數5">
+                <input class="findEZInput" id="requestValue6" style="max-width: 75px;" placeholder="請求參數6">
+                <input class="findEZInput" id="requestValue7" style="max-width: 75px;" placeholder="請求參數7">
+                <input class="findEZInput" id="requestValue8" style="max-width: 75px;" placeholder="請求參數8">
             </th>
             <!--            <th></th>-->
             <th><input class="findEZInput" id="callbackUrl" placeholder="回調地址"></th>
@@ -208,6 +230,13 @@
             this.lastUpdatedTime = "";
             this.lastUpdatedBy = "";
             this.payVoucher = "";
+            this.myPlatformCode = "";
+            this.myPlatformName = "";
+            this.myMerchantCode = "";
+            this.mySecretCode = "";
+            this.myIP = "";
+            this.mySuccessfulURL = "";
+            this.myQueryURL = "";
 
             // Model 屬性
             this.payModelId = "";
@@ -386,7 +415,7 @@
         const requestData = {};
         $(".findEZInput").each(function () {
             const inputId = $(this).attr('id'); // 獲取輸入框的 ID 作為 key
-            const inputValue = $(this).val();   // 獲取輸入框的內容作為 value
+            const inputValue = $(this).val().trim();   // 獲取輸入框的內容作為 value，清除多餘空格
 
             // console.log(`key : ${inputId} , value : ${inputValue}`)
             if (inputId) {
@@ -411,6 +440,10 @@
 
                 if (data.length === 0) {
                     // 如果沒有查詢到數據，插入提示
+                    $("#zfNum").html(`
+                    <span>查詢符合條件數量 : ${data.length} (上限為100)</span>
+                    <span style="float: right;">查詢時間 : ${formatDate(new Date())}</span>`)
+
                     $("#resultZF  tbody").append('<tr><td colspan="6">未找到相關支付資料</td></tr>');
                     return;
                 }
@@ -432,6 +465,7 @@
                         <td class="text-nowrap">${payPlatformAndModelVO.payStrategyName}</td>
                         <td class="text-nowrap">${payPlatformAndModelVO.platformCode}</td>
                         <td class="text-nowrap">${payPlatformAndModelVO.creationTime}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.lastUpdatedBy}</td>
 
 
                         <td class="text-nowrap">${payPlatformAndModelVO.payRequestStrategy}</td>
@@ -452,7 +486,9 @@
                     $("#resultZF tbody").append(newRow);
 
                 });
-                $("#zfNum").text(`查詢符合條件數量 : ${data.length} (上限為100)`)
+                $("#zfNum").html(`
+                    <span>查詢符合條件數量 : ${data.length} (上限為100)</span>
+                    <span style="float: right;">查詢時間 : ${formatDate(new Date())}</span>`)
             })
 
             .fail((error) => {
@@ -460,6 +496,19 @@
                 $("#resultZF").append('<tr><td colspan="6">伺服器請求失敗，請稍後再試。</td></tr>');
             });
     }
+
+
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+
 
     /*删除已經選盤口*/
     function deleteTr(nowTr) {
@@ -479,7 +528,7 @@
             getZFs();
         }
     })
-
+    getZFs(); // 頁面加載自動搜尋
     // 添加盤口查詢
     appCodeInput.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
@@ -492,58 +541,80 @@
     // 導出按鈕
     $("#layoutBTN").click(function () {
         const ZFs = [];
-        const collectedData = {
+        const allData = {
             inputs: [], // 初始化为空数组
-            ZFs: ZFs    // 选中支付数据
+            modifier: [], // 初始化为数组
+            ZFs: ZFs // 选中支付数据
         };
 
-        // 遍历表格中的每一行，并提取输入框值 -- 盤口數據
+        // -- 預計導出盤口之數據
         $("#exportTable tr").each(function () {
-            const rowObject = {}; // 初始化一个对象存储当前行的输入框值
+            const exportAppObject = {}; // 初始化一个对象存储当前行的输入框值
 
             // 遍历当前行的所有输入框
-            $(this).find("input").each(function (index) {
-                // const inputId = $(this).attr('id'); // 获取输入框的 ID
-                const inputId = $(this).attr('class');
-                const inputValue = $(this).val();   // 获取输入框的值
+            $(this).find("input").each(function () {
+                const inputId = $(this).attr('class'); // 获取输入框的 class
+                const inputValue = $(this).val(); // 获取输入框的值
 
                 if (inputId) {
-                    rowObject[inputId] = inputValue; // 将 ID-值作为键值对存储
+                    exportAppObject[inputId] = inputValue; // 将 class-值作为键值对存储
                 }
             });
 
             // 如果该行有有效数据，加入 inputs 数组
-            if (Object.keys(rowObject).length > 0) {
-                collectedData.inputs.push(rowObject);
+            if (Object.keys(exportAppObject).length > 0) {
+                allData.inputs.push(exportAppObject);
             }
         });
 
-        // 检查 inputs 和 ZFs 是否为空
-        if (collectedData.inputs.length === 0) {
-            alert("請填寫必要的輸入框！");
+        // 验证 inputs 是否为空
+        if (allData.inputs.length === 0) {
+            alert("請選擇至少一個盤口");
             return;
         }
 
-        // 遍历表格中选中的复选框
+        const myInputObject = {}; // 初始化一个对象存储当前行的输入框值
+
+        // -- 修改導出腳本內容
+        $(".modifier input").each(function () {
+            const inputId = $(this).attr('id'); // 获取输入框的 ID
+            const inputValue = $(this).val(); // 获取输入框的值
+
+            console.log(`inputId: ${inputId}, inputValue: ${inputValue}`);
+
+            if (inputId) {
+                myInputObject[inputId] = inputValue; // 将 ID-值作为键值对存储
+            }
+        });
+
+        // 如果该行有有效数据，加入 modifier 数组
+        if (Object.keys(myInputObject).length > 0) {
+            allData.modifier.push(myInputObject);
+        }
+
+        console.log("allData.modifier:", allData.modifier);
+
+        // -- 勾選 支付搜尋
         $(".exportCheckbox input:checked").each(function () {
             const currentRow = $(this).closest("tr");
             const fourthColumnValue = currentRow.find("td:nth-child(4)").text().trim();
             ZFs.push(fourthColumnValue);
         });
 
-        if (!collectedData.ZFs || collectedData.ZFs.length === 0) {
+        // 验证 ZFs 是否为空
+        if (allData.ZFs.length === 0) {
             alert("請選擇至少一個支付！");
             return;
         }
 
-        console.log("請求數據：", collectedData);
+        console.log("請求數據：", allData);
 
         // 将数据发送到后端
         $.ajax({
             type: "POST",
             url: "http://localhost:666/testmap",
             contentType: "application/json",
-            data: JSON.stringify(collectedData),
+            data: JSON.stringify(allData),
             success: function (response) {
                 console.log("數據已成功發送，響應數據：", response);
             },
@@ -555,8 +626,6 @@
 
 
 
-
-
     // 動態生成，所以事件綁在父容器丄
     $(document).on('click', '.exportCheckbox', function () {
         // console.log('123123123');
@@ -565,9 +634,14 @@
     });
 
 
-
-
-
+    // 清空所有查詢欄位
+    $('#clearSearch').click(function (){
+        // 選取 .modifier 下的所有 input，並清空它們的值
+        document.querySelectorAll('.findEZInput').forEach(input => {
+            console.log(`input.value : ${input.value}`)
+            input.value = ''; // 清空 input 的值
+        });
+    })
 
 </script>
 

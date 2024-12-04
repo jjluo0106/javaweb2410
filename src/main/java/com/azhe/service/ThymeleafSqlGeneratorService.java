@@ -5,7 +5,6 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.azhe.mapper.PlatformMapper;
 import com.azhe.pojo.PayPlatform;
-import com.azhe.vo.PayPlatformAndModelVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 @Slf4j
@@ -49,12 +47,13 @@ public class ThymeleafSqlGeneratorService {
             Context context = new Context();
             HashMap<String, Object> map = new HashMap<>();
             // 產出腳本時間
-            map.put("currentDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            map.put("currentDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
 
             // 打印原始数据字符串
-            System.out.println("原始数据字符串：" + rawRequestBody);
-
+//            System.out.println("原始数据字符串：" + rawRequestBody);
+            log.info("原始数据字符串:\n{}", rawRequestBody);
+            log.info("解析字串:\n{}", JSONUtil.parseObj(rawRequestBody).toStringPretty());
             // 1. 將字符串轉為 JSONObject
             JSONObject jsonObject = JSONUtil.parseObj(rawRequestBody);
             System.out.println("JSONObject: " + jsonObject);
@@ -76,15 +75,30 @@ public class ThymeleafSqlGeneratorService {
 
             List<PayPlatform> payPlatforms = platformMapper.queryTest4(zfsList.get(0));
             log.info("查询到的payPlatforms :\n{}", payPlatforms);
-            payPlatforms.forEach(platform -> log.info("payPlatformId: {}", platform.getPayPlatformId()));
-//            map.put("payPlatforms", payPlatforms);
-            context.setVariable("payPlatforms", payPlatforms);
+            payPlatforms.forEach(
+
+                    platform -> {
+                        log.info("payPlatformId: {}", platform.getPayPlatformId());
+
+                        platform.setPayPlatformId(platform.getPayPlatformId() + 1);
+                        platform.setMyPlatformCode("setMyPlatformCode");
+                        platform.setMyPlatformName("setMyPlatformName");
+                        platform.setMyMerchantCode("setMyMerchantCode");
+                        platform.setMySecretCode("setMySecretCode");
+                        platform.setRsaKey("setRsaKey");
+                        platform.setMyPlatformName("setMyPlatformName");
+
+                    }
+
+            );
+            map.put("payPlatforms", payPlatforms);
+//            context.setVariable("payPlatforms", payPlatforms);
             // 將所需的參數map傳遞給腳本
             context.setVariables(map);
 
             log.info("1");
             // 生成 SQL 文件內容 指定template腳本
-            String content = templateEngine.process("addChannel123", context);
+            String content = templateEngine.process("myScript", context);
             log.info("1");
 
             // 寫入文件
@@ -109,51 +123,5 @@ public class ThymeleafSqlGeneratorService {
         }
     }
 
-//    public static void main(String[] args) throws Exception {
-//        // 模擬輸入數據
-//        List<Map<String, String>> channels = new ArrayList<>();
-//        Map<String, String> channel1 = new HashMap<>();
-//        channel1.put("payTypeId", "2");
-//        channel1.put("payChannelName", "佰富支付微信小程序");
-//        channel1.put("payPlatformCode", "100BAIFUZMK");
-//        channel1.put("payChannelCode", "2006");
-//
-//        Map<String, String> channel2 = new HashMap<>();
-//        channel2.put("payTypeId", "2");
-//        channel2.put("payChannelName", "佰富支付微信話費");
-//        channel2.put("payPlatformCode", "100BAIFUZMK");
-//        channel2.put("payChannelCode", "2011");
-//
-//        Map<String, String> channel3 = new HashMap<>();
-//        channel3.put("payTypeId", "4");
-//        channel3.put("payChannelName", "佰富支付支付寶話費");
-//        channel3.put("payPlatformCode", "100BAIFUZMK");
-//        channel3.put("payChannelCode", "9002");
-//
-//        channels.add(channel1);
-//        channels.add(channel2);
-//        channels.add(channel3);
-//
-//        Map<String, Object> variables = new HashMap<>();
-//        variables.put("currentDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
-//        variables.put("companyCode", "318");
-//        variables.put("channels", channels);
-//
-//        // 生成 SQL 文件
-//        ThymeleafSqlGeneratorService generator = new ThymeleafSqlGeneratorService();
-//
-//        LocalDate now = LocalDate.now();
-//        String year = String.valueOf(now.getYear()) +"年";
-//        String month = String.valueOf(now.getMonthValue()) + "月";
-//        String day = String.valueOf(now.getDayOfMonth()) + "號";
-//        String fileName = "我的名字";
-//
-//
-//        List<String> list = Arrays.asList("C:", "Users", "j0981", "OneDrive", "桌面", "我的腳本", year, month, day, fileName + ".sql");
-//
-//        String filePath = String.join("//",list);
-//
-//        generator.generateSqlFile(filePath, variables);
-//    }
 }
 

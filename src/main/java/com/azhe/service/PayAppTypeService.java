@@ -34,7 +34,7 @@ public class PayAppTypeService {
             response = HttpRequest.get(url).execute();
 
             String body = response.body();
-            log.info("響應: {}", body);
+//            log.info("響應原始數據: {}", body);
             return body;
         } catch (Exception e) {
             log.error("獲取最大值信息時發生錯誤: \n{}\n{}", e.getMessage(), e);

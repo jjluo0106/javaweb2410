@@ -23,5 +23,14 @@ public class PayPlatform {
     private String lastUpdatedTime;  // 最後更新時間
     private String lastUpdatedBy;    // 最後更新人
     private String payVoucher;       // 商戶秘鑰
+
+
+    private String myPlatformCode;
+    private String myPlatformName;
+    private String myMerchantCode;
+    private String mySecretCode;
+    private String myIP;
+    private String mySuccessfulURL;
+    private String myQueryURL;
 }
 

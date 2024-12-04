@@ -72,6 +72,9 @@
         <if test="platformCode != null and platformCode != ''">
             AND p.PLATFORM_CODE LIKE CONCAT('%', #{platformCode}, '%')
         </if>
+        <if test="lastUpdatedBy != null and lastUpdatedBy != ''">
+            AND p.LAST_UPDATED_BY LIKE CONCAT('%', #{lastUpdatedBy}, '%')
+        </if>
 
 
         <if test="successUrl != null and successUrl != ''">

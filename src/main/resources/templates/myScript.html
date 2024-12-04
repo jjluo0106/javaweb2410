@@ -1,0 +1,23 @@
+-- SQL 生成於：[[${currentDate}]]
+-- 公司代碼：[[${companyCode}]]
+
+
+INSERT INTO `t_pay_platform` (`PAY_PLATFORM_ID`, `PLATFORM_CODE`, `PLATFORM_NAME`, `MERCHANT_CODE`, `SECRET_KEY`, `RSA_KEY`, `PUBLIC_KEY`, `IS_ENABLE`, `VERSION_NO`, `ip`, `SUCCESS_URL`, `QUERY_URL`, `CREATION_TIME`, `CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`) VALUES
+<th:block th:each="platform, stat : ${payPlatforms}">
+    (
+    '[[${platform.payPlatformId}]]',  -- payPlatformId
+    '[[${platform.myPlatformCode}]]', -- myPlatformCode
+    '[[${platform.myPlatformName}]]', -- myPlatformName
+    '[[${platform.myMerchantCode}]]', -- myMerchantCode
+    '[[${platform.mySecretCode}]]', -- mySecretCode
+    '-', '-', -- payPlatformId
+    '[[${platform.isEnable}]]', -- isEnable
+    '[[${platform.versionNo}]]', -- versionNo
+    '[[${platform.myIP}]]', -- myIP
+    '[[${platform.mySuccessfulURL}]]', -- mySuccessfulURL
+    '[[${platform.myQueryURL}]]', -- myQueryURL
+    NOW(), 'system', NOW(), 'system'
+    )<th:block th:if="${!stat.last}">,</th:block>
+</th:block>;
+
+1231321
