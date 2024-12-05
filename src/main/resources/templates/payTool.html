@@ -35,6 +35,18 @@
             font-size: 12px;
         }
 
+        .url {
+            max-width: 200px;            /* 設定固定寬度 */
+            white-space: nowrap;     /* 禁止換行 */
+            overflow: hidden;        /* 隱藏超出部分 */
+            text-overflow: ellipsis; /* 顯示省略號 */
+            direction: rtl;          /* 文字從右向左排列，隱藏左側內容 */
+            text-align: left;        /* 保持文字對齊方式為左對齊 */
+        }
+
+        .bgc-lightBlue{
+            background-color: red;
+        }
 
 
 
@@ -91,15 +103,15 @@
     <!--修改導出腳本內容-->
     <div class="modifier">
         <h2 class="text-center btn-danger d-flex justify-content-center align-items-center">修改導出腳本內容</h2>
-        中文<input type="text" id="myPlatformName" placeholder="中文">
-        英文<input type="text" id="myPlatformCode" placeholder="英文">
-        商戶號<input type="text" id="myMerchantCode" style="max-width: 200px;" placeholder="商戶號">
-        密鑰<input type="text" id="mySecretCode" class="longInput" style="width: 400px;" placeholder="密鑰">
+        中文<input type="text" id="myPlatformName" placeholder="中文"                                                    value="testMyPlatformName">
+        英文<input type="text" id="myPlatformCode" placeholder="英文"                                                    value="testMyPlatformCode">
+        商戶號<input type="text" id="myMerchantCode" style="max-width: 200px;" placeholder="商戶號"      v               value="testMyMerchantCode"                     >
+        密鑰<input type="text" id="mySecretCode" class="longInput" style="width: 400px;" placeholder="密鑰"              value="testMySecretCode">
         <br>
-        IP<input type="text" id="myIP" placeholder="IP">
-        下單地址<input type="text" id="mySuccessfulURL" class="longInput" style="width: 300px;" placeholder="下單地址">
-        查詢地址<input type="text" id="myQueryURL" class="longInput" style="width: 300px;" placeholder="查詢地址">
-        通道编码<input type="text" id="myChannelCode" placeholder="通道編碼">
+        IP<input type="text" id="myIP" placeholder="IP"                                                                 value="testMyIP"      >
+        下單地址<input type="text" id="mySuccessfulURL" class="longInput" style="width: 300px;" placeholder="下單地址"    value="testMySuccessfulURL"    >
+        查詢地址<input type="text" id="myQueryURL" class="longInput" style="width: 300px;" placeholder="查詢地址"         value="testMyQueryURL"      >
+        通道編碼<input type="text" id="myChannelCode" placeholder="通道編碼"                                               value="testMyChannelCode"      >
     </div>
 
 
@@ -123,11 +135,11 @@
             <th style="width: 5%;"><input class="findEZInput" id="platformName" placeholder="中"></th>
             <th><input class="findEZInput" id="platformCode" placeholder="英*****"></th>
             <th style="max-width: 20px">創建時間</th>
-            <th><input class="findEZInput" id="lastUpdatedBy" placeholder="最後修改者"></th>
+            <th><input class="findEZInput" id="lastUpdatedBy" placeholder="LastEditor"></th>
 
             <th><input class="findEZInput" id="payRequestStrategy" placeholder="下單策略"></th>
-            <th style="width: 10%;"><input class="findEZInput" id="successUrl" placeholder="下單地址*****"></th>
-            <th style="width: 10%;"><input class="findEZInput" id="queryUrl" placeholder="查詢地址"></th>
+            <th class="url"><input class="findEZInput" id="successUrl" placeholder="下單地址*****"></th>
+            <th class="url"><input class="findEZInput" id="queryUrl" placeholder="查詢地址"></th>
 
             <th style="width: 34%;">
                 <input class="findEZInput" id="requestValue" style="max-width: 75px;" placeholder="請求參數1">
@@ -282,7 +294,7 @@
 
         // 取得輸入框的值
 
-        const appCodeValue = appCodeInput.value;
+        const appCodeValue = appCodeInput.value; // 獲取按鈕的值
         const appCodeButtonsContainer = document.getElementById('appCodeButtons');
 
         // 構建請求 URL
@@ -299,15 +311,15 @@
                 if (data.length === 0) {
                     html = '<p>未找到相關盤口資料</p>';
                 } else {
-                    // console.log('獲取結果:')
-                    // console.log(data)
+                    // java->json->可用以下參數一一解析
+                    //              盤口名    盤口名    回調地址     域名
                     data.forEach(({appCode, appName, appCallUrl, appDomain}) => {
                         html += `
                     <div class="appTypeList" id="appType_${appCode}">
                         <input type="hidden" id="appCode_${appCode}" value="${appCode}" />
                         <input type="hidden" id="appCallUrl_${appCode}" value="${appCallUrl}" />
                         <input type="hidden" id="appDomain_${appCode}" value="${appDomain}" />
-                        <button id="${appCode}" class="btn btn-success" onclick="addNozzle('${appCode}')">${appName}</button>
+                        <button id="${appCode}" class="btn btn-success" onclick="addApp('${appCode}')">${appName}</button>
                     </div>
                 `;
                     });
@@ -323,26 +335,20 @@
     }
 
     /* 點擊盤口按鈕的操作 */
-    function addNozzle(id) {
-        const flag_01 = `appCode_${id}`;
-        const flag_02 = `appCallUrl_${id}`;
-        const flag_03 = `appDomain_${id}`;
+    function addApp(id) {
+        const appCode_ = `appCode_${id}`;
+        const appCallUrl_ = `appCallUrl_${id}`;
+        const appDomain_ = `appDomain_${id}`;
 
-        // console.log('flag_01 : ' + flag_01)
-        // console.log('flag_02 : ' + flag_02)
-        // console.log('flag_03 : ' + flag_03)
 
-        // const appCode = 'test4';      // 對應的編碼
-        const appCode = $(`#${flag_01}`).val();      // 對應的編碼
-        const appCallUrl = $(`#${flag_02}`).val();   // 對應的回調地址
-        // const appCallUrl = '123123';   // 對應的回調地址
-// 欄位還沒渲染，獲取不到數值
+// 欄位還沒渲染，獲取不到數值，需要分兩段獲取
+        const appCode = $(`#${appCode_}`).val();      // 對應的編碼
+        const appCallUrl = $(`#${appCallUrl_}`).val();   // 對應的回調地址
+        const appDomain = $(`#${appDomain_}`).val();    // 對應的盤口地址
 
-        const appDomain = $(`#${flag_03}`).val();    // 對應的盤口地址
-
-        // console.info(`appCode: ${appCode}`);
-        // console.info(`appCallUrl: ${appCallUrl}`);
-        // console.info(`appDomain: ${appDomain}`);
+        console.info(`appCode: ${appCode}`);
+        console.info(`appCallUrl: ${appCallUrl}`);
+        console.info(`appDomain: ${appDomain}`);
 
         const requestData = {
             appCode,
@@ -463,14 +469,14 @@
 
 
                         <td class="text-nowrap">${payPlatformAndModelVO.payStrategyName}</td>
-                        <td class="text-nowrap">${payPlatformAndModelVO.platformCode}</td>
+                        <td class="text-nowrap" style="max-width: 200px">${payPlatformAndModelVO.platformCode}</td>
                         <td class="text-nowrap">${payPlatformAndModelVO.creationTime}</td>
                         <td class="text-nowrap">${payPlatformAndModelVO.lastUpdatedBy}</td>
 
 
                         <td class="text-nowrap">${payPlatformAndModelVO.payRequestStrategy}</td>
-                        <td class="text-nowrap">${payPlatformAndModelVO.successUrl}</td>
-                        <td class="text-nowrap">${payPlatformAndModelVO.queryUrl}</td>
+                        <td class="text-nowrap url bgc-lightBlue" style="background-color:lightblue;">${payPlatformAndModelVO.successUrl}</td>
+                        <td class="text-nowrap url">${payPlatformAndModelVO.queryUrl}</td>
 
 
 
@@ -542,8 +548,8 @@
     $("#layoutBTN").click(function () {
         const ZFs = [];
         const allData = {
-            inputs: [], // 初始化为空数组
-            modifier: [], // 初始化为数组
+            Apps: [], // 初始化为空数组
+            modifier: {}, // 初始化为数组
             ZFs: ZFs // 选中支付数据
         };
 
@@ -563,12 +569,12 @@
 
             // 如果该行有有效数据，加入 inputs 数组
             if (Object.keys(exportAppObject).length > 0) {
-                allData.inputs.push(exportAppObject);
+                allData.Apps.push(exportAppObject);
             }
         });
 
         // 验证 inputs 是否为空
-        if (allData.inputs.length === 0) {
+        if (allData.Apps.length === 0) {
             alert("請選擇至少一個盤口");
             return;
         }
@@ -583,14 +589,15 @@
             console.log(`inputId: ${inputId}, inputValue: ${inputValue}`);
 
             if (inputId) {
-                myInputObject[inputId] = inputValue; // 将 ID-值作为键值对存储
+                // myInputObject[inputId] = inputValue; // 将 ID-值作为键值对存储
+                allData.modifier[inputId] = inputValue; // 直接将 ID-值作为键值对存储到 modifier 物件
             }
         });
 
         // 如果该行有有效数据，加入 modifier 数组
-        if (Object.keys(myInputObject).length > 0) {
-            allData.modifier.push(myInputObject);
-        }
+        // if (Object.keys(myInputObject).length > 0) {
+        //     allData.modifier.push(myInputObject);
+        // }
 
         console.log("allData.modifier:", allData.modifier);
 

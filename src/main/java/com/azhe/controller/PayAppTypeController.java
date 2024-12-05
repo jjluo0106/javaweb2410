@@ -24,7 +24,7 @@ public class PayAppTypeController {
     @PostMapping("/getMaxInfo")
     public String getMaxInfo(@RequestBody Object data){
         log.info("getMaxInfo-data : {}", data);
-        String response = payAppTypeService.getMaxInfo(data);
+        String response = payAppTypeService.getAppMaxID(data);
         return response;
     }
 }

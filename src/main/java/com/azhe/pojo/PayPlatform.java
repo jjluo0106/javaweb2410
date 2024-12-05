@@ -32,5 +32,6 @@ public class PayPlatform {
     private String myIP;
     private String mySuccessfulURL;
     private String myQueryURL;
+    private String myChannelCode;
 }
 

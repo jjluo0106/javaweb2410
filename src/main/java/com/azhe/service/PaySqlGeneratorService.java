@@ -6,7 +6,12 @@ import cn.hutool.json.JSONUtil;
 import com.azhe.mapper.PlatformMapper;
 import com.azhe.pojo.PayPlatform;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -20,15 +25,28 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
+//@Configuration
+//@PropertySource("classpath:applicatrion.properties")
 @Service
-public class ThymeleafSqlGeneratorService {
+public class PaySqlGeneratorService {
 
     private final TemplateEngine templateEngine;
+
+//    @Value("${spring.datasource.url}")
+//    String url;
+    @Autowired
+    Environment environment;
+
+    @Test
+    public void ttttest(){
+//        System.out.println(url);
+        System.out.println(environment.getProperty("spring.datasource.url"));
+    }
 
     @Autowired
     PlatformMapper platformMapper;
 
-    public ThymeleafSqlGeneratorService() {
+    public PaySqlGeneratorService() {
         // 配置 Thymeleaf
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
         resolver.setPrefix("templates/");
@@ -53,44 +71,30 @@ public class ThymeleafSqlGeneratorService {
             // 打印原始数据字符串
 //            System.out.println("原始数据字符串：" + rawRequestBody);
             log.info("原始数据字符串:\n{}", rawRequestBody);
+            JSONObject rJSON = JSONUtil.parseObj(rawRequestBody);
             log.info("解析字串:\n{}", JSONUtil.parseObj(rawRequestBody).toStringPretty());
             // 1. 將字符串轉為 JSONObject
-            JSONObject jsonObject = JSONUtil.parseObj(rawRequestBody);
-            System.out.println("JSONObject: " + jsonObject);
-//
-//        // 獲取字段值
-//        String inputs = jsonObject.getStr("inputs");
-//        String ZFs = jsonObject.getStr("ZFs");
 
-            // 提取 inputs 并转为 List
-            JSONArray inputsArray = jsonObject.getJSONArray("inputs");
-            List<Map> inputsList = inputsArray.toList(Map.class);
+//            List modifier = rJSON.get("modifier", List.class);
+//            log.info("獲取modifier對象 :\n", modifier);
+
+            JSONObject modifier = (JSONObject) rJSON.get("modifier");
+            log.info("modifier :\n{}", modifier);
+
+
+
 
             // 提取 ZFs 并转为 List
-            JSONArray zfsArray = jsonObject.getJSONArray("ZFs");
+            JSONArray zfsArray = rJSON.getJSONArray("ZFs");
             List<String> zfsList = zfsArray.toList(String.class);
-
-            log.info("\ninputs:\n{}\nZFs:\n{}", inputsList, zfsList);
 
 
             List<PayPlatform> payPlatforms = platformMapper.queryTest4(zfsList.get(0));
-            log.info("查询到的payPlatforms :\n{}", payPlatforms);
-            payPlatforms.forEach(
 
-                    platform -> {
-                        log.info("payPlatformId: {}", platform.getPayPlatformId());
+            // 使用 modifier修改 payPlatforms
+            useModifier(modifier, payPlatforms);
 
-                        platform.setPayPlatformId(platform.getPayPlatformId() + 1);
-                        platform.setMyPlatformCode("setMyPlatformCode");
-                        platform.setMyPlatformName("setMyPlatformName");
-                        platform.setMyMerchantCode("setMyMerchantCode");
-                        platform.setMySecretCode("setMySecretCode");
-                        platform.setRsaKey("setRsaKey");
-                        platform.setMyPlatformName("setMyPlatformName");
 
-                    }
-
-            );
             map.put("payPlatforms", payPlatforms);
 //            context.setVariable("payPlatforms", payPlatforms);
             // 將所需的參數map傳遞給腳本
@@ -121,6 +125,31 @@ public class ThymeleafSqlGeneratorService {
             log.info("錯誤 :\n{}",e);
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 自定義導出的一些修改參數
+     * @param modifier
+     * @param payPlatforms
+     */
+    private static void useModifier(JSONObject modifier, List<PayPlatform> payPlatforms) {
+        payPlatforms.forEach(
+                platform -> {
+                    log.info("payPlatformId: {}", platform.getPayPlatformId());
+
+                    platform.setPayPlatformId(platform.getPayPlatformId() + 1);
+
+                    platform.setMyPlatformName(modifier.get("myPlatformName").toString());
+                    platform.setMyPlatformCode(modifier.get("myPlatformCode").toString());
+                    platform.setMyMerchantCode(modifier.get("myMerchantCode").toString());
+                    platform.setMySecretCode(modifier.get("mySecretCode").toString());
+
+                    platform.setMyIP(modifier.get("myIP").toString());
+                    platform.setMySuccessfulURL(modifier.get("mySuccessfulURL").toString());
+                    platform.setMyQueryURL(modifier.get("myQueryURL").toString());
+                    platform.setMyChannelCode(modifier.get("myChannelCode").toString());
+                }
+        );
     }
 
 }

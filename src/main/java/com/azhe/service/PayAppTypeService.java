@@ -23,9 +23,15 @@ public class PayAppTypeService {
         return payAppTypeMapper.findTest4AppByAppCode(payAppType);
     }
 
-    public String getMaxInfo(Object data) {
+    /**
+     * 分別對不同盤口查詢ID最大值接口
+     * @param data
+     * @return
+     */
+    public String getAppMaxID(Object data) {
         HttpResponse response = null;
         try {
+            // 盤口域名
             String domain = JSONUtil.parseObj(data).get("appDomain").toString();
             String suffix = "/pay/maxid/findMaxId";
             String url = domain + suffix;

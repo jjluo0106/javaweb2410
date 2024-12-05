@@ -10,7 +10,8 @@ INSERT INTO `t_pay_platform` (`PAY_PLATFORM_ID`, `PLATFORM_CODE`, `PLATFORM_NAME
     '[[${platform.myPlatformName}]]', -- myPlatformName
     '[[${platform.myMerchantCode}]]', -- myMerchantCode
     '[[${platform.mySecretCode}]]', -- mySecretCode
-    '-', '-', -- payPlatformId
+    '-', -- RSA_KEY
+    '-', -- PUBLIC_KEY
     '[[${platform.isEnable}]]', -- isEnable
     '[[${platform.versionNo}]]', -- versionNo
     '[[${platform.myIP}]]', -- myIP

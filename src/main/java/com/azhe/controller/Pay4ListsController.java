@@ -1,20 +1,13 @@
 package com.azhe.controller;
-import cn.hutool.json.JSONArray;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import com.azhe.service.Pay4ListsService;
 import com.azhe.service.PayMethodService;
-import com.azhe.service.ThymeleafSqlGeneratorService;
+import com.azhe.service.PaySqlGeneratorService;
 import com.azhe.vo.PayPlatformAndModelVO;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -22,7 +15,7 @@ public class Pay4ListsController {
     @Autowired
     Pay4ListsService pay4ListsService;
     @Autowired
-    ThymeleafSqlGeneratorService generator;
+    PaySqlGeneratorService generator;
     @Autowired
     PayMethodService payMethodService;
 
