@@ -624,6 +624,7 @@
             data: JSON.stringify(allData),
             success: function (response) {
                 console.log("數據已成功發送，響應數據：", response);
+                alert(`數據成功導出:\n${response}`)
             },
             error: function (error) {
                 console.error("發送數據時出錯：", error);

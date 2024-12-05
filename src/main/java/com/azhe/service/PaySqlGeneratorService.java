@@ -3,6 +3,7 @@ package com.azhe.service;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import cn.hutool.setting.dialect.Props;
 import com.azhe.mapper.PlatformMapper;
 import com.azhe.pojo.PayPlatform;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
-//@Configuration
-//@PropertySource("classpath:applicatrion.properties")
 @Service
 public class PaySqlGeneratorService {
 
@@ -39,8 +38,9 @@ public class PaySqlGeneratorService {
 
     @Test
     public void ttttest(){
-//        System.out.println(url);
-        System.out.println(environment.getProperty("spring.datasource.url"));
+        Props props = new Props("application.properties");
+
+        System.out.println(props.get("azhe.sql.payGenerateLocation"));
     }
 
     @Autowired
@@ -105,8 +105,16 @@ public class PaySqlGeneratorService {
             String content = templateEngine.process("myScript", context);
             log.info("1");
 
-            // 寫入文件
-            File file = new File("C:\\Develop\\abc.sql");
+            // 選擇路徑並寫入文件
+            StringBuffer locattion = null;
+            locattion = new StringBuffer(new Props("application.properties").
+                    get("azhe.sql.payGenerateLocation").toString()).
+                    append((new Date().getMonth() + 1) + "月\\" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "\\").
+                    append(modifier.get("myPlatformName")).
+                    append(new SimpleDateFormat("HHmm").format(new Date())).append(".sql");
+
+
+            File file = new File(locattion.toString());
             File parent = file.getParentFile();
             if (!parent.exists()) {
                 parent.mkdirs();
@@ -119,8 +127,8 @@ public class PaySqlGeneratorService {
                 throw new RuntimeException(e);
             }
 
-            System.out.println("SQL 文件生成成功：");
-            return  "test123456";
+            log.info("腳本成功生成:\n{}", locattion.toString());
+            return  locattion.toString();
         } catch (RuntimeException e) {
             log.info("錯誤 :\n{}",e);
             throw new RuntimeException(e);

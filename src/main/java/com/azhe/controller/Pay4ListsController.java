@@ -66,10 +66,7 @@ public class Pay4ListsController {
     @PostMapping("/testmap")
     public Object testmap(@RequestBody String rawRequestBody) {
 
-
-        generator.generateSqlFile(rawRequestBody);
-
-        return "接收成功";
+        return generator.generateSqlFile(rawRequestBody);
     }
 
 
