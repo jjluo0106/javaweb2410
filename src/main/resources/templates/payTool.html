@@ -36,11 +36,11 @@
         }
 
         .url {
-            max-width: 200px;            /* 設定固定寬度 */
+            max-width: 500px;            /* 設定固定寬度 */
             white-space: nowrap;     /* 禁止換行 */
             overflow: hidden;        /* 隱藏超出部分 */
             text-overflow: ellipsis; /* 顯示省略號 */
-            direction: rtl;          /* 文字從右向左排列，隱藏左側內容 */
+            /*direction: rtl;          !* 文字從右向左排列，隱藏左側內容 *!*/
             text-align: left;        /* 保持文字對齊方式為左對齊 */
         }
 
@@ -53,7 +53,6 @@
     </style>
 </head>
 <body>
-
 <button id="clearSearch" class="btn btn-danger position-fixed top-0 start-0 m-3">清空所有查詢欄位</button>
 <button class="btn btn-primary position-fixed top-0 end-0 m-3" id="layoutBTN">導出數據</button>
 
@@ -103,15 +102,15 @@
     <!--修改導出腳本內容-->
     <div class="modifier">
         <h2 class="text-center btn-danger d-flex justify-content-center align-items-center">修改導出腳本內容</h2>
-        中文<input type="text" id="myPlatformName" placeholder="中文"                                                    value="testMyPlatformName">
-        英文<input type="text" id="myPlatformCode" placeholder="英文"                                                    value="testMyPlatformCode">
-        商戶號<input type="text" id="myMerchantCode" style="max-width: 200px;" placeholder="商戶號"      v               value="testMyMerchantCode"                     >
-        密鑰<input type="text" id="mySecretCode" class="longInput" style="width: 400px;" placeholder="密鑰"              value="testMySecretCode">
+        中文<input type="text" id="myPlatformName" placeholder="中文"                                                   >
+        英文<input type="text" id="myPlatformCode" placeholder="英文"                                                   >
+        商戶號<input type="text" id="myMerchantCode" style="max-width: 200px;" placeholder="商戶號"      v               >
+        密鑰<input type="text" id="mySecretCode" class="longInput" style="width: 400px;" placeholder="密鑰"             >
         <br>
-        IP<input type="text" id="myIP" placeholder="IP"                                                                 value="testMyIP"      >
-        下單地址<input type="text" id="mySuccessfulURL" class="longInput" style="width: 300px;" placeholder="下單地址"    value="testMySuccessfulURL"    >
-        查詢地址<input type="text" id="myQueryURL" class="longInput" style="width: 300px;" placeholder="查詢地址"         value="testMyQueryURL"      >
-        通道編碼<input type="text" id="myChannelCode" placeholder="通道編碼"                                               value="testMyChannelCode"      >
+        IP<input type="text" id="myIP" placeholder="IP"                                                                 >
+        下單地址<input type="text" id="mySuccessfulURL" class="longInput" style="width: 300px;" placeholder="下單地址"    >
+        查詢地址<input type="text" id="myQueryURL" class="longInput" style="width: 300px;" placeholder="查詢地址"         >
+        通道編碼<input type="text" id="myChannelCode" placeholder="通道編碼"                                              >
     </div>
 
 
@@ -464,7 +463,8 @@
                     // 插入新的表格行
                     const newRow = `
                     <tr>
-                        <td class="text-nowrap exportCheckbox"> <input type="checkbox" id="${payPlatformAndModelVO.payModelId}"></td>
+                    // 到時候能多選在改checkbox
+                        <td class="text-nowrap exportCheckbox"> <input type="radio" name="zfRadio" id="${payPlatformAndModelVO.payModelId}"></td>
                         <td class="text-nowrap">${payPlatformAndModelVO.payModelId}</td>
 
 
@@ -546,11 +546,11 @@
 
     // 導出按鈕
     $("#layoutBTN").click(function () {
-        const ZFs = [];
+        const zfs = [];
         const allData = {
-            Apps: [], // 初始化为空数组
+            apps: [], // 初始化为空数组
             modifier: {}, // 初始化为数组
-            ZFs: ZFs // 选中支付数据
+            zfs: zfs // 选中支付数据
         };
 
         // -- 預計導出盤口之數據
@@ -569,12 +569,12 @@
 
             // 如果该行有有效数据，加入 inputs 数组
             if (Object.keys(exportAppObject).length > 0) {
-                allData.Apps.push(exportAppObject);
+                allData.apps.push(exportAppObject);
             }
         });
 
         // 验证 inputs 是否为空
-        if (allData.Apps.length === 0) {
+        if (allData.apps.length === 0) {
             alert("請選擇至少一個盤口");
             return;
         }
@@ -594,22 +594,29 @@
             }
         });
 
+        // 添加CallbackURL
+
+        console.log("allData.Apps.callback:", allData.apps[0].callback)
+        allData.modifier['myCallbackURL'] = allData.apps[0].callback
+
+
+
         // 如果该行有有效数据，加入 modifier 数组
         // if (Object.keys(myInputObject).length > 0) {
         //     allData.modifier.push(myInputObject);
         // }
 
-        console.log("allData.modifier:", allData.modifier);
+        console.log("allData.modifier.myCallbackURL:", allData.modifier.myCallbackURL);
 
         // -- 勾選 支付搜尋
         $(".exportCheckbox input:checked").each(function () {
             const currentRow = $(this).closest("tr");
             const fourthColumnValue = currentRow.find("td:nth-child(4)").text().trim();
-            ZFs.push(fourthColumnValue);
+            zfs.push(fourthColumnValue);
         });
 
-        // 验证 ZFs 是否为空
-        if (allData.ZFs.length === 0) {
+        // 验证 zfs 是否为空
+        if (allData.zfs.length === 0) {
             alert("請選擇至少一個支付！");
             return;
         }

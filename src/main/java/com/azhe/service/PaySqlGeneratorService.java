@@ -1,18 +1,14 @@
 package com.azhe.service;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.setting.dialect.Props;
-import com.azhe.mapper.PlatformMapper;
-import com.azhe.pojo.PayPlatform;
+import com.azhe.mapper.*;
+import com.azhe.pojo.*;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -31,20 +27,19 @@ public class PaySqlGeneratorService {
 
     private final TemplateEngine templateEngine;
 
-//    @Value("${spring.datasource.url}")
-//    String url;
-    @Autowired
-    Environment environment;
-
-    @Test
-    public void ttttest(){
-        Props props = new Props("application.properties");
-
-        System.out.println(props.get("azhe.sql.payGenerateLocation"));
-    }
-
     @Autowired
     PlatformMapper platformMapper;
+    @Autowired
+    PayChannelMapper payChannelMapper;
+    @Autowired
+    PayMethodMapper payMethodMapper;
+    @Autowired
+    PayRequestModelMapper payRequestModelMapper;
+    @Autowired
+    MemberPayFiledMapper memberPayFiledMapper;
+
+    @Autowired
+    PayLevelRelationMapper payLevelRelationMapper;
 
     public PaySqlGeneratorService() {
         // 配置 Thymeleaf
@@ -69,41 +64,82 @@ public class PaySqlGeneratorService {
 
 
             // 打印原始数据字符串
-//            System.out.println("原始数据字符串：" + rawRequestBody);
             log.info("原始数据字符串:\n{}", rawRequestBody);
             JSONObject rJSON = JSONUtil.parseObj(rawRequestBody);
             log.info("解析字串:\n{}", JSONUtil.parseObj(rawRequestBody).toStringPretty());
-            // 1. 將字符串轉為 JSONObject
 
-//            List modifier = rJSON.get("modifier", List.class);
-//            log.info("獲取modifier對象 :\n", modifier);
+            //*****************前端部分資訊
 
+            // 提取 ZFs 并转为 List **目前禁止使用兩個支付導出！！會跟　修改導出　衝突　（到時候可能兩個就不使用修改導出）
+            JSONArray zfsArray = rJSON.getJSONArray("zfs");
+            List<String> zfsList = zfsArray.toList(String.class);
+            zfsList = CollUtil.map(zfsList, item -> "'" + item + "'", true);
+            // 提取 modifier
             JSONObject modifier = (JSONObject) rJSON.get("modifier");
             log.info("modifier :\n{}", modifier);
+            // 提取 apps
+            JSONArray apps =  rJSON.getJSONArray("apps");
+            log.info("apps :\n{}", apps);
+
+            //*****************資料庫部分資訊
+            List<PayPlatform> payPlatforms = platformMapper.queryTest4(CollUtil.join(zfsList, ", "));
+            List<PayMethod> payMethods = payMethodMapper.selectByCode(zfsList.get(0));
+            List<PayChannel> payChannels = payChannelMapper.selectByCode(zfsList.get(0));
+            List<PayRequestModel> payRequestModels = payRequestModelMapper.selectByCode(zfsList.get(0));
+            List<MemberPayFiled> memberPayFiledMappers = memberPayFiledMapper.selectByModelId(payRequestModels.get(0).getPayModelId().toString());
 
 
+            log.info("modifier: {}" , modifier);
 
-
-            // 提取 ZFs 并转为 List
-            JSONArray zfsArray = rJSON.getJSONArray("ZFs");
-            List<String> zfsList = zfsArray.toList(String.class);
-
-
-            List<PayPlatform> payPlatforms = platformMapper.queryTest4(zfsList.get(0));
+            System.out.println(payRequestModels);
 
             // 使用 modifier修改 payPlatforms
             useModifier(modifier, payPlatforms);
 
+            payPlatforms.get(0).setPayPlatformId(String.valueOf(rJSON.getByPath("apps[0].platformId", Integer.class) + 1)); // getByPath是hutool 的路徑表達式
+
+
+            payMethods.get(0).setPayMethodId(String.valueOf(rJSON.getByPath("apps[0].methodId", Integer.class) + 1));
+            payMethods.get(0).setMyPlatformCode(modifier.get("myPlatformCode").toString());
+            payMethods.get(0).setMyPlatformName(modifier.get("myPlatformName").toString());
+            payMethods.get(0).setMyChannelCode(modifier.get("myChannelCode").toString());
+
+            payChannels.get(0).setPayChannelId(String.valueOf(rJSON.getByPath("apps[0].channelId", Integer.class) + 1));
+            payChannels.get(0).setPayMethodId(String.valueOf(rJSON.getByPath("apps[0].methodId", Integer.class) + 1));
+            payChannels.get(0).setMyChannelCode(modifier.get("myChannelCode").toString());
+            payChannels.get(0).setMyPlatformName(modifier.get("myPlatformName").toString());
+            payChannels.get(0).setMyPlatformCode(modifier.get("myPlatformCode").toString());
+
+            payRequestModels.get(0).setPayModelId(String.valueOf(rJSON.getByPath("apps[0].modelId", Integer.class) + 1));
+            payRequestModels.get(0).setMyChannelCode(modifier.get("myChannelCode").toString());
+            payRequestModels.get(0).setMyPlatformName(modifier.get("myPlatformName").toString());
+            payRequestModels.get(0).setMyPlatformCode(modifier.get("myPlatformCode").toString());
+            payRequestModels.get(0).setMySuccessfulURL(modifier.get("mySuccessfulURL").toString());
+            payRequestModels.get(0).setMyCallbackURL(modifier.get("myCallbackURL").toString());
+
+
+            memberPayFiledMappers.forEach( file ->{
+                file.setPayModelId(String.valueOf(rJSON.getByPath("apps[0].modelId", Integer.class) + 1) );
+            });
+
+//            memberPayFiledMappers.get(0).setPayModelId(String.valueOf(rJSON.getByPath("apps[0].modelId", Integer.class) + 1) );
+
 
             map.put("payPlatforms", payPlatforms);
+            map.put("payMethods", payMethods.get(0));
+            map.put("payChannels", payChannels.get(0));
+            map.put("payRequestModels", payRequestModels);
+            map.put("mappers", memberPayFiledMappers);
+            map.put("levelIDs",payLevelRelationMapper.selAllLevelID());
+            map.put("memberVipIDs",payLevelRelationMapper.selAllMemberVipID());
+            map.put("devices",payLevelRelationMapper.selAllDevice());
 //            context.setVariable("payPlatforms", payPlatforms);
             // 將所需的參數map傳遞給腳本
             context.setVariables(map);
-
-            log.info("1");
             // 生成 SQL 文件內容 指定template腳本
             String content = templateEngine.process("myScript", context);
-            log.info("1");
+
+
 
             // 選擇路徑並寫入文件
             StringBuffer locattion = null;
@@ -128,15 +164,27 @@ public class PaySqlGeneratorService {
             }
 
             log.info("腳本成功生成:\n{}", locattion.toString());
-            return  locattion.toString();
+
+            try {
+                // 自動開啟文件
+                String folderPath = locattion.toString();
+                Runtime.getRuntime().exec("explorer.exe " + folderPath);
+                log.info("資料夾已打開");
+            } catch (Exception e) {
+                log.info("打開資料夾失敗");
+            }
+
+
+            return locattion.toString();
         } catch (RuntimeException e) {
-            log.info("錯誤 :\n{}",e);
+            log.info("錯誤 :\n{}", e);
             throw new RuntimeException(e);
         }
     }
 
     /**
      * 自定義導出的一些修改參數
+     *
      * @param modifier
      * @param payPlatforms
      */
@@ -145,7 +193,7 @@ public class PaySqlGeneratorService {
                 platform -> {
                     log.info("payPlatformId: {}", platform.getPayPlatformId());
 
-                    platform.setPayPlatformId(platform.getPayPlatformId() + 1);
+//                    platform.setPayPlatformId(platform.getPayPlatformId() + 1);
 
                     platform.setMyPlatformName(modifier.get("myPlatformName").toString());
                     platform.setMyPlatformCode(modifier.get("myPlatformCode").toString());

@@ -50,15 +50,14 @@
     </resultMap>
 
 
-    <select id="selModelByEng" resultMap="payPlatformAndModelVOMap">
-        <!--        select *-->
-        <!--        from `8bet`.t_pay_request_model-->
-        <!--        <where>-->
-        <!--            <if test="platformCode != null and platformCode != ''">-->
-        <!--                PLATFORM_CODE like CONCAT('%', #{platformCode}, '%')-->
-        <!--            </if>-->
-        <!--        </where>-->
-        <!--        order by PAY_MODEL_ID desc;-->
+
+<!--    <select id="selModelByEng" resultMap="payPlatformAndModelVOMap">-->
+<!--        select *-->
+<!--        from `8bet`.t_pay_request_model limit 100;-->
+<!--    </select>-->
+
+<!--    模糊查詢支付資訊-->
+    <select id="selZFsByFuzzy" resultMap="payPlatformAndModelVOMap">
 
 
         select p.*, m.* from 8bet.t_pay_platform p INNER JOIN

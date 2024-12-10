@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.azhe.mapper.PayRequestModelMapper">
+
+<!--    對應資料庫名稱-->
+    <resultMap id="PayRequestModelResultMap" type="com.azhe.pojo.PayRequestModel">
+        <id property="payModelId" column="PAY_MODEL_ID" />
+        <result property="platformCode" column="PLATFORM_CODE" />
+        <result property="payStrategyName" column="PAY_STRATEGY_NAME" />
+        <result property="payStrategyType" column="PAY_STRATEGY_TYPE" />
+        <result property="payRequestStrategy" column="PAY_REQUEST_STRATEGY" />
+        <result property="payRequestApi" column="PAY_REQUEST_API" />
+        <result property="orderStrategy" column="ORDER_STRATEGY" />
+        <result property="encryptionStrategy" column="ENCRYPTION_STRATEGY" />
+        <result property="signValue" column="SIGN_VALUE" />
+        <result property="requestValue" column="REQUERT_VALUE" />
+        <result property="requestEncryptionStrategy" column="REQUEST_ENCRYPTION_STRATEGY" />
+        <result property="responseStrategy" column="RESPONSE_STRATEGY" />
+        <result property="pageCallbackUrl" column="PAGE_CALLBACK_URL" />
+        <result property="callbackUrl" column="CALLBACK_URL" />
+        <result property="callbackStrategy" column="CALLBACK_STRATEGY" />
+        <result property="callbackReturnStrategy" column="CALLBACK_RETURN_STRATEGY" />
+        <result property="orderNoStatus" column="ORDERNO_STATUS" />
+        <result property="callbackSignValue" column="CALLBACK_SIGN_VALUE" />
+        <result property="rootXml" column="ROOT_XML" />
+        <result property="amountStrategy" column="AMOUNT_STRATEGY" />
+        <result property="queryStrategy" column="QUERY_STRATEGY" />
+        <result property="creationTime" column="CREATION_TIME" />
+        <result property="creationBy" column="CREATION_BY" />
+        <result property="lastUpdatedTime" column="LAST_UPDATED_TIME" />
+        <result property="lastUpdatedBy" column="LAST_UPDATED_BY" />
+    </resultMap>
+
+
+    <select id="selectByCode" resultMap="PayRequestModelResultMap">
+        SELECT * FROM 8bet.t_pay_request_model WHERE PLATFORM_CODE = ${payPlatformCode};
+    </select>
+
+</mapper>

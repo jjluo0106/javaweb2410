@@ -23,7 +23,7 @@
 
 
     <select id="selectByCode" resultMap="PayMethodResultMap">
-        SELECT * FROM 8bet.t_pay_method WHERE PAY_METHOD_CODE = #{payMethodCode};
+        SELECT * FROM 8bet.t_pay_method WHERE PAY_METHOD_CODE = ${payMethodCode};
     </select>
 
 </mapper>

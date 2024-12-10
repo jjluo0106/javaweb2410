@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.azhe.mapper.PayLevelRelationMapper">
+
+
+    <select id="selAllLevelID" resultType="java.lang.Integer">
+        select LEVEL_ID
+        from `8bet`.t_pay_level_relation group by LEVEL_ID
+        ;
+    </select>
+
+
+    <select id="selAllMemberVipID" resultType="java.lang.Integer">
+        select member_vip_id
+        from 8bet.t_pay_level_relation group by member_vip_id
+        ;
+    </select>
+
+    <select id="selAllDevice" resultType="java.lang.Integer">
+        select device
+        from 8bet.t_pay_level_relation group by device
+        ;
+    </select>
+</mapper>

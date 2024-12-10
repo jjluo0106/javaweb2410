@@ -1,9 +1,7 @@
 -- SQL 生成於：[[${currentDate}]]
--- 公司代碼：[[${companyCode}]]
 
-
-INSERT INTO `t_pay_platform` (`PAY_PLATFORM_ID`, `PLATFORM_CODE`, `PLATFORM_NAME`, `MERCHANT_CODE`, `SECRET_KEY`, `RSA_KEY`, `PUBLIC_KEY`, `IS_ENABLE`, `VERSION_NO`, `ip`, `SUCCESS_URL`, `QUERY_URL`, `CREATION_TIME`, `CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`) VALUES
-<th:block th:each="platform, stat : ${payPlatforms}">
+-- t_pay_platform
+INSERT INTO `t_pay_platform` (`PAY_PLATFORM_ID`, `PLATFORM_CODE`, `PLATFORM_NAME`, `MERCHANT_CODE`, `SECRET_KEY`, `RSA_KEY`, `PUBLIC_KEY`, `IS_ENABLE`, `VERSION_NO`, `ip`, `SUCCESS_URL`, `QUERY_URL`, `IS_QUERY`, `CREATION_TIME`, `CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`) VALUES<th:block th:each="platform, stat : ${payPlatforms}">
     (
     '[[${platform.payPlatformId}]]',  -- payPlatformId
     '[[${platform.myPlatformCode}]]', -- myPlatformCode
@@ -17,8 +15,103 @@ INSERT INTO `t_pay_platform` (`PAY_PLATFORM_ID`, `PLATFORM_CODE`, `PLATFORM_NAME
     '[[${platform.myIP}]]', -- myIP
     '[[${platform.mySuccessfulURL}]]', -- mySuccessfulURL
     '[[${platform.myQueryURL}]]', -- myQueryURL
+    '1', -- IS_QUERY
     NOW(), 'system', NOW(), 'system'
-    )<th:block th:if="${!stat.last}">,</th:block>
-</th:block>;
+    )<th:block th:if="${!stat.last}">,</th:block></th:block>
+;
 
-1231321
+-- t_pay_method
+INSERT INTO `t_pay_method` (`PAY_METHOD_ID`, `PAY_TYPE_ID`, `IS_ONLINE`, `PAY_METHOD_CODE`, `PAY_METHOD_NAME`, `PAY_METHOD_DESC`, `ORDER_NUM`, `IS_RECOMMEND`, `IS_ENABLE`, `CREATION_TIME`, `CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`) VALUES<th:block th:each="method, iterStat : ${payMethods}">
+    (
+    '[[${method.payMethodId}]]', -- payMethodId
+    '2', -- PAY_TYPE_ID
+    '[[${method.isOnline}]]', -- isOnline
+    '[[${method.myPlatformCode}]]', -- myPlatformCode PAY_METHOD_CODE
+    '[[${method.myPlatformName}]]_[[${method.myChannelCode}]]', -- myChannelCode PAY_METHOD_NAME
+    '[[${method.myPlatformName}]]_[[${method.myChannelCode}]]', -- myChannelCode PAY_METHOD_DESC
+    '[[${method.orderNum}]]', -- orderNum
+    '[[${method.isRecommend}]]', -- isRecommend
+    '1', -- IS_ENABLE
+    NOW(), 'system', NOW(), 'system'
+    )<th:block th:if="${!iterStat.last}">,</th:block></th:block>
+;
+
+-- t_pay_channel
+INSERT INTO `t_pay_channel` (`PAY_CHANNEL_ID`, `PAY_TYPE_ID`, `PAY_METHOD_ID`, `PAY_MODEL_ID`,`PAY_PLATFORM_CODE`, `PAY_CHANNEL_CODE`, `PAY_CHANNEL_NAME`,`PAY_CHANNEL_DESC`, `ORDER_NUM`, `PAY_CHANNEL_QUOTA`,`PAY_DEFAULT_AMOUNT`, `PAY_BANK_CODE`, `IS_RECOMMEND`,`IS_ENABLE`, `IS_DELETE`, `BANK_CARD_ID`, `RECEIPT_ACCOUNT`,`OP_ACCOUNT_PLACE`, `RECEIPT_NAME`, `PAY_ICON_URL`, `BANK_DEPOSIT`,`REMARK`, `TOTAL_LOAD_TIMES`, `TOTAL_LOAD_AMOUNT`,`CREATION_TIME`, `CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`) VALUES<th:block th:each="channel, iterStat : ${payChannels}">
+    (
+    '[[${channel.payChannelId}]]', -- PAY_CHANNEL_ID
+    '2', -- PAY_TYPE_ID
+    '[[${channel.payMethodId}]]', -- PAY_METHOD_ID
+    '[[${channel.payModelId}]]', -- PAY_MODEL_ID
+    '[[${channel.myPlatformCode}]]', -- PAY_PLATFORM_CODE
+    '[[${channel.myChannelCode}]]', -- PAY_CHANNEL_CODE
+    '[[${channel.myPlatformName}]]_[[${channel.myChannelCode}]]', -- PAY_CHANNEL_NAME
+    '[[${channel.myPlatformName}]]_[[${channel.myChannelCode}]]', -- PAY_CHANNEL_DESC
+    '[[${channel.orderNum}]]', -- ORDER_NUM
+    '1-5000', -- PAY_CHANNEL_QUOTA
+    '10,20,50,100,200,500,800', -- PAY_DEFAULT_AMOUNT
+    '<th:block th:utext="${channel.payBankCode}"></th:block>', -- PAY_BANK_CODE
+    '[[${channel.isRecommend}]]', -- IS_RECOMMEND
+    '1', -- IS_ENABLE
+    '[[${channel.isDelete}]]', -- IS_DELETE
+    '1', -- BANK_CARD_ID
+    '[[${channel.receiptAccount}]]', -- RECEIPT_ACCOUNT
+    '[[${channel.opAccountPlace}]]', -- OP_ACCOUNT_PLACE
+    '[[${channel.receiptName}]]', -- RECEIPT_NAME
+    '[[${channel.payIconUrl}]]', -- PAY_ICON_URL
+    '[[${channel.bankDeposit}]]', -- BANK_DEPOSIT
+    '[[${channel.remark}]]', -- REMARK
+    '[[${channel.totalLoadTimes}]]', -- TOTAL_LOAD_TIMES
+    '[[${channel.totalLoadAmount}]]', -- TOTAL_LOAD_AMOUNT
+    NOW(), 'system', NOW(), 'system'
+    )<th:block th:if="${!iterStat.last}">,</th:block></th:block>
+;
+
+
+-- t_pay_request_model
+INSERT INTO `t_pay_request_model` (`PAY_MODEL_ID`, `PLATFORM_CODE`, `PAY_STRATEGY_NAME`, `PAY_STRATEGY_TYPE`,`PAY_REQUEST_STRATEGY`, `PAY_REQUEST_API`, `ORDER_STRATEGY`, `ENCRYPTION_STRATEGY`, `SIGN_VALUE`, `REQUERT_VALUE`,`REQUEST_ENCRYPTION_STRATEGY`, `RESPONSE_STRATEGY`, `PAGE_CALLBACK_URL`, `CALLBACK_URL`, `CALLBACK_STRATEGY`,`CALLBACK_RETURN_STRATEGY`, `ORDERNO_STATUS`, `CALLBACK_SIGN_VALUE`, `ROOT_XML`, `AMOUNT_STRATEGY`, `CREATION_TIME`,`CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`, `QUERY_STRATEGY`) VALUES<th:block th:each="model, iterStat : ${payRequestModels}">
+    (
+    '<th:block th:utext="${model.payModelId}"></th:block>', -- PAY_MODEL_ID
+    '<th:block th:utext="${model.myPlatformCode}"></th:block>', -- PLATFORM_CODE
+    '<th:block th:utext="${model.myPlatformName}"></th:block>', -- PAY_STRATEGY_NAME
+    '<th:block th:utext="${model.payStrategyType}"></th:block>', -- PAY_STRATEGY_TYPE
+    '<th:block th:utext="${model.payRequestStrategy}"></th:block>', -- PAY_REQUEST_STRATEGY
+    '<th:block th:utext="${model.mySuccessfulURL}"></th:block>', -- PAY_REQUEST_API
+    '<th:block th:utext="${model.orderStrategy}"></th:block>', -- ORDER_STRATEGY
+    '<th:block th:utext="${model.encryptionStrategy}"></th:block>', -- ENCRYPTION_STRATEGY
+    '<th:block th:utext="${model.signValue}"></th:block>', -- SIGN_VALUE
+    '<th:block th:utext="${model.requestValue}"></th:block>', -- REQUERT_VALUE
+    '<th:block th:utext="${model.requestEncryptionStrategy}"></th:block>', -- REQUEST_ENCRYPTION_STRATEGY
+    '<th:block th:utext="${model.responseStrategy}"></th:block>', -- RESPONSE_STRATEGY
+    '<th:block th:utext="${model.pageCallbackUrl}"></th:block>', -- PAGE_CALLBACK_URL
+    '<th:block th:utext="${model.myCallbackURL}"></th:block>/[[${model.payModelId}]]', -- CALLBACK_URL
+    '<th:block th:utext="${model.callbackStrategy}"></th:block>', -- CALLBACK_STRATEGY
+    '<th:block th:utext="${model.callbackReturnStrategy}"></th:block>', -- CALLBACK_RETURN_STRATEGY
+    '<th:block th:utext="${model.ordernoStatus}"></th:block>', -- ORDERNO_STATUS
+    '<th:block th:utext="${model.callbackSignValue}"></th:block>', -- CALLBACK_SIGN_VALUE
+    '<th:block th:utext="${model.rootXml}"></th:block>', -- ROOT_XML
+    '<th:block th:utext="${model.amountStrategy}"></th:block>', -- AMOUNT_STRATEGY
+    NOW(), 'system', NOW(), 'system',
+    '<th:block th:utext="${model.queryStrategy}"></th:block>' -- QUERY_STRATEGY
+    )<th:block th:if="${!iterStat.last}">,</th:block></th:block>
+;
+
+
+
+-- t_member_pay_filed_mapper
+INSERT INTO `t_member_pay_filed_mapper` (`PAY_MODEL_ID`, `API_FILED_NAME`, `FILED_JAVATYPE`, `MODEL_FILED_NAME`,`ORDER_NUMBER`, `IS_AMOUNT`, `FILED_TYPE`, `CREATION_TIME`,`CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`) VALUES
+<th:block th:each="filed, iterStat : ${mappers}">
+    <th:block th:if="${!iterStat.first and filed.filedType != mappers[iterStat.index - 1].filedType}">
+
+    </th:block>('[[${filed.payModelId}]]','[[${filed.apiFiledName}]]','[[${filed.filedJavatype}]]', '[[${filed.modelFiledName}]]','[[${filed.orderNumber}]]','[[${filed.isAmount}]]', '[[${filed.filedType}]]',NOW(),'system',NOW(),'system')<th:block th:if="${!iterStat.last}">,</th:block></th:block>
+;
+
+-- 权限启动
+insert into t_pay_level_relation
+(LEVEL_ID, member_vip_id, device, PAY_CHANNEL_ID, CREATION_TIME, CREATION_BY, LAST_UPDATED_TIME, LAST_UPDATED_BY)
+values
+<th:block th:each="levelID, iterStat : ${levelIDs}"><th:block th:if="${levelID != null}">([[${levelID}]], null, null, [[${payChannels.payChannelId}]], NOW(), 'system', NOW(), 'system'),</th:block><th:block th:if="${!iterStat.last}"></th:block></th:block>
+<th:block th:each="memberVipID, iterStat : ${memberVipIDs}"><th:block th:if="${memberVipID != null}">(null, [[${memberVipID}]], null, [[${payChannels.payChannelId}]], NOW(), 'system', NOW(), 'system'),</th:block><th:block th:if="${!iterStat.last}"></th:block></th:block>
+<th:block th:each="device, iterStat : ${devices}"><th:block th:if="${device != null}">(null, null, [[${device}]], [[${payChannels.payChannelId}]], NOW(), 'system', NOW(), 'system')</th:block><th:block th:if="${!iterStat.last and device != null}">,</th:block></th:block>;
+
+

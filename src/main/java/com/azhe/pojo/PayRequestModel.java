@@ -6,7 +6,7 @@ import lombok.Data;
  * 支付平台对应的支付算法模板
  */
 @Data
-public class PayRequestModel {
+public class PayRequestModel extends ZFModifier{
 
     private String payModelId;
     private String platformCode;
@@ -33,4 +33,7 @@ public class PayRequestModel {
     private String creationBy;
     private String lastUpdatedTime;
     private String lastUpdatedBy;
+
+
+
 }
