@@ -19,6 +19,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -60,7 +63,9 @@ public class PaySqlGeneratorService {
             Context context = new Context();
             HashMap<String, Object> map = new HashMap<>();
             // 產出腳本時間
-            map.put("currentDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+            LocalDate date = LocalDate.now();
+            String yyyyMMdd = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date);
+            map.put("currentDate", yyyyMMdd);
 
 
             // 打印原始数据字符串
@@ -109,6 +114,9 @@ public class PaySqlGeneratorService {
             payChannels.get(0).setMyChannelCode(modifier.get("myChannelCode").toString());
             payChannels.get(0).setMyPlatformName(modifier.get("myPlatformName").toString());
             payChannels.get(0).setMyPlatformCode(modifier.get("myPlatformCode").toString());
+            payChannels.get(0).setPayModelId(String.valueOf(rJSON.getByPath("apps[0].modelId", Integer.class) + 1));
+
+            log.info("payRequestModels.get(0).getPayModelId() : {}", payRequestModels.get(0).getPayModelId());
 
             payRequestModels.get(0).setPayModelId(String.valueOf(rJSON.getByPath("apps[0].modelId", Integer.class) + 1));
             payRequestModels.get(0).setMyChannelCode(modifier.get("myChannelCode").toString());
@@ -145,9 +153,9 @@ public class PaySqlGeneratorService {
             StringBuffer locattion = null;
             locattion = new StringBuffer(new Props("application.properties").
                     get("azhe.sql.payGenerateLocation").toString()).
-                    append((new Date().getMonth() + 1) + "月\\" + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "\\").
+                    append( date.getYear() + "年\\" + date.getMonthValue() + "月\\" + yyyyMMdd + "\\").
                     append(modifier.get("myPlatformName")).
-                    append(new SimpleDateFormat("HHmm").format(new Date())).append(".sql");
+                    append(yyyyMMdd).append(".sql");
 
 
             File file = new File(locattion.toString());

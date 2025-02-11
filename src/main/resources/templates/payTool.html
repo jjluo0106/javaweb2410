@@ -459,7 +459,7 @@
                     Object.assign(payPlatformAndModelVO, item);
 
                     // 修改&no在html中的亂碼問題
-                    const fixRequestValue = payPlatformAndModelVO.requestValue.replace('&no', '&amp;no');
+                    const fixRequestValue = payPlatformAndModelVO.requestValue.replace('&no', '&amp;no').replace('&times', '&amp;times').replace('&curren', '&amp;curren');
                     // 插入新的表格行
                     const newRow = `
                     <tr>

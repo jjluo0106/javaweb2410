@@ -84,7 +84,7 @@ INSERT INTO `t_pay_request_model` (`PAY_MODEL_ID`, `PLATFORM_CODE`, `PAY_STRATEG
     '<th:block th:utext="${model.requestEncryptionStrategy}"></th:block>', -- REQUEST_ENCRYPTION_STRATEGY
     '<th:block th:utext="${model.responseStrategy}"></th:block>', -- RESPONSE_STRATEGY
     '<th:block th:utext="${model.pageCallbackUrl}"></th:block>', -- PAGE_CALLBACK_URL
-    '<th:block th:utext="${model.myCallbackURL}"></th:block>/[[${model.payModelId}]]', -- CALLBACK_URL
+    '<th:block th:utext="${model.myCallbackURL}"></th:block>/[[${model.myPlatformCode}]]/[[${model.payModelId}]]', -- CALLBACK_URL
     '<th:block th:utext="${model.callbackStrategy}"></th:block>', -- CALLBACK_STRATEGY
     '<th:block th:utext="${model.callbackReturnStrategy}"></th:block>', -- CALLBACK_RETURN_STRATEGY
     '<th:block th:utext="${model.ordernoStatus}"></th:block>', -- ORDERNO_STATUS

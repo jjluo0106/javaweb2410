@@ -22,6 +22,9 @@ public class User {
         this.dept_id = dept_id;
     }
 
+    public User(String name){this.name = name;}
+
+
     /**
      * 获取
      * @return id
@@ -104,5 +107,9 @@ public class User {
 
     public String toString() {
         return "\nUser{id = " + id + ", name = " + name + ", password = " + password + ", age = " + age + ", dept_id = " + dept_id + "}\n";
+    }
+
+    private void playGame(){
+        System.out.println(name + "打游戏");
     }
 }
