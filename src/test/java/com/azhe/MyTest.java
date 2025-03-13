@@ -1,7 +1,13 @@
 package com.azhe;
 
+import cn.hutool.jwt.JWT;
 import org.junit.Test;
 import org.junit.experimental.theories.suppliers.TestedOn;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 
 public class MyTest {
 
@@ -18,11 +24,11 @@ public class MyTest {
 
     @Test
     public void test2() {
-        Star star = new Star("張三豐");
+        StringBuffer buffer = new StringBuffer("abcd");
 
-        StarService proxy = ProxyUtil.getProxy2(star);
+        buffer.replace(1, 2, "**");
 
-        proxy.dance("太極拳");
-        System.out.println(proxy.sing());
+        System.out.println(buffer);
+
     }
 }

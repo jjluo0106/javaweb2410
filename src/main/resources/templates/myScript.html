@@ -90,7 +90,7 @@ INSERT INTO `t_pay_request_model` (`PAY_MODEL_ID`, `PLATFORM_CODE`, `PAY_STRATEG
     '<th:block th:utext="${model.ordernoStatus}"></th:block>', -- ORDERNO_STATUS
     '<th:block th:utext="${model.callbackSignValue}"></th:block>', -- CALLBACK_SIGN_VALUE
     '<th:block th:utext="${model.rootXml}"></th:block>', -- ROOT_XML
-    '<th:block th:utext="${model.amountStrategy}"></th:block>', -- AMOUNT_STRATEGY
+    '<th:block th:utext="${model.amountStrategy}"></th:block>', -- AMOUNT_STRATEGY // 分 POINTS 100=1块 / 保留小数两位 TDP / 元 INTEGERS
     NOW(), 'system', NOW(), 'system',
     '<th:block th:utext="${model.queryStrategy}"></th:block>' -- QUERY_STRATEGY
     )<th:block th:if="${!iterStat.last}">,</th:block></th:block>
@@ -114,4 +114,26 @@ values
 <th:block th:each="memberVipID, iterStat : ${memberVipIDs}"><th:block th:if="${memberVipID != null}">(null, [[${memberVipID}]], null, [[${payChannels.payChannelId}]], NOW(), 'system', NOW(), 'system'),</th:block><th:block th:if="${!iterStat.last}"></th:block></th:block>
 <th:block th:each="device, iterStat : ${devices}"><th:block th:if="${device != null}">(null, null, [[${device}]], [[${payChannels.payChannelId}]], NOW(), 'system', NOW(), 'system')</th:block><th:block th:if="${!iterStat.last and device != null}">,</th:block></th:block>;
 
-
+-- PayBaseVO->>>>
+-- merchantCode
+-- platformOrderNO
+-- callbackUrl
+-- payTypeCode 通道编码
+-- amount
+--
+-- payBankCode 图片显示
+-- secretKey
+-- publicKey
+--
+-- ip 服務器
+-- clientIp 客戶端
+-- randomNum
+-- currCode 币种CNY
+--
+-- payAmount
+-- extend1
+-- payStatus
+-- remarks
+-- payApplyDate yyyy-MM-dd HH:mm:ss
+-- payApplyDate1 yyyyMMddHHmmss
+-- currentTimeMillis 13位時間戳

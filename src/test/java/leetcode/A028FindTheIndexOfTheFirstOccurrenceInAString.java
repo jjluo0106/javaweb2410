@@ -4,7 +4,17 @@ package leetcode;
 import org.junit.Test;
 
 /**
- * 返回haystack中有needle的首個index，沒有返回-1
+ Example 1:
+
+ Input: haystack = "sadbutsad", needle = "sad"
+ Output: 0
+ Explanation: "sad" occurs at index 0 and 6.
+ The first occurrence is at index 0, so we return 0.
+ Example 2:
+
+ Input: haystack = "leetcode", needle = "leeto"
+ Output: -1
+ Explanation: "leeto" did not occur in "leetcode", so we return -1.
  */
 public class A028FindTheIndexOfTheFirstOccurrenceInAString {
 
@@ -14,8 +24,8 @@ public class A028FindTheIndexOfTheFirstOccurrenceInAString {
 
         if( !haystack.contains(needle)) return -1;
 
-        for(int i=0; i < haystack.length() - needle.length(); i++){
-            if(haystack.substring(i, needle.length() + i).equals(needle) ) return i;
+        for(int i =0; i <= haystack.length() - needle.length(); i++){
+            if(haystack.substring(i, i + needle.length()).equals(needle)) return i;
         }
         return -1;
     }

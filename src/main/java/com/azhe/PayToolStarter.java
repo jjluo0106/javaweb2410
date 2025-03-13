@@ -4,6 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
+
+// 開啟對servlet組件(servlet，filter，listener)的支持
 @ServletComponentScan
 @SpringBootApplication
 // 請根據您的 Mapper 包路徑修改
