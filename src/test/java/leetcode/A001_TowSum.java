@@ -1,9 +1,6 @@
 package leetcode;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 /**
  Example 1:
@@ -24,13 +21,15 @@ public class A001_TowSum {
 
     public static int[] twoSum(int[] nums, int target) {
 
-        HashMap<Integer, Integer> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
 
-        for(int i =0; i < nums.length; i++){
-            if(map.containsKey(target - nums[i])) return new int[] {map.get(target - nums[i]), i};
-            map.put(nums[i], i);
+        for(int i=0; i<nums.length; i++){
+            int num = nums[i];
+
+            if(map.containsValue(target - num)) return new int[]{i, map.get(i)};
+            map.put(i, num);
         }
-        return new int[] {};
+        return new int[]{0};
     }
 
 

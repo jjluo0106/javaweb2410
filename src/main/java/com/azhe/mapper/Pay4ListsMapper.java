@@ -10,5 +10,5 @@ public interface Pay4ListsMapper {
 
 //    public List<PayRequestModel> selectAll();
 
-    List<PayPlatformAndModelVO> selZFsByFuzzy(PayPlatformAndModelVO payPlatformAndModelVO);
+    List<PayPlatformAndModelVO> selectModelByInputBoxes(PayPlatformAndModelVO payPlatformAndModelVO);
 }

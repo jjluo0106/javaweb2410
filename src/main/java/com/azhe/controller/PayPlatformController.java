@@ -23,4 +23,11 @@ public class PayPlatformController {
         log.info("查詢");
         return platformService.queryTest4(ZF);
     }
+
+
+    @RequestMapping("/selectById")
+    public PayPlatform selectById(int id) {
+        log.info("測試查詢");
+        return platformService.selectById(id);
+    }
 }

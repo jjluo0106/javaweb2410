@@ -11,12 +11,13 @@ public class A110BalancedBinaryTree {
     }
 
     public int getHigh(TreeNode root){
-        TreeNode leftt = root.left;
-        TreeNode rightt = root.right;
-        if(root==null) return 0;
-        if( Math.abs( getHigh(leftt) - getHigh(rightt))  > 1 ) return -1;
-        if(getHigh(leftt)==-1 || getHigh(rightt)==-1) return -1;
-        return Math.max( getHigh(leftt), getHigh(rightt)) +1;
+        if(root == null) return 0;
+        TreeNode left = root.left;
+        TreeNode right = root.right;
+        if(  getHigh(left)==-1 || getHigh(right)==-1) return -1;
+        if( Math.abs( getHigh(left) - getHigh(right)) > 1) return -1;
+
+        return  Math.max( getHigh(left), getHigh(right)) +1;
     }
 
 
@@ -26,21 +27,3 @@ public class A110BalancedBinaryTree {
 
 }
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-
-    TreeNode() {
-    }
-
-    TreeNode(int val) {
-        this.val = val;
-    }
-
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}

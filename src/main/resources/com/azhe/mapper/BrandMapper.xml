@@ -50,8 +50,8 @@
     </delete>
 
 
-    <!--    <select id="selectAll" resultMap="brandResultMap">-->
-<!--        select *-->
-<!--        from brand;-->
-<!--    </select>-->
+        <select id="selectAll" resultMap="brandResultMap">
+        select *
+        from brand;
+    </select>
 </mapper>

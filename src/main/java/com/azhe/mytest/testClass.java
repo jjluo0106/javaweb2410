@@ -1,20 +1,21 @@
 package com.azhe.mytest;
 
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.*;
 
+
+
 public class testClass {
+
+    private String username;
 
 
     @Test
     public void test(){
 
-        String[] strs = {"ab", "a"};
-
-        String s = longestCommonPrefix(strs);
-
-        System.out.println("結果 : " + s);
+        System.out.println(username);
 
 
 

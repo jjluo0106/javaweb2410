@@ -16,17 +16,17 @@ public class Pay4ListsService {
     @Autowired
     Pay4ListsMapper pay4ListsMapper;
 
-    public List<PayPlatformAndModelVO> selModelByEng(PayPlatformAndModelVO payPlatformAndModelVO) {
+    public List<PayPlatformAndModelVO> selectModelByInputBoxes(PayPlatformAndModelVO payPlatformAndModelVO) {
         System.out.println(123);
 
         try {
-            System.out.println(pay4ListsMapper.selZFsByFuzzy(payPlatformAndModelVO));
+            System.out.println(pay4ListsMapper.selectModelByInputBoxes(payPlatformAndModelVO));
             System.out.println(321);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-        return pay4ListsMapper.selZFsByFuzzy(payPlatformAndModelVO);
+        return pay4ListsMapper.selectModelByInputBoxes(payPlatformAndModelVO);
     }
 
     public List<PayMethod> selectByCode(Map<String, Object> requestBody) {

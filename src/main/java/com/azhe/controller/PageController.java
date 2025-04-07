@@ -1,16 +1,9 @@
 package com.azhe.controller;
 
-import com.azhe.pojo.PayAppType;
-import com.azhe.pojo.User;
-import com.azhe.service.LoginService;
-import com.azhe.service.PayAppTypeService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,21 +15,21 @@ import java.util.List;
 @Controller
 public class PageController {
 
-    @Autowired
-    private LoginService loginService;
-    @Autowired
-    PayAppTypeService payAppTypeService;
-
-    private void addUserListToModel(Model model) {
-        List<User> users = loginService.selectAll();
-        model.addAttribute("users", users);
-    }
-
-    @GetMapping("/greeting")
-    public String greeting(Model model) {
-        model.addAttribute("name", "World");
-        return "greeting";
-    }
+//    @Autowired
+//    private LoginService loginService;
+//    @Autowired
+//    PayAppTypeService payAppTypeService;
+//
+//    private void addUserListToModel(Model model) {
+//        List<User> users = loginService.selectAll();
+//        model.addAttribute("users", users);
+//    }
+//
+//    @GetMapping("/greeting")
+//    public String greeting(Model model) {
+//        model.addAttribute("name", "World");
+//        return "greeting";
+//    }
 
 //    @RequestMapping({"/login", "/home", "/paytools"})
 //    public String page( String path) {

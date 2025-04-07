@@ -57,7 +57,7 @@
 <!--    </select>-->
 
 <!--    模糊查詢支付資訊-->
-    <select id="selZFsByFuzzy" resultMap="payPlatformAndModelVOMap">
+    <select id="selectModelByInputBoxes" resultMap="payPlatformAndModelVOMap">
 
 
         select p.*, m.* from 8bet.t_pay_platform p INNER JOIN

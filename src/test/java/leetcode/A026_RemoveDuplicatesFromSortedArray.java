@@ -3,6 +3,9 @@ package leetcode;
 
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 /**
  Example 1:
@@ -22,12 +25,12 @@ public class A026_RemoveDuplicatesFromSortedArray {
 
     public int removeDuplicates(int[] nums) {
 
-        int slow = 0;
+        int slow=0;
 
-        for(int fast =0; fast < nums.length; fast++){
-            if(nums[fast] != nums[slow]){
-                nums[slow++] = nums[fast];
-
+        for(int fast = 0; fast < nums.length; fast++){
+            if(nums[slow]!=nums[fast]){
+                nums[slow] = nums[fast];
+                slow++;
             }
         }
         return ++slow;

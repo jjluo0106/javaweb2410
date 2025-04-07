@@ -1,34 +1,50 @@
 package com.azhe;
 
-import cn.hutool.jwt.JWT;
+import com.azhe.mapper.PlatformMapper;
+import com.azhe.mapper.UserMapper;
+import com.azhe.service.Pay4ListsService;
+import com.azhe.service.UserService;
+import com.azhe.vo.PayPlatformAndModelVO;
 import org.junit.Test;
-import org.junit.experimental.theories.suppliers.TestedOn;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
+import java.util.Optional;
 
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application.properties")
 public class MyTest {
 
 
+    @Value("${spring.datasource.username}")
+    private String appId;
+
     @Test
     public void test1() {
-        Star star = new Star("張三豐");
-
-        StarService proxy = ProxyUtil.getProxy(star);
-
-        proxy.dance("太極拳");
-        System.out.println(proxy.sing());
+        System.out.println(appId);
     }
 
     @Test
     public void test2() {
-        StringBuffer buffer = new StringBuffer("abcd");
 
-        buffer.replace(1, 2, "**");
+        String aa = "null";
 
-        System.out.println(buffer);
+        Optional.ofNullable( aa )
+                .orElse("");
 
+    }
+
+    @Autowired
+    PlatformMapper platformMapper;
+    @Autowired
+    Pay4ListsService pay4ListsService;
+    @Test
+    public void test3(){
+//        System.out.println(userMapper.selectById(4));
+//        System.out.println(platformMapper.queryTest4("ZF"));
+
+        pay4ListsService.selectModelByInputBoxes(new PayPlatformAndModelVO());
     }
 }

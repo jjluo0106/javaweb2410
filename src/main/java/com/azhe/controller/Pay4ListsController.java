@@ -1,5 +1,6 @@
 package com.azhe.controller;
 //import com.azhe.service.Pay4ListsService;
+import com.azhe.anno.GetRunTime;
 import com.azhe.service.Pay4ListsService;
 import com.azhe.service.PayMethodService;
 import com.azhe.service.PaySqlGeneratorService;
@@ -22,10 +23,11 @@ public class Pay4ListsController {
 
 
     @PostMapping("/selPayPlatformAndModelVO")
-    public List<PayPlatformAndModelVO> selModelByEng(@RequestBody PayPlatformAndModelVO payPlatformAndModelVO) {
+    @GetRunTime
+    public List<PayPlatformAndModelVO> selectModelByInputBoxes(@RequestBody PayPlatformAndModelVO payPlatformAndModelVO) {
 
-        log.info("響應數量 : {}" , pay4ListsService.selModelByEng(payPlatformAndModelVO).size());
-        return pay4ListsService.selModelByEng(payPlatformAndModelVO);
+        log.info("響應數量 : {}" , pay4ListsService.selectModelByInputBoxes(payPlatformAndModelVO).size());
+        return pay4ListsService.selectModelByInputBoxes(payPlatformAndModelVO);
     }
 
 

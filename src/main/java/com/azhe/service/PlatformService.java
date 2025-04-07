@@ -15,4 +15,8 @@ public class PlatformService {
     public List<PayPlatform> queryTest4(String ZF) {
         return platformMapper.queryTest4(ZF);
     }
+
+    public PayPlatform selectById(int id) {
+        return  platformMapper.selectById(id);
+    }
 }
