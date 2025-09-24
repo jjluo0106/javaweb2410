@@ -1,7 +1,5 @@
 package leetcode;
 
-import org.junit.Test;
-
 
 /**
  Example 1:
@@ -23,23 +21,14 @@ public class A035SearchInsertPosition {
 
     public int searchInsert(int[] nums, int target) {
 
-        if(nums == null || nums.length == 0) return 0;
-
-        for(int i=0; i< nums.length; i++){
-            if(nums[i] >= target) return i;
-
+        for(int i =0 ; i<nums.length; i++){
+            if(nums[i]==target) return ++i;
+            if(nums[i]>target) return i;
         }
-        return nums.length;
+        return -1;
     }
 
 
 
-    @Test
-    public void test(){
 
-        int[] nums = {1,3,5,6};
-        System.out.println(searchInsert(nums, 5));
-
-
-    }
 }

@@ -1,10 +1,8 @@
 
 package leetcode;
 
-import org.junit.Test;
 
-import java.util.HashSet;
-import java.util.Set;
+import org.junit.jupiter.api.Test;
 
 
 /**
@@ -25,16 +23,12 @@ public class A026_RemoveDuplicatesFromSortedArray {
 
     public int removeDuplicates(int[] nums) {
 
-        int slow=0;
+        int slow = 0;
 
-        for(int fast = 0; fast < nums.length; fast++){
-            if(nums[slow]!=nums[fast]){
-                nums[slow] = nums[fast];
-                slow++;
-            }
+        for(int fast=0; fast<nums.length; fast++){
+            if(nums[slow] != nums[fast]) nums[slow++] = nums[fast];
         }
         return ++slow;
-
     }
 
     @Test

@@ -2,28 +2,32 @@ package leetcode;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class A168 {
 
 
     public String convertToTitle(int columnNumber) {
 
         StringBuilder sb = new StringBuilder();
-        while(columnNumber>0){
-            columnNumber--;
-            sb.insert(0, (char) ('A' + columnNumber%26));
+        while(columnNumber!=0){
+            columnNumber-=1;
+            sb.append( (char)('A' + columnNumber%26 ) );
             columnNumber/=26;
+
         }
-        return sb.toString();
+        return sb.reverse().toString();
     }
 
 
     @Test
     public void test(){
-        char c= 'A';
-        System.out.println(c+0);
+        List list = new ArrayList();
+        for(int i=0; i<26; i++){
+            list.add( (char) ('A'+i));
+        }
 
-
-        char cc= (27%27+64);
-        System.out.println(cc);
+        System.out.println(list);
     }
 }

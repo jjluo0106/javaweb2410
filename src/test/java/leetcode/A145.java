@@ -7,17 +7,18 @@ public class A145 {
 
     public List<Integer> postorderTraversal(TreeNode root) {
         List<Integer> list = new ArrayList<>();
-
-        return getList(root, list);
+        return getList(list,root);
     }
 
-    private List<Integer> getList(TreeNode root, List<Integer> list) {
+    private List<Integer> getList(List<Integer> list, TreeNode root) {
+        if(list==null) return list;
 
-        if(root==null)return list;
-        getList(root.left, list);
-        getList(root.right, list);
+        getList(list, root.left);
+        getList(list, root.right);
         list.add(root.val);
         return list;
+
+
     }
 
 

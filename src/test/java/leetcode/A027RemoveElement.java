@@ -23,14 +23,12 @@ public class A027RemoveElement {
 
     public int removeElement(int[] nums, int val) {
 
-        int slow = 0;
+        int slow=  0;
 
-        for( int fast = 0; fast < nums.length; fast ++){
-            if(nums[fast] != val){
-                nums[slow++] = nums[fast];
-            }
+        for(int fast=0; fast<nums.length; fast++){
+            if(nums[fast]!=val) nums[slow++] = nums[fast];
         }
-        return slow;
+        return ++slow;
     }
 
 

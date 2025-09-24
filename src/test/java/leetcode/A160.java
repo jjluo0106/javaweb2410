@@ -3,33 +3,32 @@ package leetcode;
 public class A160 {
 
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+
         int lenA = getLen(headA);
         int lenB = getLen(headB);
 
-        while (lenA > lenB) {
+        while(lenA>lenB){
+            headA = headA.next;
             lenA--;
-            headA=headA.next;
         }
-        while (lenA < lenB) {
+        while(lenA<lenB){
+            headB = headB.next;
             lenB--;
-            headB=headB.next;
         }
 
-        while (headA != null && headB != null) {
+        while(headA!=null){
             if(headA==headB) return headA;
-            headA=headA.next;
-            headB=headB.next;
         }
         return null;
     }
 
-    private static int getLen(ListNode node) {
-        int len = 0;
-        while(node!=null){
-            node=node.next;
-            len++;
+    private int getLen(ListNode headA) {
+        int l = 0;
+        while(headA!=null) {
+            l++;
+            headA = headA.next;
         }
-        return len;
+        return l;
     }
 
 

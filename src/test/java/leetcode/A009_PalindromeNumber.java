@@ -22,17 +22,18 @@ public class A009_PalindromeNumber {
 
     public static boolean isPalindrome(int x) {
 
-        if(x<0 || x/10==0) return false;
-        int reverse = 0;
+        if(x<0 || x%10==0) return false;
+        if(x==0) return true;
 
-        while(x>reverse){
-            reverse = reverse*10 + x%10;
+        int mir = 0;
+
+        while(x>mir){
+            mir = mir*10 + x%10;
             x/=10;
         }
 
-        if(x==reverse || x==reverse/10) return true;
+        if(x==mir || x==mir/10) return true;
         return false;
-
 
     }
     public static void main(String[] args) {

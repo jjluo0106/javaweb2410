@@ -1,10 +1,11 @@
 package com.azhe.vo;
 
 
+import cn.hutool.json.JSONUtil;
 import lombok.Data;
 
 @Data
-public class PayPlatformAndModelVO {
+public class PayPlatformAndModelVO  {
 
 //    Platform
     private String payPlatformId;    // 主鍵
@@ -57,5 +58,11 @@ public class PayPlatformAndModelVO {
     private String requestValue6;
     private String requestValue7;
     private String requestValue8;
+
+
+    @Override
+    public String toString() {
+        return JSONUtil.toJsonPrettyStr(this);
+    }
 
 }

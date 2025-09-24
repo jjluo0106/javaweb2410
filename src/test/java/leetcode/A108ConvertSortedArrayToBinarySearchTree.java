@@ -5,18 +5,30 @@ public class A108ConvertSortedArrayToBinarySearchTree {
 
     public TreeNode sortedArrayToBST(int[] nums) {
 
-        return getTree(nums, 0, nums.length-1);
+       return getNode(nums, 0, nums.length-1);
+
+
     }
 
-    public TreeNode getTree(int[] nums, int start, int end){
+
+    public TreeNode getNode(int[] nums, int start, int end){
         if(start>end) return null;
-        TreeNode myTreeNode  = new TreeNode();
-        int mid = start + (end-start)/2;
-        myTreeNode.val = nums[mid];
-        myTreeNode.left = getTree(nums,  start, mid-1);
-        myTreeNode.right = getTree(nums, mid+1, end);
-        return myTreeNode;
+
+        int mid = (start+end)/2;
+        TreeNode node = new TreeNode();
+        node.val = nums[mid];
+
+        node.left = getNode(nums, start, mid-1);
+        node.right = getNode(nums, mid+1, end);
+        return node;
     }
+
+
+
+
+
+
+
 
 
 

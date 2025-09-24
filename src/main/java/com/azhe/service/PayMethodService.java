@@ -1,9 +1,7 @@
 package com.azhe.service;
 
 import com.azhe.mapper.PayMethodMapper;
-import com.azhe.mapper.PlatformMapper;
 import com.azhe.pojo.PayMethod;
-import com.azhe.pojo.PayPlatform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

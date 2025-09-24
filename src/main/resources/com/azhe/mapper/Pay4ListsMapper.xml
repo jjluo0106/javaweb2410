@@ -140,6 +140,19 @@
             AND p.QUERY_URL LIKE CONCAT('%', #{queryUrl}, '%')
         </if>
 
+        <if test="rootXml != null and rootXml != ''">
+            AND m.ROOT_XML LIKE CONCAT('%', #{rootXml}, '%')
+        </if>
+
+
+        <if test="encryptionStrategy != null and encryptionStrategy != ''">
+            AND m.ENCRYPTION_STRATEGY LIKE CONCAT('%', #{encryptionStrategy}, '%')
+        </if>
+
+        <if test="queryStrategy != null and queryStrategy != ''">
+            AND m.QUERY_STRATEGY LIKE CONCAT('%', #{queryStrategy}, '%')
+        </if>
+
         order by p.PAY_PLATFORM_ID desc limit 100;
     </select>
 

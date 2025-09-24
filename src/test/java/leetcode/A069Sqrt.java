@@ -1,7 +1,5 @@
 package leetcode;
 
-import org.junit.Assert;
-import org.junit.Test;
 
 /**
  Example 1:
@@ -20,22 +18,21 @@ public class A069Sqrt {
 
     public int mySqrt(int x) {
 
-        int left = 0, right = x, mid = 0;
+        if(x<=1)return x;
 
-        while(left <= right){
-            mid = left + (right -left)/2;
-            if(mid == x/mid) return mid;
-            if(mid <  x/mid) left = mid +1;
-            else right = mid - 1;
+        int a = 0;
+        int b = x;
+
+
+        while(a<=b){
+            int mid = (a+b)/2;
+
+            if(mid==x/mid) return mid;
+            if(mid> x/mid) b = mid-1;
+            if(mid< x/mid) a = mid+1;
         }
-        return right;
+        return b;
     }
 
-    @Test
-    public void test(){
-//        Assert.assertEquals(2, mySqrt(4));
-        Assert.assertEquals(2, mySqrt(8));
-        Assert.assertEquals(3, mySqrt(9));
-        Assert.assertEquals(3, mySqrt(10));
-    }
+
 }

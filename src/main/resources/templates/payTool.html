@@ -137,8 +137,9 @@
             <th><input class="findEZInput" id="lastUpdatedBy" placeholder="LastEditor"></th>
 
             <th><input class="findEZInput" id="payRequestStrategy" placeholder="下單策略"></th>
+            <th><input class="findEZInput" id="encryptionStrategy" placeholder="加密策略"></th>
             <th class="url"><input class="findEZInput" id="successUrl" placeholder="下單地址*****"></th>
-            <th class="url"><input class="findEZInput" id="queryUrl" placeholder="查詢地址"></th>
+
 
             <th style="width: 34%;">
                 <input class="findEZInput" id="requestValue" style="max-width: 75px;" placeholder="請求參數1">
@@ -151,6 +152,11 @@
                 <input class="findEZInput" id="requestValue8" style="max-width: 75px;" placeholder="請求參數8">
             </th>
             <!--            <th></th>-->
+            <th><input class="findEZInput" id="rootXml" placeholder="rootXml"></th>
+
+            <th class="url"><input class="findEZInput" id="queryStrategy" placeholder="查詢策略"></th>
+            <th class="url"><input class="findEZInput" id="queryUrl" placeholder="查詢地址"></th>
+
             <th><input class="findEZInput" id="callbackUrl" placeholder="回調地址"></th>
             <th><input class="findEZInput" id="merchantCode" placeholder="商戶號"></th>
             <th><input class="findEZInput" id="secretKey" placeholder="密鑰"></th>
@@ -475,12 +481,18 @@
 
 
                         <td class="text-nowrap">${payPlatformAndModelVO.payRequestStrategy}</td>
+                        <td class="text-nowrap">${payPlatformAndModelVO.encryptionStrategy}</td>
                         <td class="text-nowrap url bgc-lightBlue" style="background-color:lightblue;">${payPlatformAndModelVO.successUrl}</td>
-                        <td class="text-nowrap url">${payPlatformAndModelVO.queryUrl}</td>
 
 
 
                         <td class="text-nowrap">${fixRequestValue}</td>
+
+                        <td class="text-nowrap">${payPlatformAndModelVO.rootXml}</td>
+
+                        <td class="text-nowrap url">${payPlatformAndModelVO.queryStrategy}</td>
+                        <td class="text-nowrap url">${payPlatformAndModelVO.queryUrl}</td>
+
 
                         <td class="text-nowrap">${payPlatformAndModelVO.callbackUrl}</td>
                         <td class="text-nowrap">${payPlatformAndModelVO.merchantCode}</td>

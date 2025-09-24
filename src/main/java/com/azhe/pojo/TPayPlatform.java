@@ -3,7 +3,7 @@ package com.azhe.pojo;
 import lombok.Data;
 
 @Data // 自動生成getter setter
-public class PayPlatform {
+public class TPayPlatform {
 
     private String payPlatformId;    // 主鍵
     private String platformCode;     // 平台編碼

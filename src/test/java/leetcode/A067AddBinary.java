@@ -1,7 +1,6 @@
 package leetcode;
 
 
-import org.junit.Test;
 
 /**
  Example 1:
@@ -18,19 +17,22 @@ public class A067AddBinary {
 
 
     public String addBinary(String a, String b) {
-        int carry =0, i = a.length(), j = b.length();
+
+
+        int aPointer = a.length()-1;
+        int bPointer = b.length()-1;
+        int sum  = 0;
         StringBuilder sb = new StringBuilder();
-        while(i > 0 || j > 0 || carry > 0){
-            if(i > 0) carry += a.charAt(--i) - '0';
-            if(j > 0) carry += b.charAt(--j) - '0';
-            sb.append(carry %2);
-            carry /=2;
+
+        while(aPointer>-1 || bPointer>-1 || sum!=0){
+
+            if(aPointer>-1) sum+= a.charAt(aPointer--) - '0';
+            if(bPointer>-1) sum+= b.charAt(bPointer--) - '0';
+            sb.append(sum%2);
+            sum/=2;
         }
         return sb.reverse().toString();
     }
 
-    @Test
-    public void test(){
-        System.out.println(addBinary("11", "1"));
-    }
+
 }

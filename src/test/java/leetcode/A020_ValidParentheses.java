@@ -1,8 +1,7 @@
 package leetcode;
 
-import org.junit.Test;
-
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  Example 1:
@@ -35,36 +34,23 @@ public class A020_ValidParentheses {
 
     public boolean isValid(String s) {
 
-        Stack<Character> stack = new Stack<>();
-
+        List<Character> list = new ArrayList<>();
 
         for(int i = 0; i < s.length(); i++){
-            Character c  = s.charAt(i);
+            char temp = s.charAt(i);
+            if( temp == '(' || temp == '[' || temp == '{' ){
+                list.add(temp);
+            }else if( temp == ')' || temp == ']' || temp == '}'){
+                char c = list.get(list.size()-1);
+                if(c == '(' && temp == ')') list.remove(list.size()-1 );
+                if(c == '{' && temp == '}') list.remove(list.size()-1 );
+                if(c == '[' && temp == ']') list.remove(list.size()-1 );
+            }
+            else return false;
 
-            if(c == '(' || c == '[' || c == '{'){
-                stack.push(c);
-            }else if(stack.isEmpty()){
-                return false;
-            }
-            else{
-                if( c== ')' && stack.peek() != '(' || c== ']' && stack.peek() != '[' || c== '}' && stack.peek() != '{') return false;
-                stack.pop();
-            }
         }
-        if(!stack.isEmpty()) return false;
-
-        return true;
-    }
-
-    @Test
-    public void test() {
-        System.out.println(isValid("()"));
-    }
-
-
-    @Test
-    public void test1(){
-        System.out.println( -3/2);
+        if (list.isEmpty()) return true;
+        return false;
     }
 
 

@@ -29,19 +29,16 @@ public class A094BinaryTreeInorderTraversal {
     public List<Integer> inorderTraversal(TreeNode root) {
 
         List<Integer> list = new ArrayList<>();
+        return getList(root, list);
+    }
+
+    private List<Integer> getList(TreeNode root, List<Integer> list) {
         if(root == null) return list;
-        getList(root, list);
+        getList(root.left, list);
+        list.add(root.val);
+        getList(root.right, list);
         return list;
     }
-
-    public void getList(TreeNode root, List<Integer> list){
-        if(root==null) return;
-        if(root.left != null) getList(root.left, list);
-        list.add(root.val);
-        if(root.right != null) getList(root.right, list);
-    }
-
-
 
 
     public class TreeNode {

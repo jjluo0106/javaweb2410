@@ -9,12 +9,18 @@
 <!--    如果想用註解導入sql語句可以用@ResultMap引用 userResultMap(id)-->
     <resultMap id="userResultMap" type="com.azhe.pojo.User">
     </resultMap>
-
+    <update id="myUpdate">
+        update db2409.tb_user
+            set name = #{name}
+        <where>
+            ${ew.customSqlSegment}
+        </where>
+    </update>
 
 
     <select id="selectAll" resultType="com.azhe.pojo.User">
         select *
-        from db2409.user;
+        from db2409.tb_user;
     </select>
 
 

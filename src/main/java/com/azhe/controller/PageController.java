@@ -59,4 +59,19 @@ public class PageController {
     }
 
 
+
+    @GetMapping("/testPage")
+    public String testPage(Model model) {
+//        log.info("這是測試網頁...");
+//
+//        List<String> fieldNames = Arrays.asList(
+//                "MyTestBean"
+//        );
+//
+//        log.info("fieldNames : {}", fieldNames);
+
+        return "testPage";
+    }
+
+
 }

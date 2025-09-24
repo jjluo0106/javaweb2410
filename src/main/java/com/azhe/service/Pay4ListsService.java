@@ -20,7 +20,7 @@ public class Pay4ListsService {
         System.out.println(123);
 
         try {
-            System.out.println(pay4ListsMapper.selectModelByInputBoxes(payPlatformAndModelVO));
+//            System.out.println(pay4ListsMapper.selectModelByInputBoxes(payPlatformAndModelVO));
             System.out.println(321);
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -16,7 +16,7 @@ public class GetRunTimeAspect {
     public Object printRunTime(ProceedingJoinPoint joinPoint) throws Throwable {
         //獲取該方法名稱
         String methodName = joinPoint.getSignature().getName();
-
+        System.out.println(methodName + "被調用了...");
         long start = System.currentTimeMillis();
         Object result = joinPoint.proceed();
         long end = System.currentTimeMillis();

@@ -22,6 +22,11 @@ public class Pay4ListsController {
     PayMethodService payMethodService;
 
 
+    /**
+     * PayPlatform 以為主的input欄位模糊查詢
+     * @param payPlatformAndModelVO
+     * @return
+     */
     @PostMapping("/selPayPlatformAndModelVO")
     @GetRunTime
     public List<PayPlatformAndModelVO> selectModelByInputBoxes(@RequestBody PayPlatformAndModelVO payPlatformAndModelVO) {

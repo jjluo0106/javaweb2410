@@ -1,39 +1,75 @@
 package com.azhe.controller;
 
-import org.springframework.web.bind.annotation.*;
+import com.azhe.mapper.TPayPlatformMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
+@Slf4j
 @RestController
 public class myTestController {
 
-    @RequestMapping("/tt")
+    @Autowired
+    TPayPlatformMapper platformMapper;
+
+
+    /**
+     *http://localhost:666/tt
+     */
+    @PostMapping("/tt")
     public String tt(HttpServletRequest request, @RequestBody(required = false) String body) {
         try {
-            // 获取请求头
-            String contentType = request.getHeader("Content-Type");
-            String userAgent = request.getHeader("User-Agent");
+            StringBuilder headerBuilder = new StringBuilder("\n===== 所有請求 Header =====\n");
 
-            // 打印请求头
-            System.out.println("Content-Type(請求體格式):\n " + contentType);
-            System.out.println("User-Agent(發送的設備):\n " + userAgent);
-
-
-            System.out.println("getRequestURI ：　" + request.getRequestURI());
-
-            // 打印请求体
-            if (body != null) {
-                System.out.println("Request Body(請求體):\n " + body);
-            } else {
-                System.out.println("Request Body: No body");
+            // 列印所有 header
+            Enumeration<String> headerNames = request.getHeaderNames();
+            while (headerNames.hasMoreElements()) {
+                String headerName = headerNames.nextElement();
+                String headerValue = request.getHeader(headerName);
+                headerBuilder.append(headerName).append(": ").append(headerValue).append("\n");
             }
+
+            log.info(headerBuilder.toString());
+
+            // 印出 URI 與 body
+            log.info("\n===== 請求資訊 =====\n" +
+                    "URI: " + request.getRequestURI() + "\n" +
+                    "Body:\n" + (body != null ? body : "No Body") +
+                    "\n====================");
 
             return "tttest";
 
         } catch (Exception e) {
-            e.printStackTrace();  // 打印详细的异常堆栈信息
+            log.error("發生錯誤", e);
             return "Error occurred!";
         }
+    }
+
+
+
+
+    @RequestMapping("/testMyBatisPlus")
+    public String testMyBatisPlus( @RequestBody String s ) {
+        // 打印请求体
+        if (s != null) {
+            System.out.println("Request Body(請求體):\n " + s);
+        } else {
+            System.out.println("Request Body: No body");
+        }
+        log.info("testPlus...");
+
+        String myInput = s.split("=")[1];
+        System.out.println(myInput);
+
+        System.out.println(platformMapper.selectById(myInput));
+
+        return "testMyBatisPlus";
     }
 
 

@@ -1,6 +1,7 @@
 package leetcode;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 
 /**
  Example 1:
@@ -18,20 +19,19 @@ public class A014_LongestCommonPrefix {
 
     private String longestCommonPrefix(String[] strs) {
 
+        StringBuilder sb = new StringBuilder();
+
         String first = strs[0];
 
 
-        // 第幾個字
-        for(int i = 0; i < first.length() ; i++){
-            // 第幾組字串
-            for(int j =1; j < strs.length; j++){
-                if(first.length() == 0 || strs[j].length() == 0) return "";
-
-                if(strs[j].length() < i || first.charAt(i) != strs[j].charAt(i)) return first.substring(0 , i);
-
+        for(int i = 0; i < first.length(); i++){ // 每次字母
+            char firstC = first.charAt(i);
+            for(int j = 0; j < strs.length; j++){ // 美個單字
+                if(strs.length-1 < i || firstC != strs[j].charAt(i)) return sb.toString();
             }
+            sb.append(firstC);
         }
-        return first;
+        return sb.toString();
     }
 
 

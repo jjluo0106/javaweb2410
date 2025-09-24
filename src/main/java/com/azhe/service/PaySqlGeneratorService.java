@@ -30,7 +30,7 @@ public class PaySqlGeneratorService {
     private final TemplateEngine templateEngine;
 
     @Autowired
-    PlatformMapper platformMapper;
+    TPayPlatformMapper platformMapper;
     @Autowired
     PayChannelMapper payChannelMapper;
     @Autowired
@@ -76,6 +76,8 @@ public class PaySqlGeneratorService {
 
             // 提取 ZFs 并转为 List **目前禁止使用兩個支付導出！！會跟　修改導出　衝突　（到時候可能兩個就不使用修改導出）
             JSONArray zfsArray = rJSON.getJSONArray("zfs");
+            log.info("zfsArray :\n{}", zfsArray);
+
             List<String> zfsList = zfsArray.toList(String.class);
             zfsList = CollUtil.map(zfsList, item -> "'" + item + "'", true);
             // 提取 modifier
@@ -86,7 +88,7 @@ public class PaySqlGeneratorService {
             log.info("apps :\n{}", apps);
 
             //*****************資料庫部分資訊
-            List<PayPlatform> payPlatforms = platformMapper.queryTest4(CollUtil.join(zfsList, ", "));
+            List<TPayPlatform> payPlatforms = platformMapper.queryTest4(CollUtil.join(zfsList, ", "));
             List<PayMethod> payMethods = payMethodMapper.selectByCode(zfsList.get(0));
             List<PayChannel> payChannels = payChannelMapper.selectByCode(zfsList.get(0));
             List<PayRequestModel> payRequestModels = payRequestModelMapper.selectByCode(zfsList.get(0));
@@ -97,16 +99,20 @@ public class PaySqlGeneratorService {
 
             System.out.println(payRequestModels);
 
+            System.out.println("----------------------------------");
             // 使用 modifier修改 payPlatforms
             useModifier(modifier, payPlatforms);
+            System.out.println("----------------------------------");
 
             payPlatforms.get(0).setPayPlatformId(String.valueOf(rJSON.getByPath("apps[0].platformId", Integer.class) + 1)); // getByPath是hutool 的路徑表達式
 
+            System.out.println("----------------------------------");
 
             payMethods.get(0).setPayMethodId(String.valueOf(rJSON.getByPath("apps[0].methodId", Integer.class) + 1));
             payMethods.get(0).setMyPlatformCode(modifier.get("myPlatformCode").toString());
             payMethods.get(0).setMyPlatformName(modifier.get("myPlatformName").toString());
             payMethods.get(0).setMyChannelCode(modifier.get("myChannelCode").toString());
+            System.out.println("----------------------------------");
 
             payChannels.get(0).setPayChannelId(String.valueOf(rJSON.getByPath("apps[0].channelId", Integer.class) + 1));
             payChannels.get(0).setPayMethodId(String.valueOf(rJSON.getByPath("apps[0].methodId", Integer.class) + 1));
@@ -123,6 +129,7 @@ public class PaySqlGeneratorService {
             payRequestModels.get(0).setMyPlatformCode(modifier.get("myPlatformCode").toString());
             payRequestModels.get(0).setMySuccessfulURL(modifier.get("mySuccessfulURL").toString());
             payRequestModels.get(0).setMyCallbackURL(modifier.get("myCallbackURL").toString());
+            System.out.println("----------------------------------");
 
 
             memberPayFiledMappers.forEach( file ->{
@@ -195,7 +202,7 @@ public class PaySqlGeneratorService {
      * @param modifier
      * @param payPlatforms
      */
-    private static void useModifier(JSONObject modifier, List<PayPlatform> payPlatforms) {
+    private static void useModifier(JSONObject modifier, List<TPayPlatform> payPlatforms) {
         payPlatforms.forEach(
                 platform -> {
                     log.info("payPlatformId: {}", platform.getPayPlatformId());

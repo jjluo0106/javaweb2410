@@ -1,6 +1,6 @@
 package dataStructure;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static dataStructure.TestStop.myStop;
 import static org.junit.jupiter.api.Assertions.assertEquals;

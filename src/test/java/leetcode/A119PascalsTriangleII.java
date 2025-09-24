@@ -6,16 +6,18 @@ import java.util.List;
 public class A119PascalsTriangleII {
 
     public List<Integer> getRow(int rowIndex) {
-        List<List<Integer>> total = new ArrayList<>();
 
-        for(int h=0; h<=rowIndex; h++){
-            List<Integer> floor = new ArrayList<>();
-            for(int w=0; w<h; w++){
-                if(w==0||w==h) floor.add(1);
-                else floor.add(total.get(h-1).get(w-1) + total.get(h-1).get(w));
+
+        List<List<Integer>> list = new ArrayList<>();
+
+        for(int i=0; i<=rowIndex; i++){
+            List<Integer> row = new ArrayList<>();
+            for(int j=0; j<=i; j++){
+                if(j==0 || j==i) row.add(1);
+                else row.add( list.get(i-1).get(j-1) + list.get(i-1).get(j) );
             }
+            list.add(row);
         }
-
-        return total.get(rowIndex);
+        return list.get(rowIndex);
     }
 }

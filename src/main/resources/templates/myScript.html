@@ -1,5 +1,5 @@
 -- SQL 生成於：[[${currentDate}]]
-
+use 8bet;
 -- t_pay_platform
 INSERT INTO `t_pay_platform` (`PAY_PLATFORM_ID`, `PLATFORM_CODE`, `PLATFORM_NAME`, `MERCHANT_CODE`, `SECRET_KEY`, `RSA_KEY`, `PUBLIC_KEY`, `IS_ENABLE`, `VERSION_NO`, `ip`, `SUCCESS_URL`, `QUERY_URL`, `IS_QUERY`, `CREATION_TIME`, `CREATION_BY`, `LAST_UPDATED_TIME`, `LAST_UPDATED_BY`) VALUES<th:block th:each="platform, stat : ${payPlatforms}">
     (
@@ -86,8 +86,8 @@ INSERT INTO `t_pay_request_model` (`PAY_MODEL_ID`, `PLATFORM_CODE`, `PAY_STRATEG
     '<th:block th:utext="${model.pageCallbackUrl}"></th:block>', -- PAGE_CALLBACK_URL
     '<th:block th:utext="${model.myCallbackURL}"></th:block>/[[${model.myPlatformCode}]]/[[${model.payModelId}]]', -- CALLBACK_URL
     '<th:block th:utext="${model.callbackStrategy}"></th:block>', -- CALLBACK_STRATEGY
-    '<th:block th:utext="${model.callbackReturnStrategy}"></th:block>', -- CALLBACK_RETURN_STRATEGY
-    '<th:block th:utext="${model.ordernoStatus}"></th:block>', -- ORDERNO_STATUS
+    '<th:block th:utext="${model.callbackReturnStrategy}"></th:block>', -- CALLBACK_RETURN_STRATEGY 完成查詢響應內容
+    '<th:block th:utext="${model.ordernoStatus}"></th:block>', -- ORDERNO_STATUS 請求成功回調標誌
     '<th:block th:utext="${model.callbackSignValue}"></th:block>', -- CALLBACK_SIGN_VALUE
     '<th:block th:utext="${model.rootXml}"></th:block>', -- ROOT_XML
     '<th:block th:utext="${model.amountStrategy}"></th:block>', -- AMOUNT_STRATEGY // 分 POINTS 100=1块 / 保留小数两位 TDP / 元 INTEGERS
@@ -129,7 +129,7 @@ values
 -- clientIp 客戶端
 -- randomNum
 -- currCode 币种CNY
---
+-- userId 会员ID
 -- payAmount
 -- extend1
 -- payStatus

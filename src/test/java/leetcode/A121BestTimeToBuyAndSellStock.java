@@ -4,18 +4,16 @@ public class A121BestTimeToBuyAndSellStock {
 
     public int maxProfit(int[] prices) {
 
-        if(prices.length == 0) return 0;
+        int low = prices[0];
+        int mProfit= 0;
 
-        int minPrice = prices[0];
-        int maxProfit = 0;
-
-        for(int price : prices){
-            if( minPrice > price) minPrice = price;
-            int tempProfit = price-minPrice;
-            if(tempProfit>maxProfit) maxProfit=tempProfit;
+        for(int i=1; i< prices.length; i++){
+            int temp = prices[i];
+            if(temp<low) low = temp;
+            if(temp-low>mProfit) mProfit = temp-low;
 
         }
-        return maxProfit;
+        return mProfit;
     }
 
 

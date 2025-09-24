@@ -23,13 +23,12 @@ public class A001_TowSum {
 
         Map<Integer, Integer> map = new HashMap<>();
 
-        for(int i=0; i<nums.length; i++){
-            int num = nums[i];
-
-            if(map.containsValue(target - num)) return new int[]{i, map.get(i)};
-            map.put(i, num);
+        for(int i=0; i< nums.length; i++){
+            int temp = nums[i];
+            if(map.containsKey(target - temp) ) return new int[]{i, map.get(target-temp)};
+            map.put(temp, i);
         }
-        return new int[]{0};
+        return new int[]{};
     }
 
 

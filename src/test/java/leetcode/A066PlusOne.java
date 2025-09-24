@@ -31,25 +31,23 @@ public class A066PlusOne {
 
     public int[] plusOne(int[] digits) {
 
-        for(int i = digits.length -1; i >= 0; i--){
-            if(digits[i] != 9){
-                digits[i]+=1;
-                return digits;
+        for(int point = digits.length-1; point>0; point--){
+
+            if(digits[point] == 9){
+
+                if(point==0) {
+                    int[] result = new int[digits.length];
+                    result[0] = 1;
+                    return result;
+                }
+                digits[point] = 0;
+            }else {
+                digits[point] += 1;
+                break;
             }
 
-            if(i == 0){
-                digits = new int[digits.length+1];
-                digits[0] = 1;
-                return digits;
-            }
-
-            digits[i] =0;
         }
-
         return digits;
-
-
-
     }
 
 

@@ -9,20 +9,17 @@ public class A144 {
 
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> list = new ArrayList<>();
-        return getList(root, list);
+        return getMyList(list, root);
 
     }
 
-    public List<Integer> getList(TreeNode node, List<Integer> list){
-        if(node==null) return list;
-        list.add(node.val);
-        getList(node.left,list);
-        getList(node.right,list);
+    private List<Integer> getMyList(List<Integer> list, TreeNode root) {
+        if(list == null) return list;
+        list.add(root.val);
+        getMyList(list, root.left);
+        getMyList(list, root.right);
         return list;
     }
-
-
-
 
 
 }
