@@ -12,16 +12,16 @@ public class A083RemoveDuplicatesFormSortedList {
 
     public ListNode deleteDuplicates(ListNode head) {
 
-        if(head==null || head.next==null || head.next.next==null) return head;
+        if(head==null || head.next==null) return head;
+
         ListNode temp = head;
 
-        while(temp!=null && temp.next!=null && temp.next.next!=null){
-            if(temp.val== temp.next.val) temp.next= temp.next.next;
+        while(temp!=null && temp.next!=null){
+            if(temp.val == temp.next.val) temp.next = temp.next.next;
             else temp = temp.next;
         }
-        return head;
 
-
+        return temp;
     }
 
 

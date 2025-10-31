@@ -22,15 +22,18 @@ public class A070ClimbingStairs {
 
     public int climbStairs(int n) {
 
-        if(n <=2 ) return n;
-        int a = 1, b=2;
+        if(n<=2) return n;
 
+        int temp = 0;
+        int a = 1;
+        int b = 2;
         for(int i=3; i<=n; i++){
-            int c = a +b;
-            a = b;
-            b = c;
+
+           temp = a + b;
+           a = b;
+           b = temp;
         }
-        return b;
+        return temp;
 
     }
 
