@@ -1,4 +1,4 @@
-package leetcode.practicing;
+package leetcode.done;
 
 import org.junit.jupiter.api.Test;
 

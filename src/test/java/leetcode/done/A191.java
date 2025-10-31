@@ -1,4 +1,4 @@
-package leetcode.practicing;
+package leetcode.done;
 
 public class A191 {
 

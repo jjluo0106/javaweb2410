@@ -1,4 +1,4 @@
-package leetcode.practicing;
+package leetcode.done;
 
 import cn.hutool.crypto.digest.DigestUtil;
 import org.json.JSONException;

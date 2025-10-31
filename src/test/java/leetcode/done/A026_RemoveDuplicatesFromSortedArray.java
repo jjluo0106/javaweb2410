@@ -1,5 +1,5 @@
 
-package leetcode;
+package leetcode.done;
 
 
 import org.junit.jupiter.api.Test;

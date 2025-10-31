@@ -1,6 +1,4 @@
-package leetcode.practicing;
-
-import leetcode.done.TreeNode;
+package leetcode.done;
 
 public class A222 {
 

@@ -1,12 +1,14 @@
-package leetcode.practicing;
+package leetcode.done;
 
+
+import leetcode.practicing.ListNode;
 
 public class A203 {
 
 
-    public ListNode removeElements(ListNode head, int val) {
+    public leetcode.practicing.ListNode removeElements(leetcode.practicing.ListNode head, int val) {
 
-        ListNode result = new ListNode(0);
+        leetcode.practicing.ListNode result = new leetcode.practicing.ListNode(0);
         result.next= head;
         ListNode temp = result;
 

@@ -1,4 +1,4 @@
-package leetcode;
+package leetcode.done;
 
 /**
  Input: head = [1,1,2]

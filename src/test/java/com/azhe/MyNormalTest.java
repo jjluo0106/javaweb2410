@@ -319,4 +319,39 @@ public class MyNormalTest {
         System.out.println("Current java.library.path:");
         System.out.println(libraryPath);
     }
+
+
+    @Test
+    public void testNoName(){
+        new Animal(){
+            @Override
+            public void cry(){
+                System.out.println("廟喵叫");
+            }
+        }.cry();
+    }
+
+
+     interface Animal{
+        void cry();
+    }
+
+
+//    int gg;
+
+    @Test
+    public void testField(){
+
+        BigGG bigGG = new BigGG();
+
+    }
+
+
+    class BigGG {
+        int gg;
+
+        BigGG(){
+            System.out.println(gg);
+        }
+    }
 }

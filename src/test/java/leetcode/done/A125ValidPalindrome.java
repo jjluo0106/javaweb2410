@@ -1,4 +1,4 @@
-package leetcode;
+package leetcode.done;
 
 public class A125ValidPalindrome {
 
